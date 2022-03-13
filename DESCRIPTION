@@ -17,6 +17,7 @@ Imports:
     flair,
     flextable,
     fontawesome,
+    gghighlight,
     ggplot2,
     gradethis (>= 0.2.5.9000),
     gtsummary,

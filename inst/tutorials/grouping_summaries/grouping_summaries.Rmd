@@ -23,12 +23,12 @@ library(learnr)
 library(gradethis)
 library(etude)      # help functions for gradethis
 library(flair)
-# load packages ----------------------------------------------------------------
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 library(janitor)
 library(flextable)
+library(scales)
 
 
 # set options for exercises and checking ---------------------------------------
