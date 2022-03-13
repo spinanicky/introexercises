@@ -27,7 +27,7 @@ library(dplyr)
 library(ggplot2)
 library(gghighlight)
 library(janitor)
-library(flextable)
+library(lubridate)
 library(scales)
 
 
