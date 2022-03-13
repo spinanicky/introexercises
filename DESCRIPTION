@@ -16,16 +16,22 @@ Imports:
     etude (>= 0.3.0.9001),
     flair,
     fontawesome,
+    ggplot2,
     gradethis (>= 0.2.5.9000),
+    gtsummary,
     icons (>= 0.2.0),
     janitor,
     learnr (>= 0.10.1.9019),
+    lubridate,
     rio,
+    stringr,
     tidyr
-Remotes:  
+Remotes: 
     rstudio/learnr,
     rstudio/gradethis,
     dtkaplan/etude,
     hadley/emo,
     mitchelloharawild/icons
 RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+

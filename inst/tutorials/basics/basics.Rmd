@@ -1,5 +1,5 @@
 ---
-title: "APPLIED EPI: R Setup, syntax, and import"
+title: "R Setup, syntax, data import"
 output: 
   learnr::tutorial:
     progressive: true
@@ -18,6 +18,14 @@ description: >
 <script language="JavaScript" src="js/exercise-font-size.js"></script>
 
 ```{r setup, include=FALSE}
+library(gradethis)
+library(etude)
+library(learnr)
+library(dplyr)
+library(flair)
+library(ggplot2)
+library(lubridate)
+library(janitor)
 
 # set options for exercises and checking ---------------------------------------
 gradethis::gradethis_setup()
@@ -29,7 +37,7 @@ learnr::tutorial_options(exercise.timelimit = 60)
 # event recorder ---------------------------------------------------------------
 # see https://github.com/dtkaplan/submitr/blob/master/R/make_a_recorder.R
 
-learnr::tutorial_options(exercise.eval = FALSE)  # pre-evaluate exercises
+tutorial_options(exercise.eval = FALSE)  # pre-evaluate exercises
 
 # new_recorder <- function(tutorial_id, tutorial_version, user_id, event, data) {
 #     cat(
@@ -58,9 +66,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
-
-linelist_raw <- rio::import(system.file("dat/linelist_raw.xlsx", package = "introexercises"))
-linelist <- rio::import(system.file("dat/linelist_cleaned.rds", package = "introexercises"))
+surv_raw <- rio::import(system.file("dat/surveillance_linelist_12012014.csv", package = "introexercises"))
 ```
 
 
@@ -1330,7 +1336,7 @@ You can do this using the **base R** command `library()`.
 
 **Try this command in RStudio.**  
 
-```{r, echo=T}
+```{r, echo=T, eval = FALSE}
 # Loads the package pacman for use in the current R session
 library(pacman)
 ```
@@ -1350,7 +1356,7 @@ One solution is **pacman**'s function `p_load()`. You can list the names of pack
 
 Here is what a **pacman** command can look like. The syntax quite simple. Just list the names of the packages within the `p_load()` parentheses, separated by commas. Note that package names are case-sensitive.  
 
-```{r, echo=T}
+```{r, echo=T, eval=F}
 pacman::p_load(rio, here, janitor, lubridate, tidyverse)
 ```
 
@@ -1358,7 +1364,7 @@ The syntax `pacman::p_load()` explicitly writes the package name (**pacman**) pr
 
 This command can also be written vertically. **In any R command, the newlines and indenting will not impact the execution of the code.** But it can dramatically improve readability!  
 
-```{r, echo=T}
+```{r, echo=T, eval=F}
 # Load all the packages needed, installing if necessary
 pacman::p_load(
      rio,          # for importing data
@@ -1497,7 +1503,7 @@ Notes:
 
 [***DANGER:*** If providing a vector of numbers to one of the above functions, be sure to wrap the numbers within `c()` .]{style="color: red;"}
 
-```{r}
+```{r, eval=T, echo=T}
 # If supplying raw numbers to a function, wrap them in c()
 mean(1, 6, 12, 10, 5, 0)    # !!! INCORRECT !!!  
 
@@ -1552,6 +1558,8 @@ File naming can seem like a small thing to focus on, but the ramifications can b
 Imagine the power of R - you can write code to automatically import the most recent data files by the date in their file name! But this can be hindered by poor file naming practices.  
 
 Even if you never try coding such as that, you surely know that bad file naming practices can cause significant problems for version control and archiving.  
+
+### Good and bad file names  
 
 **Have you ever seen files like these?**  
 
@@ -2064,7 +2072,35 @@ You can return a good summary of the dataset using the R package {skimr} and its
 
 Install this package and load it for use.  
 
-Place the name of the linelist in `skim()` and run. What content appears in the R console? If it is not easily readible, try expanding your Console pane to be larger, and run the command again.  
+Place the name of the linelist in `skim()` and run. What content appears in the R console? If it is not easily readable, try expanding your Console pane to be larger, and run the command again.  
+
+
+
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+slim(surv_raw
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+
+
+
+
+
 
 **What does the output show?**  
 
