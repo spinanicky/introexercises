@@ -1,5 +1,5 @@
 ---
-title: "Fundamentals of ggplot2"
+title: "Applied Epi - Fundamentals of ggplot2"
 output: 
   learnr::tutorial:
     progressive: true

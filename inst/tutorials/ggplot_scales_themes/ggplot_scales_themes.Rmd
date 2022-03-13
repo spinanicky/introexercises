@@ -1,5 +1,5 @@
 ---
-title: "Scales and themes in ggplot2"
+title: "Applied Epi - Scales and themes in ggplot2"
 output: 
   learnr::tutorial:
     progressive: true
