@@ -1,5 +1,5 @@
 ---
-title: "R Setup, syntax, data import"
+title: "Applied Epi - R setup, syntax, data import"
 output: 
   learnr::tutorial:
     progressive: true
