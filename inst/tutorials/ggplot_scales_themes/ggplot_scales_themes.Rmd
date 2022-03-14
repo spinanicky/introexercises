@@ -28,7 +28,7 @@ library(ggplot2)
 library(gghighlight)
 library(janitor)
 library(lubridate)
-library(icons)
+library(fontawesome)
 library(scales)
 
 
@@ -113,7 +113,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Here you will see a helpful hint!  
@@ -126,7 +126,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -333,7 +333,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r, warning=F, message=F}
@@ -440,7 +440,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r manual-color, warning=F, message=F}
@@ -500,7 +500,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 
@@ -539,7 +539,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 
@@ -574,7 +574,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 
@@ -641,7 +641,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 
@@ -786,7 +786,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r, echo = F, eval = F}
@@ -860,7 +860,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Add a `labs()` function, using `caption = `. Within the quotes, place "\n" in each place where you want a newline to appear.  
@@ -874,7 +874,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r, echo = T, eval = F}
@@ -921,7 +921,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r, echo = T, eval = F}

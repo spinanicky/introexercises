@@ -21,7 +21,6 @@ Imports:
     ggplot2,
     gradethis (>= 0.2.5.9000),
     gtsummary,
-    icons (>= 0.2.0),
     janitor,
     learnr (>= 0.10.1.9019),
     lubridate,

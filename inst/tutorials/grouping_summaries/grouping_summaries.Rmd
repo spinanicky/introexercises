@@ -28,7 +28,7 @@ library(ggplot2)
 library(lubridate)
 library(janitor)
 library(flextable)
-library(icons)
+library(fontawesome)
 library(scales)
 
 
@@ -114,7 +114,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Here you will see a helpful hint!  
@@ -127,7 +127,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -254,7 +254,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -335,7 +335,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Pipe the clean `surv` data frame into `tabyl()` and write the column `district` in the parentheses.
@@ -351,7 +351,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -400,7 +400,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -427,7 +427,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -455,7 +455,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -535,7 +535,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -561,7 +561,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -640,7 +640,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -752,7 +752,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -876,7 +876,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}

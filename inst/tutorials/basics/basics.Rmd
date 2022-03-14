@@ -25,7 +25,7 @@ library(dplyr)
 library(flair)
 library(ggplot2)
 library(lubridate)
-library(icons)
+library(fontawesome)
 library(janitor)
 
 # set options for exercises and checking ---------------------------------------
@@ -109,7 +109,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Here you will see a helpful hint!  
@@ -122,7 +122,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -550,7 +550,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Use the addition operator `+` between the numbers, place the cursor on that line of the script, and press the "Run" button in the upper-right of the script. Don't forget that the second value is NEGATIVE 99.    
@@ -563,7 +563,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -610,7 +610,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Use parentheses ( ), the asterisk multiplication operator, and the addition + and subtraction - operators. First, total the known needs (200, 550, and two times 925). Wrap that all in parentheses, because you need to multiply that sum by the desired buffer (110%, but in deminal form). That total should also be wrapped in parentheses, because you need to then subtract the extra left-over from the previous month (which does not need to be purchased).  
@@ -623,7 +623,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -735,7 +735,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -830,7 +830,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Begin by writing 3 commands, which define the needs for each of the 3 sites. Then, write one command that defines excess tests remaining from the previous month. Finally, write a command that prints the total number of tests needed by replacing the numbers with the object names defined in the previous commands.    
@@ -843,7 +843,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -916,7 +916,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1140,7 +1140,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1316,7 +1316,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1713,7 +1713,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 * 20141201_hosp-linelist_central.csv  
@@ -1836,7 +1836,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Use the assignment operator `<-` before the function. Don't forget quotation marks around the name of the file.  
@@ -1850,7 +1850,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1967,7 +1967,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Begin the command with the object name that you want to assign, then the assignment operator, and then the `import()` command. Within the `import()` parentheses, place the `here()` function, which should list the names of the sub-folders (in quotes) and include the file name with extension (.xlsx).  
@@ -1980,7 +1980,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -2083,7 +2083,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}

@@ -26,7 +26,7 @@ library(dplyr)
 library(flair)
 library(ggplot2)
 library(lubridate)
-library(icons)
+library(fontawesome)
 library(janitor)
 
 # set options for exercises and checking ---------------------------------------
@@ -110,7 +110,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Here you will see a helpful hint!  
@@ -123,7 +123,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -291,7 +291,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -329,7 +329,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -632,7 +632,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -719,7 +719,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -813,7 +813,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -862,7 +862,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -966,7 +966,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1049,7 +1049,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1116,7 +1116,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 In the `mutate()` function, re-define `age` as equal to itself as wrapped within the `as.numeric()` function.  
@@ -1130,7 +1130,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1235,7 +1235,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1321,7 +1321,7 @@ Now that both of the date columns are corretly classified as "date", we can do m
 **Add a `mutate()` command to the pipe chain, to create a new column named `diff` that records the number of days between `date_onset` and `date_report` for each case.  
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1409,7 +1409,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1561,7 +1561,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the new column to create `age_years` and an equals sign. On the right side of the equals sign, you write the function `case_when()`. Within the parentheses of `case_when()`, you are writing logical criteria that will be assessed for each row in the dataset (on the left side of the ~), and on the right side of the ~ you write the resulting value to returned.  
@@ -1581,7 +1581,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1676,7 +1676,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1833,7 +1833,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -1957,7 +1957,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 -->
 <details>
 
-<summary style='text-decoration: underline; color: darkgreen;'>`r icons::icon_style(icons::fontawesome("lightbulb", style = "solid"), scale = 1, fill = "darkgold")` Click to read a hint</summary>
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
 Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the column to re-define `hospital` and an equals sign. On the right side of the equals sign, you write the function `recode()`. Within the parentheses of `recode()`, the first argument is again the name of the column to re-define.
@@ -1973,7 +1973,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -2085,7 +2085,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
@@ -2223,7 +2223,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 -->
 
 <details>
-<summary style='text-decoration: underline; color: red;'>`r icons::icon_style(icons::fontawesome("check", style = "solid"), scale = 1, fill = "red")`Click to see a solution (try it yourself first!)</summary>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
 ```{r eval = F, echo=T}
