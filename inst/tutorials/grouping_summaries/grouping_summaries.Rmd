@@ -195,12 +195,12 @@ You will see these icons throughout the exercises:
 
 Icon  |Meaning
 ------|--------------------
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`|Observe  
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`|Alert!  
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`|An informative note  
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")`|Time for you to code!  
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`|Change to another window  
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`|Remember this for later  
+`r fontawesome::fa("eye", fill = "darkblue")`|Observe  
+`r fontawesome::fa("exclamation", fill = "red")`|Alert!  
+`r fontawesome::fa("pen", fill = "brown")`|An informative note  
+`r fontawesome::fa("terminal", fill = "black")`|Time for you to code!  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`|Change to another window  
+`r fontawesome::fa("bookmark", fill = "orange")`|Remember this for later  
 
 
 
@@ -228,7 +228,7 @@ In this exercise you will:
 ### Open the R project  
 
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`  
 
 Open the RStudio by clicking on the "intro_course" R project, as before. Open your script: "ebola_analysis.R" where you wrote the cleaning code from the previous module.  
 

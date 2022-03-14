@@ -31,8 +31,8 @@ Imports:
 Remotes: 
     rstudio/learnr,
     rstudio/gradethis,
+    rstudio/fontawesome,
     dtkaplan/etude,
     hadley/emo,
-    mitchelloharawild/icons
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)

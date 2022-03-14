@@ -190,12 +190,12 @@ You will see these icons throughout the exercises:
 
 Icon  |Meaning
 ------|--------------------
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`|Observe  
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`|Alert!  
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`|An informative note  
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")`|Time for you to code!  
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`|Change to another window  
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`|Remember this for later  
+`r fontawesome::fa("eye", fill = "darkblue")`|Observe  
+`r fontawesome::fa("exclamation", fill = "red")`|Alert!  
+`r fontawesome::fa("pen", fill = "brown")`|An informative note  
+`r fontawesome::fa("terminal", fill = "black")`|Time for you to code!  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`|Change to another window  
+`r fontawesome::fa("bookmark", fill = "orange")`|Remember this for later  
 
 
 
@@ -316,10 +316,10 @@ quiz(caption = "Quiz - R and RStudio",
 
 ## RStudio tour 
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")` Open RStudio from your desktop or computer's list of applications. As it opens, RStudio will automatically find and use R. There will almost never be a need to open R directly. 
+`r fontawesome::fa("window-restore", fill = "darkgrey")` Open RStudio from your desktop or computer's list of applications. As it opens, RStudio will automatically find and use R. There will almost never be a need to open R directly. 
 
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`  
+`r fontawesome::fa("eye", fill = "darkblue")`  
 
 * Look around RStudio. If the size of the script is too small or large, adjust it in the *View* menu.  
 * Observe the major RStudio panes. How many panes do you see?  
@@ -359,7 +359,7 @@ The lower-right pane includes several important tabs. The Files pane is a browse
 
 This pane contains the Stata equivalents of the Plots Manager and Project Manager windows.
 
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`  
+`r fontawesome::fa("pen", fill = "brown")`  
 For more detail on RStudio capabilities, download this PDF [RStudio IDE cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf).  
 
 <!-- TODO (gif) -->
@@ -414,7 +414,7 @@ knitr::include_graphics("images/create_project.png")
 
 3) Browse to select a location to save this RStudio Project folder
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")` 
+`r fontawesome::fa("exclamation", fill = "red")` 
 >For this course, do NOT save the R project to a shared drive such as Sharepoint, OneDrive, Google Drive, etc. for this course. Save this project to your desktop or a drive that is local to your computer only. While hosting projects on drives like this is possible (and important for team work), it requires some testing and coordination between team members.    
 
 4) Make sure any remaining boxes are *unchecked* and click "Create project".  
@@ -423,14 +423,14 @@ Voila! Does your screen look different? It should not look very different. See i
 
 #### Explore your project  
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`
+`r fontawesome::fa("window-restore", fill = "darkgrey")`
 **Close your RStudio window.** If asked to save a 'workspace image", say NO (we'll explain why later).  
 
 **Open your File Explorer.** Navigate to where you saved the R project. *What do you see?* You should see a small file with an icon that looks like an "R box" - this is the RStudio project file (.Rproj). *To directly open the project next time, simply double-click this file to open it. RStudio will open, and all your files for this project will be at-the-ready.  
 
 **Double-click the RStudio Project file** to re-open your "intro_course" project. RStudio should open.  
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`
+`r fontawesome::fa("eye", fill = "darkblue")`
 Observe in the "Files" RStudio pane (lower-right) that you can see the contents of the "intro_course" project.  
 
 You can read more about RStudio projects in [this chapter of the Epi R Handbook](https://epirhandbook.com/en/r-projects.html).  
@@ -453,7 +453,7 @@ Currently, the script is not saved. Click the save icon above the script, or cli
 
 Note that the file extension for an R script is ".R". In working with R, you will encounter other extensions, but remember that this one is for R scripts.  
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`
+`r fontawesome::fa("eye", fill = "darkblue")`
 
 Observe that the file now appears in the "Files" RStudio pane in the lower-right. Similarly, it should also appear in your File Explorer.    
 
@@ -491,7 +491,7 @@ knitr::include_graphics("images/example_script.png")
 
 ### Write simple R commands  
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 
 Let's do some coding!
 
@@ -636,7 +636,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 NOTE: End of solution
 -->
 
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`
+`r fontawesome::fa("pen", fill = "brown")`
 Write your code so that other people have an easy time reading it! **Include spaces** around all the operators as you would in writing English or another language. See the solution above for proper form. Future readers of your code will thank you!  
 
 
@@ -700,7 +700,7 @@ quiz(
 ```
 
 
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`
+`r fontawesome::fa("pen", fill = "brown")`
 A quick note about naming objects:  
 
 * **Object names must not contain spaces**, but you should use underscore (_) or a period (.) instead of a space.
@@ -720,7 +720,7 @@ A quick note about naming objects:
 Note: in R literature, you may often see people using `df` as an object name. This is a very shorthand way to refer to the fact that the object they are saving is a "data frame" (dataset with columns and rows).  
 
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 Back to your R script... you can now return/print the *value* assigned to the name `confirmed_cases`, by simply running the name as a command **(look at the R console pane for the output)**:  
 
 ```{r, echo=TRUE, eval=FALSE}
@@ -806,7 +806,7 @@ Before you run the entire document, consider whether you have any unfinished cod
 
 ### Exercise: Medical supply chain calculation  
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 Let's run an exercise that uses that supply chain example from the previous section. As a reminder: you are managing a COVID testing campaign across 3 sites, and you need to place a supply order for rapid tests for next month. You have the following information:  
 
 * Site 1 uses 200 per month  
@@ -880,13 +880,13 @@ quiz(
 )
 ```
 
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`
+`r fontawesome::fa("pen", fill = "brown")`
 For extra credit, answer the following two questions:  
 
 * If you wanted to save the final output value, what operator would you add, and where?  
 * How would you need to modify your script if the two sub-sites of site 3 needed different numbers of tests?  
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")` 
+`r fontawesome::fa("exclamation", fill = "red")` 
 Remember to save your R script often! Just click the small "save icon" in the row of icons above the script, or click *File -> Save*  
 
 ### Commenting  
@@ -1001,7 +1001,7 @@ Likewise, the function `sum()` accepts an unlimited number of numeric values and
 sum(2, 5, 10, -8, 100)
 ```
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 
 Time for you to practice in RStudio. In your "demo.R" script, use the function `min()` and `max()` to find the minimum and maximum of the numbers 3, 55, 9, -4, and 33.  
 
@@ -1129,7 +1129,7 @@ flair::decorate("arguments") %>%
   flair::knit_print.with_flair()
 ```
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 Replicate the code above with your `jurisdictions` vector in RStudio. 
 
 **How would you adjust the code to add a space after each comma?**
@@ -1303,10 +1303,10 @@ install.packages("tidyverse")
 install.packages(c("tidyverse", "rio", "here"))
 ```
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")` 
+`r fontawesome::fa("exclamation", fill = "red")` 
 Note: this command installs a package, but does not load it for use in the current session.
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 
 **Now you try it: install the package "pacman".**
 
@@ -1671,7 +1671,7 @@ quiz(caption = "Quiz - file names",
 
 ### Clean file names  
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`
+`r fontawesome::fa("window-restore", fill = "darkgrey")`
 
 In your File Explorer, view the "intro_course" folder that we gave to you at the beginning of the course, in which you have created the R project.  
 
@@ -1696,7 +1696,7 @@ Here is how your folder structure should look:
 
 #### Clean file names  
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`
+`r fontawesome::fa("window-restore", fill = "darkgrey")`
 
 **Enter the folder "data/raw/hospital".**  
 
@@ -1813,7 +1813,7 @@ import("surveillance_linelist_12012014.csv")
 ```
 
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`  
+`r fontawesome::fa("exclamation", fill = "red")`  
 
 >Did you see this error?  
 >  
@@ -1890,7 +1890,7 @@ The package **here** and its function `here()` make it easy to tell R where to f
 Used in conjunction with an RStudio project, here allows you to describe the location of files in your RStudio project *in relation to the project’s root directory (the top-level folder)*. This is useful when the project may be shared or accessed by multiple people/computers. It prevents complications due to the unique file paths on different computers (e.g. "C:/Users/Laura/Documents...") by “starting” the file path in a place common to all users (the project root).  
 
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 
 Make sure you have installed and loaded the package **here**. Then try running the command `here()` - leave the parentheses empty. What do you see?  
 
@@ -1954,11 +1954,11 @@ You do not know who will be using your script later, or what kind of computer th
 
 ### Import from a subfolder  
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`  
 Now, go to your File Explorer to the root folder of the R project. Cut the file *"surveillance_linelist_12012014.csv"* from the root folder, and paste it into the "data/raw" subfolder.  
 
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 Now in RStudio, write a command to import the "surveillance_linelist_12012014.csv" dataset and save it as `surv_raw`.  
 
 
@@ -2025,7 +2025,7 @@ Now that you have imported the data, let's take a look!
 
 ### Take a peek  
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`
+`r fontawesome::fa("eye", fill = "darkblue")`
 
 The dataset is now saved as a data frame object in the RStudio **Environment pane**. Find its name there, and click once on the blue circle next to the name. What do you see?  
 

@@ -191,12 +191,12 @@ You will see these icons throughout the exercises:
 
 Icon  |Meaning
 ------|--------------------
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`|Observe  
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`|Alert!  
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`|An informative note  
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")`|Time for you to code!  
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`|Change to another window  
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`|Remember this for later  
+`r fontawesome::fa("eye", fill = "darkblue")`|Observe  
+`r fontawesome::fa("exclamation", fill = "red")`|Alert!  
+`r fontawesome::fa("pen", fill = "brown")`|An informative note  
+`r fontawesome::fa("terminal", fill = "black")`|Time for you to code!  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`|Change to another window  
+`r fontawesome::fa("bookmark", fill = "orange")`|Remember this for later  
 
 
 
@@ -238,7 +238,7 @@ In this exercise you will:
 
 ### Open your RStudio project  
 
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`  
 
 **Open the "intro_course" R project that you created in the previous exercise.**  
 
@@ -396,7 +396,7 @@ When you import data, empty cells in a CSV or XLSX may import into R with a blan
 
 You may even have an *empty character value* which will look blank but would actually be written like this: "".  
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`
+`r fontawesome::fa("eye", fill = "darkblue")`
 
 Let's keep an eye out for how missing values have been imported in our data set, as we begin to clean.  
 
@@ -802,7 +802,7 @@ surv %>%
 
 Yes, you can actually use `select()` to rename columns! It uses the same syntax as `rename()`, but (!) remember that it only keeps the columns that you write.  
 
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")` 
+`r fontawesome::fa("terminal", fill = "black")` 
 
 
 Now, add to your pipe chain a step that remove the column `row_num` from the dataset. It is not necessary for our analyses.  
@@ -1173,7 +1173,7 @@ NOTE: End of solution
 
 
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`
+`r fontawesome::fa("exclamation", fill = "red")`
 **Have you saved your script lately?**  
 
 
@@ -1278,7 +1278,7 @@ surv <- surv_raw %>%
 NOTE: End of solution
 -->
 
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`
+`r fontawesome::fa("bookmark", fill = "orange")`
 
 **Please note the below commands related to missingness in R**.  
 
@@ -1539,7 +1539,7 @@ Notably, the criteria are applied to each row in the dataset **in the order they
 
 Along those lines, in your *final statement*, it is advised to place TRUE on the left-side, which will capture any row that did not meet any of the previous criteria. The right-side of this statement could be assigned a value like “check me!”, or missing, or as in the example above to the column name to revert to the original value.  
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`
+`r fontawesome::fa("exclamation", fill = "red")`
 *DANGER: All outcome values on the RIGHT-side must all be the same class - either numeric, integer, character, date, logical, etc. Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric or POSIX), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html).*  
 
 
@@ -1746,7 +1746,7 @@ surv <- surv_raw %>%
 NOTE: End of solution
 -->
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`
+`r fontawesome::fa("exclamation", fill = "red")`
 **Have you saved your script lately?**  
 
 
@@ -1909,7 +1909,7 @@ surv <- surv_raw %>%
 NOTE: End of solution
 -->
 
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`
+`r fontawesome::fa("exclamation", fill = "red")`
 **Have you saved your script lately?**  
 
 
@@ -2174,7 +2174,7 @@ NOTE: End of solution
 
 
 
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`  
+`r fontawesome::fa("eye", fill = "darkblue")`  
 
 **Review your cleaning pipe chain, and the one in the solution.** Ensure that all the cleaning steps in the solution are also present in your R script "ebola_analysis.R".    
 

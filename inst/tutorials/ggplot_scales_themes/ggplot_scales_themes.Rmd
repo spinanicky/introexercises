@@ -194,12 +194,12 @@ You will see these icons throughout the exercises:
 
 Icon  |Meaning
 ------|--------------------
-`r icons::icon_style(icons::fontawesome("eye", style = "solid"), scale = 2, fill = "darkblue")`|Observe  
-`r icons::icon_style(icons::fontawesome("exclamation", style = "solid"), scale = 2, fill = "red")`|Alert!  
-`r icons::icon_style(icons::fontawesome("pen", style = "solid"), scale = 2, fill = "brown")`|An informative note  
-`r icons::icon_style(icons::fontawesome("terminal", style = "solid"), scale = 2, fill = "black")`|Time for you to code!  
-`r icons::icon_style(icons::fontawesome("window-restore", style = "solid"), scale = 2, fill = "darkgrey")`|Change to another window  
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`|Remember this for later  
+`r fontawesome::fa("eye", fill = "darkblue")`|Observe  
+`r fontawesome::fa("exclamation", fill = "red")`|Alert!  
+`r fontawesome::fa("pen", fill = "brown")`|An informative note  
+`r fontawesome::fa("terminal", fill = "black")`|Time for you to code!  
+`r fontawesome::fa("window-restore", fill = "darkgrey")`|Change to another window  
+`r fontawesome::fa("bookmark", fill = "orange")`|Remember this for later  
 
 
 
@@ -968,7 +968,7 @@ Themes are non-data design features (background, text size/color, etc).
 
 Try the argument `base_size = 16` inside the theme function, to quickly increase text sizes.  
 
-`r icons::icon_style(icons::fontawesome("bookmark", style = "solid"), scale = 2, fill = "orange")`
+`r fontawesome::fa("bookmark", fill = "orange")`
 
 Which one do you prefer? Bookmark and save it for later!  
 
