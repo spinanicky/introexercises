@@ -28,6 +28,7 @@ library(ggplot2)
 library(gghighlight)
 library(janitor)
 library(flextable)
+library(icons)
 library(scales)
 
 

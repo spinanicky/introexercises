@@ -28,6 +28,7 @@ library(ggplot2)
 library(gghighlight)
 library(janitor)
 library(lubridate)
+library(icons)
 library(scales)
 
 

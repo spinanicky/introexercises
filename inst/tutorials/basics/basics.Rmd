@@ -25,6 +25,7 @@ library(dplyr)
 library(flair)
 library(ggplot2)
 library(lubridate)
+library(icons)
 library(janitor)
 
 # set options for exercises and checking ---------------------------------------
