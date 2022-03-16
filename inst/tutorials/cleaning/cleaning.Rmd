@@ -320,7 +320,7 @@ NOTE: End of solution
 The next segment of your script will import the data.  
 
 
-**Write a command that imports the *"surveillance_linelist_12012014.csv"* from the "data/raw" subfolder of the R project. Use `here()` and `import()`, and name the dataset `surv_raw`.  
+**Write a command that imports the *"surveillance_linelist_12012014.csv"* from the "data/raw" subfolder of the R project.** Use `here()` and `import()`, and name the dataset `surv_raw`.  
 
 
 
@@ -417,7 +417,7 @@ surv_raw %>%
 quiz(caption = "Quiz - Gender",
   question_numeric(
     "How many rows are missing a value for gender?",
-    answer(25, correct = T),
+    answer(26, correct = T),
     allow_retry = TRUE,
     correct = "Correct, nice work.",
     min = 1,
@@ -466,8 +466,10 @@ Ah! But some of the rows have recorded age in *months*.
 
 ```{r, echo=T, eval=F}
 surv_raw %>% 
-  janitor::tabyl(`age unit`)
+  tabyl(`age unit`)
 ```
+
+Note that because this column name has a space in it, we had to write it surrounded by backticks, for R to understand that we are referring to a known column name.  
 
 ```{r quiz-age-unit, echo = FALSE}
 quiz(caption = "Quiz - age unit",
@@ -586,6 +588,16 @@ This allows us to carry out several different alterations of the dataframe in a 
 The order of this pipeline is important as operations occur sequentially, and so improperly ordered arguments may fail or (potentially more dangerously!) give incorrect values or unwanted outcomes.
 
 Remember - it may be tempting to exit and go clean up the dataset in the Excel file... but in almost all circumstances it is more reproducible and more efficient to record the changes in code. More than likely, you will receive another version of the "raw" data and all the cleaning work in the Excel will be lost. However, if you have the R script you will have a record of all the adjustments.  
+
+
+### Keyboard shortcut  
+
+R coders use the pipe operator so often that there is a keyboard shortcut! You will want to memorize this:  
+
+Windows/Linux: Ctrl + Shift + m  
+Max: Cmd + Shift + m  
+
+Try it out!  
 
 
 
@@ -800,7 +812,7 @@ surv %>%
 
 **You can re-name columns**  
 
-Yes, you can actually use `select()` to rename columns! It uses the same syntax as `rename()`, but (!) remember that it only keeps the columns that you write.  
+Yes, you can actually use `select()` to rename columns! It uses the same syntax as `rename()`, but remember that it only keeps the columns that you write!  
 
 `r fontawesome::fa("terminal", fill = "black")` 
 
@@ -951,9 +963,9 @@ head(surv)
 quiz(caption = "Quiz - date format",
   question("Which function should be used to convert the column date_onset?",
     allow_retry = T,
-    answer("ymd()", correct = T),
+    answer("ymd()"),
     answer("dmy()"),
-    answer("mdy()")
+    answer("mdy()", correct = T)
   )
 )
 ```
@@ -1029,7 +1041,7 @@ quiz(caption = "Quiz - Date",
 
 Now that we have date columns with the correct "date" class, we can create a column to represent the "epiweek" (epidemiological week).  
 
-Different countries in the world formulate epiweeks differently (e.g. starting on Sundays, Mondays, or Fridays), but most of the world uses weeks that begin on Mondays.  
+Some countries across the world formulate epiweeks differently (e.g. starting on Sundays, Mondays, or Fridays), but most of the world uses weeks that begin on Mondays.  
 
 To create this, we use the function `floor_date()` from the package {lubridate}, with the following argument settings:  
 
@@ -1208,14 +1220,14 @@ We need to tell R that if the value in `gender` is empty "" then R should change
 This code is saying: "Change `gender`, such that its values are equivalent to the column `gender` as changed by the function `na_if()` so that any instances of `""` are replaced by `NA`.  
 
 ```{r, echo=T, eval=F}
-surv_raw <- surv %>% 
-  mutate(gender = na_if(gender, ""))
+mutate(gender = na_if(gender, ""))
 ```
 
-**Run your pipe chain with this new command added, and the re-tabulate (using the clean dataset `surv`).**  
+**Run this short code to test the new command - it makes the change and prints the tabyl.** Do you see how the missing values are now listed as NA's?  
 
-```{r, echo=T}
-surv_raw %>% 
+```{r, eval=F, echo=T}
+surv %>% 
+  mutate(gender = na_if(gender, "")) %>% 
   tabyl(gender)
 ```
 
@@ -1785,7 +1797,7 @@ Try this in your RStudio. Then **open the `surv` dataset in the viewer** (by cli
 quiz(caption = "Quiz - Moving cases",
   question_numeric(
     "How many cases have different districts of residence and of detection?",
-    answer(34, correct = T),
+    answer(21, correct = T),
     allow_retry = TRUE,
     correct = "Correct, nice work.",
     min = 1,
@@ -2202,7 +2214,7 @@ Above, we write the name of the R object (`surv`), and then the filepath that we
 
 ## Set report parameters  
 
-Finally, now that we our cleaned data, let's use it to define a few parameters which could change as the data are updated.  
+Finally, now that we have our cleaned data, let's use it to define a few parameters which could change as the data are updated.  
 
 **Write one line of code for each of the below items, that defines these values as stored R objects:**  
 

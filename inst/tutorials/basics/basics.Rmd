@@ -449,7 +449,7 @@ You can read more about RStudio projects in [this chapter of the Epi R Handbook]
 knitr::include_graphics("images/new_script.jpg")
 ```
 
-Currently, the script is not saved. Click the save icon above the script, or click *File -> Save As*. Name the script "demo.R" and ensure it saves in the same folder as your R project.  
+Currently, the script is not saved. Click the save icon above the script, or click *File -> Save As*. Name the script as "demo.R" and ensure it saves in the same folder as your R project.  
 
 Note that the file extension for an R script is ".R". In working with R, you will encounter other extensions, but remember that this one is for R scripts.  
 
@@ -1003,7 +1003,7 @@ sum(2, 5, 10, -8, 100)
 
 `r fontawesome::fa("terminal", fill = "black")` 
 
-Time for you to practice in RStudio. In your "demo.R" script, use the function `min()` and `max()` to find the minimum and maximum of the numbers 3, 55, 9, -4, and 33.  
+Time for you to practice in RStudio. In your R script (named "demo.R"), use the function `min()` and `max()` to find the minimum and maximum of the numbers 3, 55, 9, -4, and 33.  
 
 We won't do a quiz, because the answers should be quite easy... but did your code work?  
 
@@ -1391,8 +1391,8 @@ quiz(caption = "Quiz - packages",
 
   question("How often do you need to load a package?",
     allow_retry = T,
-    answer("Every time you restart R", correct = TRUE, message = "Packages must be loaded each time you start an R session."),
-    answer("Only once", correct = TRUE, message = "Packages must be installed only once, but must be loaded at the beginning of each R session."),
+    answer("Every time you start or restart R", correct = TRUE, message = "Packages must be loaded each time you start an R session."),
+    answer("Only once", message = "Packages must be installed only once, but must be loaded at the beginning of each R session."),
     answer("Never (assuming you are connected to the internet)", message = "Packages must be installed once and loaded at the beginning of each R session. You can not access them dynamically through the internet."),
     answer("Each time you restart your computer", message = "Packages only need to be installed once and loaded at the beginning of each R session. There is no relation to restarting your computer.")
   ),
@@ -1955,7 +1955,9 @@ You do not know who will be using your script later, or what kind of computer th
 ### Import from a subfolder  
 
 `r fontawesome::fa("window-restore", fill = "darkgrey")`  
-Now, go to your File Explorer to the root folder of the R project. Cut the file *"surveillance_linelist_12012014.csv"* from the root folder, and paste it into the "data/raw" subfolder.  
+Now, go to your File Explorer to the root folder of the R project.  
+
+**Cut the file *"surveillance_linelist_12012014.csv"* from the root folder, and paste it into the "data/raw" subfolder.**  
 
 
 `r fontawesome::fa("terminal", fill = "black")` 
@@ -2042,14 +2044,14 @@ quiz(caption = "Quiz - data review",
   question("How many columns are there in the data frame?",
     allow_retry = T,
     answer("665", message = "No, this is the number of rows/observations"),
-    answer("19", correct = TRUE, message = "Yes this is correct!"),
-    answer("20", message = "This is not correct, try again."),
+    answer("21", correct = TRUE, message = "Yes this is correct!"),
+    answer("19", message = "This is not correct, try again."),
     answer("25", message = "No, this is the number of rows shown in the initial display")
   ),
 
   question("What is the value in the 4th column and the 50th row?",
     allow_retry = T,
-    answer("21", correct = TRUE),
+    answer("m", correct = TRUE),
     answer("Port Hospital"),
     answer("38.3"),
     answer("West II")
@@ -2058,12 +2060,57 @@ quiz(caption = "Quiz - data review",
   question("How many of the rows include a weight between 40 and 45 kg?",
     allow_retry = T,
         answer("112"),
-        answer("64", correct = TRUE),
+        answer("65", correct = TRUE),
         answer("226"),
         answer("95")
   )
 )
 ```
+
+
+### Indexing  
+
+Above we asked you to find the value in the 4th column, and the 50th row. Instead of searching manually, you can also write code to isolate and view pieces of the dataframe.  
+
+**The `$` operator can be used on a dataframe to reference a specific column.** It is one of the indexing operators in R, which returns a sub-part of a larger object. For example, `surv_raw$gender` will return the entire column `gender`.  
+
+**Try typing and running the following commands**  
+
+* `surv_raw$hospital`  
+* `surv_raw$case_id`
+
+As you typed, slowly, did you see anything appear as you arrived at typing the `$`? You should have seen a small menu appear that showed all the columns in the data frame `surv_raw`. Using your arrow keys you can select a column from that menu - if you do not want to type the rest and potentially make a spelling mistake.  
+
+**Try writing commands to show other columns, and experiment with this pop-up menu**.  
+
+Here is something you should know: columns can also be referred to as "vectors" - vectors are a long line of values of the same class. So in fact, a data frame is simply a collection of vectors (column!). You can also create other, independent vectors, like you have already done with `c()`. But most commonly, you will work with vectors in the context of a data frame. "Vector" is a good term to know.  
+
+Another indexing operator to be aware of is the "square brackets" that look like `[ ]`. These brackets can also be used to isolate/return a sub-part of a larger object: `dataframe[ROW, COLUMN]`  
+This command would return the value at the 12th row and the 4th column: `surv_raw[12, 4]`  
+
+You can return an entire column by leaving the ROWS part empty (but don't forget the comma!):  `surv_raw[ ,4]`  
+Or an entire row by doing the opposite: `surv_raw[12, ]`  
+
+Other objects can be subset as well. For example, the `summary()` function when used on a column returns an object that contains the minimum, median, mean, IQR, etc.  
+
+Try these three commands in R to see how the output changes as further indexing is applied:  
+
+```{r, echo=T}
+# Return the summary of the column 'age'
+summary(surv_raw$age)
+
+# Return the 3rd element of the summary
+summary(surv_raw$age)[3]
+
+# Return the number only, of the 3rd element of the summary
+summary(surv_raw$age)[[3]]
+
+# Do something with the number
+summary(surv_raw$age)[[3]] + 4
+```
+
+You will use the `$` very frequently. It is less common to need the brackets. But still - good to know about in case you see them or need to use them.  
+
 
 
 
@@ -2087,7 +2134,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 </br>
 
 ```{r eval = F, echo=T}
-slim(surv_raw
+skim(surv_raw)
 ```
 
 </br>
@@ -2110,14 +2157,14 @@ quiz(caption = "Quiz - reviewing the data",
   question("How many columns has R classified as numeric?",
     allow_retry = T,
     answer("32", message = "No, this is more than the columns in the dataset!"),
-    answer("5", correct = TRUE, message = "Yes this is correct!"),
+    answer("6", correct = TRUE, message = "Yes this is correct!"),
     answer("13", message = "No, this is the number of columns of class character"),
     answer("1", message = "No, this is the number of columns that are POSIXct - a type of date format")
   ),
 
   question("Review the information on character columns. What is the number of unique values in the hospital column?",
     allow_retry = T,
-    answer("6", correct = TRUE),
+    answer("9", correct = TRUE),
     answer("Port Hospital"),
     answer("3"),
     answer("8")
@@ -2126,7 +2173,7 @@ quiz(caption = "Quiz - reviewing the data",
   question("Review the information on numeric columns. What is the median age?",
     allow_retry = T,
         answer("32.2"),
-        answer("6", correct = TRUE),
+        answer("13", correct = TRUE),
         answer("1250"),
         answer("99.0")
   )
@@ -2136,6 +2183,12 @@ quiz(caption = "Quiz - reviewing the data",
 
 
 
+
+## End  
+
+Congratulations! You have completed the first exercise in this course!  
+
+Be sure to save your R script, and check-in with your facilitator.  
 
 
 

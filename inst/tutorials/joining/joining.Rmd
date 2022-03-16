@@ -1215,7 +1215,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-Use `clean_names()` first to standardize the syntax. Then use `rename()` to manually adjust specific column names (new = old). To establish date class, choose between `mdy()`, `ymd()`, or `dmy()` to place within the `mutate()` function, for example:  `mutate(date_outcome = mdy(date_outcome))`
+Use `clean_names()` first to standardize the syntax. Then use `rename()` to manually adjust specific column names (new = old). To establish date class, choose between `mdy()`, `ymd()`, or `dmy()` to place within the `mutate()` function, based on the current format of the date (look at the dataset) for example:  `mutate(date_outcome = mdy(date_outcome))`
 
 </br>
 </details>
@@ -1243,7 +1243,7 @@ combined <- combined %>%
   # covert new columns to class date
   mutate(date_hospitalisation = mdy(date_hospitalisation),
          date_outcome         = mdy(date_outcome),
-         date_infection       = mdy(date_infection))
+         date_infection       = ymd(date_infection))
 ```
 
 
@@ -1265,7 +1265,7 @@ quiz(caption = "Quiz - Final cleaning",
     answer("age unit", correct = T),
     answer("gender", correct = T)
   ),
-  question("Why did we choose mdy() to clean the dates?",
+  question("Why did we choose mdy() for the date_outcome column?",
     allow_retry = T,
     answer("Because the DESIRED format of the date is MM/DD/YYYY"),
     answer("Because the DIRTY format of the date was MM/DD/YYYY", correct = T),
@@ -1289,7 +1289,9 @@ It is important to keep our R script orderly and in a logical flow:
 5) Join datasets (and perform any residual cleaning)
 6) Begin tables and visualizations  
 
-Take a moment to ensure that your script aligns with the above
+Take a moment to ensure that your script aligns with the above, and that you can run it from top to bottom without any errors.  
+
+
 
 
 
