@@ -88,10 +88,6 @@ We have a dataset called `hospital_week`, which has columns labelling the hospit
 
 `r fontawesome::fa("terminal", fill = "black")` With the aid of the help function `?geom_tile` can you create a heatmap that has the week of onset on the x-axis, the hospital on the y-axis and is colored by the number of onsets in that week?
 
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
-
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
@@ -103,13 +99,10 @@ ggplot(data = hospital_week) +
 
 </br>
 </details>
-<!--
-NOTE: End of solution
--->
 
-### 
+### Customising your heatmap
 
-Great job, but there are still a few things we can do to refine this plot.
+`r fontawesome::fa("terminal", fill = "black")` Great job, but there are still a few things we can do to refine this plot.
 
 * Can you create a new object, `hospital_week_adjusted` where the NA values in `hospital` are recoded as "Missing", and the factors are re-ordered as "Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", "Missing".
 * Change the color scheme to a diverging colour scale, could you provide one that goes from "skyblue" at low values to "tomato" at high values
