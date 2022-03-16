@@ -2118,7 +2118,9 @@ You will use the `$` very frequently. It is less common to need the brackets. Bu
 
 You can return a good summary of the dataset using the R package {skimr} and its function `skim()`.  
 
-Install this package and load it for use.  
+Use `p_load(skimr)` or `install.packages("skimr")` to install this package and load it for use.  
+
+If you encounter any errors when trying to install the package, notify your facilitator.  
 
 Place the name of the linelist in `skim()` and run. What content appears in the R console? If it is not easily readable, try expanding your Console pane to be larger, and run the command again.  
 
