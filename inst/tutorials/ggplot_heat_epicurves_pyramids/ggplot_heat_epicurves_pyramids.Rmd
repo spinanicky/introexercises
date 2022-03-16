@@ -6,7 +6,12 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+library(ggplot2)
+library(tidyverse)
+
 knitr::opts_chunk$set(echo = FALSE)
+linelist_raw <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
+
 ```
 
 
