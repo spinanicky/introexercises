@@ -30,6 +30,12 @@ hospital_week_expanded <- hospital_week_raw %>%
   mutate(n = replace_na(n, 0))  
 
 hospital_week <- subset(hospital_week_expanded, week_onset >= "2014-06-15")
+
+count_data <- linelist %>% 
+  group_by(hospital, date_hospitalisation) %>% 
+  summarize(n_cases = dplyr::n()) %>% 
+  ungroup()
+
 ```
 
 # Advanced ggplot2 - Heatmaps, Epi curves and Age pyramids
@@ -160,6 +166,91 @@ ggplot(data = subset(age_outcome_summary, outcome == "Death")) +                
 ```
 </br>
 </details>
+
+###
+```{r quiz2}
+quiz(
+  question("What do you notice? Who has the lowest proportion of 'Death' as a gender and age category?",
+    answer("Male and 60-69"),
+    answer("Female and 0-9"),
+    answer("Male and 20-29"),
+    answer("Female and 40-49", correct = TRUE)
+    ),
+  question("Who has the highest proportion of 'Death' as a gender and age category?",
+           answer("Male and 20-20", correct = TRUE),
+           answer("Female and 20-29"),
+           answer("Male and 50-59"),
+           answer("Female and 40-49")
+           ),
+  question("Which gender has the oldest ages?",
+           answer("Female"),
+           answer("Male", correct = TRUE)
+           )
+)
+```
+
+
+Great work, you have managed to build datasets for heatmap plotting and customize these plots to produce interesting graphics you can then analyze. As with all aspects of R and ggplot, there are numerous additional ways of coding and customizing your plots to edit almost every specification you can think of. For further reading, please see the R Epidemiologists Handbook chapter on [heatmaps](https://www.epirhandbook.com/en/heat-plots.html?q=heat%20plot#heat-plots).
+
+## Epi curves
+
+An epidemic curve (also known as an “epi curve”) is a core epidemiological chart typically used to visualize the temporal pattern of illness onset among a cluster or epidemic of cases.
+
+Analysis of the epicurve can reveal temporal trends, outliers, the magnitude of the outbreak, the most likely time period of exposure, time intervals between case generations, and can even help identify the mode of transmission of an unidentified disease (e.g. point source, continuous common source, person-to-person propagation).
+
+Here we are going to look at two different ways of learning how to make epicurves
+
+* The **incidence2** package, which can produce an epi curve with simple commands
+* The **ggplot2** package, which allows for advanced customizability via more complex commands
+
+Firstly, we will look at the **incidence2** package.
+
+### incidence2
+
+In order to explore epicurves, we are going to use the object `count_data`. Explore the dataframe to look at the dimensions, column names and example data.
+
+From this, we can use the function `incidence()` from **incidence2** to produce a simple epicurve. 
+
+Can you read the documentation of `incidence()` (`?incidence`) in order to produce a simple incidence object for the column `date_hospitalisation` with an interval of 1 week? Can you then assign this to an object `hospitalisation_week`?
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+hospitalisation_week <- incidence(linelist,
+          date_index = date_hospitalisation,
+          interval = "weeks")
+```
+</br>
+</details>
+
+Okay, now that you have made the object its time to plot. In it's simplest form, you can just type type `plot(hospitalisation_week)`
+```{r, eval = T, echo = F}
+plot(hospitalisation_week)
+```
+
+However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories, or the hospital they were a patient at. Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `age_cat` and `hospital`? 
+
+Once you have done this, can you plot the object using `plot()` and "fill" using "hospital" in order to see how the epidemic curves differ by age category?
+
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+hospitalisation_week <- incidence(linelist,
+          date_index = date_hospitalisation,
+          groups = c(age_cat, hospital),
+          interval = "weeks")
+
+plot(hospitalisation_week,
+     fill = age_cat)
+
+```
+</br>
+</details>
+
+
+
+
 
 
 
