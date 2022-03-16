@@ -8,6 +8,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(ggplot2)
 library(tidyverse)
+library(viridis)
 
 knitr::opts_chunk$set(echo = FALSE)
 linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
@@ -91,12 +92,10 @@ We have a dataset called `hospital_week`, which has columns labelling the hospit
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
-
 ```{r eval = F, echo=T}
 ggplot(data = hospital_week) +
   geom_tile(aes(x = week_onset, y = hospital, fill = n))
 ```
-
 </br>
 </details>
 
@@ -106,14 +105,14 @@ ggplot(data = hospital_week) +
 
 * Can you create a new object, `hospital_week_adjusted` where the NA values in `hospital` are recoded as "Missing", and the factors are re-ordered as "Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", "Missing".
 * Change the color scheme to a diverging colour scale, could you provide one that goes from "skyblue" at low values to "tomato" at high values
-* The labels should be cleaned up
+* The axis and fill labels should be made more presentable
+* The default x-axis ticks show every month, can you change these to every two weeks, and only display the day and month.
 
 This will require a mix of refactoring the dataset, and adjusting your **ggplot** function. If you need a refresher on how to change `NA` values in factor columns, and how to reorder, checkout the R Handbook chapter on [factors](https://www.epirhandbook.com/en/factors.html?q=factor#factors).
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
-
 ```{r eval = F, echo=T}
 hospital_week_adjusted <- hospital_week %>%
   mutate(hospital = fct_explicit_na(hospital, "Missing"),
@@ -122,14 +121,46 @@ hospital_week_adjusted <- hospital_week %>%
 ggplot(data = hospital_week_adjusted) +
   geom_tile(aes(x = week_onset, y = hospital, fill = n)) +
   scale_fill_gradient(low = "skyblue", high = "tomato") +
-  labs(x = "Week onset", y = "Hospital", fill = "Number of patients with\nsymptom onset")
+  labs(x = "Week onset", y = "Hospital", fill = "Number of patients with\nsymptom onset") +
+  scale_x_date(date_breaks = "2 weeks", 
+               date_labels = "%d %b")
 ```
-
 </br>
 </details>
-<!--
-NOTE: End of solution
--->
+
+Now you have got the hang of heatmaps and some basic customisation, we are going to move onto a harder exercise where you create the dataframe from scratch and customize the display.
+
+Can you do the following
+
+* Create a new object, `age_outcome_summary`, where you summarise `linelist` in order to output the percent of those in each `outcome` category when it is grouped by `age_cat` and `gender`
+* Drop any `NA` values
+* Once this is done, create a heatmap that is coloured by the percent of those that have an outcome of "Death" when broken down by `gender` and `age_cat`
+* Clean up the axis names to "Age category", "Gender" and label to "Percent of cases fatal"
+* Using the **viridis** package (`scale_fill_viridis()`) and pick a colour scheme, and set the scale limits to go from 0 to 100
+* Display the percent, rounded to 1 decimal place 
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+age_outcome_summary <- linelist %>%
+  drop_na(gender, age_cat) %>% #Remove the NA values
+    group_by(age_cat, gender, outcome) %>% #Group by in order to summarise later
+    summarise(n = n()) %>%        #Count the number in each grouping
+    mutate(percent = n/sum(n) * 100) #Multiply by 100 to make the proportion into a percentage
+
+ggplot(data = subset(age_outcome_summary, outcome == "Death")) +                 #Subset to only those with the outcome death
+  geom_tile(aes(x = gender, y = age_cat, fill = percent)) +                         #Set up the mapping
+  scale_fill_viridis(option = "B", limits = c(0, 100)) +                           #Choose any of the options, and set the limits to go from 0 to 100
+  labs(x = "Gender", y = "Age categories", fill = "Proportion of cases fatal") +
+  geom_text(
+    aes(x = gender, y = age_cat, label = round(percent, 1)))
+
+
+```
+</br>
+</details>
+
 
 
 
