@@ -10,70 +10,116 @@ library(ggplot2)
 library(tidyverse)
 
 knitr::opts_chunk$set(echo = FALSE)
-linelist_raw <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
+linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
 
+linelist$hospital <- factor(linelist$hospital)
+
+#Create an easy heatmap dataset
+hospital_week_raw <- linelist %>%
+  group_by(hospital, week_onset) %>%
+  summarise(n = n())
+
+expanded_weeks <- hospital_week_raw %>% 
+  select(hospital, week_onset) %>%
+  ungroup() %>%
+  tidyr::expand(., week_onset, hospital)
+
+hospital_week_expanded <- hospital_week_raw %>%      
+  right_join(expanded_weeks) %>%                            
+  mutate(n = replace_na(n, 0))  
+
+hospital_week <- subset(hospital_week_expanded, week_onset >= "2014-06-15")
 ```
 
+# Advanced ggplot2 - Heatmaps, Epi curves and Age pyramids
 
-## Topic 1
+## Welcome
 
-### Exercise 
+Welcome to the advanced ggplot2 module where we will be learning how to code and customise more advanced plots such as heatmaps, epi curves and age pyramids. We will be building on what you have learned previously from tidyverse and ggplot2 to produce these.
 
-*Here's a simple exercise with an empty code chunk provided for entering the answer.*
+This will involve using previously explored aspects such as `ggplot()`, pipe chains `%>%`, themes (e.g. `theme_minimal()`, `theme_bw()`), custom axis scales (e.g. `scale_y_continuous()`) and new functions such as `geom_tile()` for heatmaps, `incidence` (from **incidence2**) and `geom_histogram()` for epi curves, and `age_pyramid` (from **apyramid**) for age pyramids.
 
-Write the R code required to add two plus two:
+But first, let us refresh ourselves on the basics of **ggplot2**!
 
-```{r two-plus-two, exercise=TRUE}
-
-```
-
-### Exercise with Code
-
-*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
-
-Now write a function that adds any two numbers and then call it:
-
-```{r add-function, exercise=TRUE, exercise.lines = 5}
-add <- function() {
-  
-}
-```
-
-## Topic 2
-
-### Exercise with Hint
-
-*Here's an exercise where the chunk is pre-evaulated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
-
-Modify the following code to limit the number of rows printed to 5:
-
-```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
-mtcars
-```
-
-```{r print-limit-hint}
-head(mtcars)
-```
-
-### Quiz
-
-*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
-
-Some questions to verify that you understand the purposes of various base and recommended R packages:
-
-```{r quiz}
+```{r quiz1}
 quiz(
-  question("Which package contains functions for installing other R packages?",
-    answer("base"),
-    answer("tools"),
-    answer("utils", correct = TRUE),
-    answer("codetools")
+  question("Where are dynamic aesthetics placed in ggplot code?",
+    answer("inside aes()", correct = T),
+    answer("outside aes()")
   ),
-  question("Which of the R packages listed below are used to create plots?",
-    answer("lattice", correct = TRUE),
-    answer("tools"),
-    answer("stats"),
-    answer("grid", correct = TRUE)
+  question("Are static aesthetics in the initial ggplot() call inherited by subsequent geoms?",
+    answer("No", correct = TRUE),
+    answer("Yes")
+  ),
+  question("Are dynamic aesthetics in the initial ggplot() call inherited by subsequent geoms?",
+    answer("No"),
+    answer("Yes", correct = TRUE)
+  ),
+    question("Should adjustments to the theme be made before or after setting one of the default themes?",
+    answer("before"),
+    answer("after", correct = TRUE)
+  ),
+  question("Which of the following are prebuilt themes in ggplot",
+    answer("theme_bw()", correct = TRUE),
+    answer("theme_classic()", correct = TRUE),
+    answer("theme_red()"),
+    answer("scale_color_brewer()")
+  ),
+  question("How would you hide a legend in ggplot?",
+    answer("theme(legend.title = 'element.blank()')"),
+    answer("theme(legend.position = 'right')"),
+    answer("theme(legend.position(`none`))"),
+    answer("theme(legend.position = 'none')", correct = TRUE)
+  ),
+  question("How would you set your legend to appear in the centre of your graph?",
+    answer("theme(legend.position = 'middle')"),
+    answer("theme(legend.position =  c(0.5,0.5))", correct = TRUE)
   )
 )
 ```
+
+Great, now we have refreshed our memory with a quiz, we will start on our first topic, *heatmaps*.
+
+## Heatmaps
+
+Heatmaps, also called heat plots and heat tiles, are useful visualizations when trying to display 3 variables (x-axis, y-axis and fill). For instance, you might want to look at a breakdown of how many cases were reported by week across a hospitals to get an idea of how the epidemic is/has progressed.
+
+We have a dataset called `hospital_week`, which has columns labelling the hospital, the week of onset and the number of these in the week. Use `head()` to look at the data.
+
+`r fontawesome::fa("terminal", fill = "black")` With the aid of the help function `?geom_tile` can you create a heatmap that has the week of onset on the x-axis, the hospital on the y-axis and is colored by the number of onsets in that week?
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+ggplot(data = hospital_week) +
+  geom_tile(aes(x = week_onset, y = hospital, fill = n))
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+### 
+
+Great job, but there are still a few things we can do to refine this plot.
+
+* Can you create a new object, "hospital_week_adjusted" where the NA values in `hospital` are recoded as "Missing"?
+* We would also like to re-order the y-axis, from top to bottom, to read "Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", `NA`.
+* Change the color scheme to a diverging colour scale, could you provide one that goes from "blue" at low values to "red" at high values
+* The labels should be cleaned up
+
+This will require a mix of refactoring the dataset, and adjusting your **ggplot** function.
+
+
+
+
+
+
