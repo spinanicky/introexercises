@@ -2216,7 +2216,7 @@ Above, we write the name of the R object (`surv`), and then the filepath that we
 
 Finally, now that we have our cleaned data, let's use it to define a few parameters which could change as the data are updated.  
 
-**Write one line of code for each of the below items, that defines these values as stored R objects:**  
+**Write one line of code for each of the below items, that defines these values as stored R objects:** These lines should be written *below* your cleaning pipe chain.  
 
 The most recent dates present in the data:  
 
