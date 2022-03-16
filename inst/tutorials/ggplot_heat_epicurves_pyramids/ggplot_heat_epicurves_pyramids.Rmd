@@ -111,14 +111,32 @@ NOTE: End of solution
 
 Great job, but there are still a few things we can do to refine this plot.
 
-* Can you create a new object, "hospital_week_adjusted" where the NA values in `hospital` are recoded as "Missing"?
-* We would also like to re-order the y-axis, from top to bottom, to read "Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", `NA`.
-* Change the color scheme to a diverging colour scale, could you provide one that goes from "blue" at low values to "red" at high values
+* Can you create a new object, `hospital_week_adjusted` where the NA values in `hospital` are recoded as "Missing", and the factors are re-ordered as "Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", "Missing".
+* Change the color scheme to a diverging colour scale, could you provide one that goes from "skyblue" at low values to "tomato" at high values
 * The labels should be cleaned up
 
-This will require a mix of refactoring the dataset, and adjusting your **ggplot** function.
+This will require a mix of refactoring the dataset, and adjusting your **ggplot** function. If you need a refresher on how to change `NA` values in factor columns, and how to reorder, checkout the R Handbook chapter on [factors](https://www.epirhandbook.com/en/factors.html?q=factor#factors).
 
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
 
+```{r eval = F, echo=T}
+hospital_week_adjusted <- hospital_week %>%
+  mutate(hospital = fct_explicit_na(hospital, "Missing"),
+         hospital = fct_relevel(hospital, rev(c("Central Hospital", "Military Hospital", "Port Hospital", "SMMH", "Other", "Missing"))))
+
+ggplot(data = hospital_week_adjusted) +
+  geom_tile(aes(x = week_onset, y = hospital, fill = n)) +
+  scale_fill_gradient(low = "skyblue", high = "tomato") +
+  labs(x = "Week onset", y = "Hospital", fill = "Number of patients with\nsymptom onset")
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
 
 
 
