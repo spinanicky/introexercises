@@ -11,6 +11,7 @@ library(tidyverse)
 library(viridis)
 library(lubridate)
 library(apyramid)
+library(incidence2)
 
 knitr::opts_chunk$set(echo = FALSE)
 linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
@@ -37,6 +38,10 @@ count_data <- linelist %>%
   group_by(hospital, date_hospitalisation) %>% 
   summarize(n_cases = dplyr::n()) %>% 
   ungroup()
+
+hospitalisation_week <- incidence(linelist,
+          date_index = date_hospitalisation,
+          interval = "weeks")
 
 ```
 
@@ -235,6 +240,7 @@ However, we may want to customise this output. In particular, we are not display
 
 Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category?
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
@@ -245,15 +251,16 @@ hospitalisation_week <- incidence(linelist,
 
 plot(hospitalisation_week,
      fill = age_cat)
-
 ```
 </br>
 </details>
+
 
 By default, the epi curves categories are stacked to show the overall incidence. Sometimes we would want to show them separately as it can be easier to see individual trends among groups. 
 
 By default, when you plot an incidence object, the bars are stacked with `stack = TRUE`, can you update this to re-plot `hospitalisation_week`, showing with the fill of `age_cat` side-by-side (NOT stacked)?
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
@@ -270,6 +277,7 @@ Rather than manually specifying each hospital using a filter, we can use the fun
 
 After looking at the help for `facet_plot`, can you plot `hospitalisation_week` with stacked bars, filled by `age_cat` and faceted by `hospital`?
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
@@ -281,7 +289,6 @@ facet_plot(hospitalisation_week,
 </details>
 
 Great job, now that you have mastered the **incidence2** package, we will move onto using **ggplot2** in order to plot our incidence curves.
-
 ### ggplot2
 
 As you have been through several exercises using **ggplot2**, you are now familiar with the syntax and customization it allows (themes, labels, axes, etc). 
@@ -294,6 +301,7 @@ Plotting epi curves in **ggplot2** is a case of using the function `geom_histogr
 
 `r fontawesome::fa("terminal", fill = "black")` Can you make a simple histogram from the dataset `linelist` which shows the incidence of `date_onset` every 5 days? Remember to specify the bindwith correctly, supply a theme and clean up the labels!
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
@@ -316,10 +324,11 @@ This allows us to use specific dates by which to aggregate our data. For instanc
 
 Hint: As we want the values to be aggregated by calendar month, we can use functions such as `min()` and `max()` to find the first date and last dates, and then from the **lubridate** package, the functions `floor_date()` and `ceiling_date()` to ensure we encompass the entire month (when correctly specified, check `?floor_date` for details).
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
-wmonth_break <- seq.Date(from = floor_date(min(linelist$date_onset, na.rm = T), "month"),      #Here we use min to find the lowest value, and then floor_date() from the lubridate package in order to get the 1st of the month
+month_break <- seq.Date(from = floor_date(min(linelist$date_onset, na.rm = T), "month"),      #Here we use min to find the lowest value, and then floor_date() from the lubridate package in order to get the 1st of the month
                         to = ceiling_date(max(linelist$date_onset, na.rm = T), "month"), #Here we work out the last month and using ceiling_date to get the month above it in order to fill in the values correctly
                         by = "months")
 
@@ -343,6 +352,7 @@ Age pyramids are a useful way of illustrating demographics, and can be customise
 
 `r fontawesome::fa("terminal", fill = "black")` Can you look up the function (`?age_pyramid`) and then create an age pyramid from `linelist` of `age_category` that is split by `gender`?
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
@@ -357,10 +367,10 @@ You can also plot the values by proportion, rather than count, and include a col
 
 `r fontawesome::fa("terminal", fill = "black")` Can you now, after reading the instructions, create an age pyramid of gender that includes missing (`NA`) values and plots the proportion?
 
+<details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
-age_pyramid(data = linelist,
             age_group = "age_cat", #note that the column must be enclosed in quotation marks (" ")
             split_by = "gender",
             proportional = TRUE,
@@ -368,7 +378,6 @@ age_pyramid(data = linelist,
 ```
 </br>
 </details>
-
 
 
 
