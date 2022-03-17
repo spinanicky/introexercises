@@ -455,7 +455,7 @@ Whether you select options for the code to appear in the report may very by the 
 
 ### Code folding  
 
-One particlarly fun option is "code folding", which is only available for HTML reports.  
+One particularly fun option is "code folding", which is only available for HTML reports.  
 
 1) Edit the `setup` chunk at the top so that `echo = TRUE`  
 
@@ -481,9 +481,35 @@ params:
 
 You can read more about code folding [here](https://bookdown.org/yihui/rmarkdown/html-document.html#code-folding).  
 
+**Now, revert your Rmd YAML back to a Word document output.**  
+
+```{results='asis'}
+---
+title: "Situation Report"
+subtitle: "Ebola outbreak in Sierra Leone"
+author: "(Your name or agency here)"
+output:
+  word_document: default
+date: "`r Sys.Date()`"
+params:
+  district: "Central Hospital"
+  publish_date: "2014-12-01"
+---
+```
+
+**Change your `setup` default options to as below.**  
+
+```{r, eval=F, echo=T}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+
+
+
+
 
 ## Text
-
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("images/2_text.png")
