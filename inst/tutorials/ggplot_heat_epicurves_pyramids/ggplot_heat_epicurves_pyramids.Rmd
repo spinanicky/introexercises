@@ -9,6 +9,7 @@ library(learnr)
 library(ggplot2)
 library(tidyverse)
 library(viridis)
+library(lubridate)
 
 knitr::opts_chunk$set(echo = FALSE)
 linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
@@ -229,9 +230,9 @@ Okay, now that you have made the object its time to plot. In it's simplest form,
 plot(hospitalisation_week)
 ```
 
-However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories, or the hospital they were a patient at. Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `age_cat` and `hospital`? 
+However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories. Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `hospital` and `age_cat`, with the incidence set to every 2 weeks? Remember you always consult the help (`?incidence`) if you need more information! 
 
-Once you have done this, can you plot the object using `plot()` and "fill" using "hospital" in order to see how the epidemic curves differ by age category?
+Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category?
 
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
@@ -239,7 +240,7 @@ Once you have done this, can you plot the object using `plot()` and "fill" using
 hospitalisation_week <- incidence(linelist,
           date_index = date_hospitalisation,
           groups = c(age_cat, hospital),
-          interval = "weeks")
+          interval = "2 weeks")
 
 plot(hospitalisation_week,
      fill = age_cat)
@@ -248,9 +249,86 @@ plot(hospitalisation_week,
 </br>
 </details>
 
+By default, the epi curves categories are stacked to show the overall incidence. Sometimes we would want to show them separately as it can be easier to see individual trends among groups. 
 
+By default, when you plot an incidence object, the bars are stacked with `stack = TRUE`, can you update this to re-plot `hospitalisation_week`, showing with the fill of `age_cat` side-by-side (NOT stacked)?
 
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+plot(hospitalisation_week,
+     fill = age_cat,
+     stack = FALSE)
+```
+</br>
+</details>
 
+Now there is a lot of very useful information here, but it would also be helpful to show how these epi curves of different ages differ by hospital. In order to do this, we will need more than one plot.
+
+Rather than manually specifying each hospital using a filter, we can use the function `facet_plot` from **incidence2** to produce individual plots for each hospital.
+
+After looking at the help for `facet_plot`, can you plot `hospitalisation_week` with stacked bars, filled by `age_cat` and faceted by `hospital`?
+
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+facet_plot(hospitalisation_week,
+     fill = age_cat,
+     facets = hospital)
+```
+</br>
+</details>
+
+Great job, now that you have mastered the **incidence2** package, we will move onto using **ggplot2** in order to plot our incidence curves.
+
+### ggplot2
+
+As you have been through several exercises using **ggplot2**, you are now familiar with the syntax and customization it allows (themes, labels, axes, etc). 
+
+Plotting epi curves in **ggplot2** is a case of using the function `geom_histogram()`, however, unlike in **incidence2** we also need to manually control the aggregation and intervals of time. There are three main things to watch out for
+
+* Bins, these are specific "break" points that must be specified (time points, so if the unit was days and `binwidth = 7` then it would have an interval of a week)
+* Scales for axes and their labels
+* Themes for the plot appearance
+
+`r fontawesome::fa("terminal", fill = "black")` Can you make a simple histogram from the dataset `linelist` which shows the incidence of `date_onset` every 5 days? Remember to specify the bindwith correctly, supply a theme and clean up the labels!
+
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+ggplot(data = linelist) +
+    geom_histogram(aes(x = date_onset),
+                   bindwidth = 5) +
+  labs(x = "Date of onset", y = "Incidence") +
+  theme_bw()
+```
+</br>
+</details>
+
+This approach of calculating incidence through specifying binwidths is a good approach if we do not care about the specific day of the week we use, and if we don't want to specify by a changing value (i.e. months can be 28, 29, 30 or 31 days!).
+
+If we want to make sure that we calculate the incidence according a specific breakdown (i.e. by month, 7 day week starting on a particular day etc) then *instead* of using `binwidth = `, we specify `breaks = `.
+
+This allows us to use specific dates by which to aggregate our data. For instance, the function `seq.Date()` can specify between two dates break periods of values such as days, weeks, months, etc.
+
+`r fontawesome::fa("terminal", fill = "black")` Can you create a vector of dates that goes from the first month that there is data for `date_onset`, till the last month, by months. Once you've done this, can you create an epi curve which also fills in the bars by hospital and has x-axis breaks every month?
+
+Hint: As we want the values to be aggregated by calendar month, we can use functions such as `min()` and `max()` to find the first date and last dates, and then from the **lubridate** package, the functions `floor_date()` and `ceiling_date()` to ensure we encompass the entire month (when correctly specified, check `?floor_date` for details).
+
+```{r, eval = F, echo = T}
+wmonth_break <- seq.Date(from = floor_date(min(linelist$date_onset, na.rm = T), "month"),      #Here we use min to find the lowest value, and then floor_date() from the lubridate package in order to get the 1st of the month
+                        to = ceiling_date(max(linelist$date_onset, na.rm = T), "month"), #Here we work out the last month and using ceiling_date to get the month above it in order to fill in the values correctly
+                        by = "months")
+
+ggplot(data = linelist) +
+    geom_histogram(aes(x = date_onset, fill = hospital),
+                   breaks = month_break) +
+  labs(x = "Date of onset", y = "Incidence") +
+  theme_bw() +
+  scale_x_date(breaks = "months")
+```
+</br>
+</details>
 
 
 
