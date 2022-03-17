@@ -10,6 +10,7 @@ library(ggplot2)
 library(tidyverse)
 library(viridis)
 library(lubridate)
+library(apyramid)
 
 knitr::opts_chunk$set(echo = FALSE)
 linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", package = "introexercises"))
@@ -315,6 +316,8 @@ This allows us to use specific dates by which to aggregate our data. For instanc
 
 Hint: As we want the values to be aggregated by calendar month, we can use functions such as `min()` and `max()` to find the first date and last dates, and then from the **lubridate** package, the functions `floor_date()` and `ceiling_date()` to ensure we encompass the entire month (when correctly specified, check `?floor_date` for details).
 
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
 ```{r, eval = F, echo = T}
 wmonth_break <- seq.Date(from = floor_date(min(linelist$date_onset, na.rm = T), "month"),      #Here we use min to find the lowest value, and then floor_date() from the lubridate package in order to get the 1st of the month
                         to = ceiling_date(max(linelist$date_onset, na.rm = T), "month"), #Here we work out the last month and using ceiling_date to get the month above it in order to fill in the values correctly
@@ -330,6 +333,41 @@ ggplot(data = linelist) +
 </br>
 </details>
 
+## Age pyramids
+
+Age pyramids are a useful way of illustrating demographics, and can be customised in a variety of different ways. For our purposes, we will be using the function `age_pyramid()` from the **apyramid** package and `geom_histogram()` from **ggplot2**.
+
+### **apyramid**
+
+`age_pyramid()` is a fairly simple function that produces high quality age pyramids with relatively few arguments. 
+
+`r fontawesome::fa("terminal", fill = "black")` Can you look up the function (`?age_pyramid`) and then create an age pyramid from `linelist` of `age_category` that is split by `gender`?
+
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+age_pyramid(data = linelist,
+            age_group = "age_cat", #note that the column must be enclosed in quotation marks (" ")
+            split_by = "gender")  #note that the column must be enclosed in quotation marks (" ")
+```
+</br>
+</details>
+
+You can also plot the values by proportion, rather than count, and include a column for missing data.
+
+`r fontawesome::fa("terminal", fill = "black")` Can you now, after reading the instructions, create an age pyramid of gender that includes missing (`NA`) values and plots the proportion?
+
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+age_pyramid(data = linelist,
+            age_group = "age_cat", #note that the column must be enclosed in quotation marks (" ")
+            split_by = "gender",
+            proportional = TRUE,
+            na.rm = FALSE)  #note that the column must be enclosed in quotation marks (" ")
+```
+</br>
+</details>
 
 
 
