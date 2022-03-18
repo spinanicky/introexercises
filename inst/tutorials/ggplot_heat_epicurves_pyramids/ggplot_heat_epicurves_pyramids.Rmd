@@ -43,6 +43,23 @@ hospitalisation_week <- incidence(linelist,
           date_index = date_hospitalisation,
           interval = "weeks")
 
+demo_agg <- linelist %>% 
+  count(age_cat, gender, name = "cases") %>% 
+  pivot_wider(
+    id_cols = age_cat,
+    names_from = gender,
+    values_from = cases) %>% 
+  rename(`missing_gender` = `NA`)
+
+aggregate_data <- demo_agg %>% 
+  pivot_longer(
+    col = c(female, male, missing_gender),            # cols to elongate
+    names_to = "gender",                # name for new col of categories
+    values_to = "counts") %>%           # name for new col of counts
+  mutate(
+    gender = na_if(gender, "missing_gender")) # convert "missing_gender" to NA
+
+
 ```
 
 # Advanced ggplot2 - Heatmaps, Epi curves and Age pyramids
@@ -371,6 +388,7 @@ You can also plot the values by proportion, rather than count, and include a col
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
+age_pyramid(data = linelist,
             age_group = "age_cat", #note that the column must be enclosed in quotation marks (" ")
             split_by = "gender",
             proportional = TRUE,
@@ -379,5 +397,98 @@ You can also plot the values by proportion, rather than count, and include a col
 </br>
 </details>
 
+Currently we are assuming that the data is in a linelist format, where each row is a unique observation. However, you may be given data that is already aggregated.
 
+This is easily dealt with in **apyramid** by simply specifying `count = `, where the column that contains the count values is specified.
 
+`r fontawesome::fa("terminal", fill = "black")` Knowing this, and checking with the function help if needed, can you create an age pyramid that is split by gender from the aggregate dataset `aggregate_data`?
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+age_pyramid(data = linelist,
+            age_group = "age_cat", 
+            split_by = "gender",
+            count = "counts")
+```
+</br>
+</details>
+
+Note the data format, which one of these is it?
+
+```{r quiz3}
+quiz(
+  question("",
+    answer("long format", correct = T),
+    answer("wide format")
+  ))
+```
+
+### **ggplot2**
+
+Using `ggplot()` to build the age pyramid allows for much more flexibility, but requires more effort and an understanding of how `ggplot()` works.
+
+There are several steps to constructing the age pyramid:
+
+1) Within the ggplot(), we need to create **two** histograms using the numeric age column. 
+2) One of these must have its counts converted to _negative_ values. This creates the "pyramid" with the value of 0 in the middle. Negative values are created by multiplying the column by -1.
+3) The command `coord_flip()` switches the X and Y axes is required to flip the axes and create the pyramid.
+4) Finally, the count-axis value labels must be altered so they appear as "positive" on both sides of the pyramid, despite the underlying values on one side being negative.
+
+Considering you have already practiced using `geom_histogram()` for the epi curves, and given the instructions above. Can you re-create the a simple age pyramid, with age breaks ever 5 years, below?
+
+```{r, echo = F, eval = T}
+# begin ggplot
+  ggplot(mapping = aes(x = age, fill = gender)) +
+  
+  # female histogram
+  geom_histogram(data = linelist %>% filter(gender == "female"),
+                 breaks = seq(0, 85, 5),
+                 colour = "white") +
+  
+  # male histogram (values converted to negative)
+  geom_histogram(data = linelist %>% filter(gender == "male"),
+                 breaks = seq(0,85,5),
+                 mapping = aes(y = ..count..*(-1)),
+                 colour = "white") +
+  
+  # flip the X and Y axes
+  coord_flip() +
+  
+  # adjust counts-axis scale
+  scale_y_continuous(limits = c(-100, 100),
+                     breaks = seq(-100,100,25),
+                     labels = abs(seq(-100, 100, 25)))+
+  labs(y = "Count", x = "Age", fill = "Gender")
+```
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+# begin ggplot
+  ggplot(mapping = aes(x = age, fill = gender)) +
+  
+  # female histogram
+  geom_histogram(data = linelist %>% filter(gender == "female"),
+                 breaks = seq(0, 85, 5),
+                 colour = "white") +
+  
+  # male histogram (values converted to negative)
+  geom_histogram(data = linelist %>% filter(gender == "male"),
+                 breaks = seq(0,85,5),
+                 mapping = aes(y = ..count..*(-1)),
+                 colour = "white") +
+  
+  # flip the X and Y axes
+  coord_flip() +
+  
+  # adjust counts-axis scale
+  scale_y_continuous(limits = c(-100, 100),
+                     breaks = seq(-100,100,25),
+                     labels = abs(seq(-100, 100, 25)))+
+  labs(y = "Count", x = "Age", fill = "Gender")
+```
+</br>
+</details>
