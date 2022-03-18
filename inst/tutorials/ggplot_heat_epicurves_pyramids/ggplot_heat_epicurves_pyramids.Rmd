@@ -492,3 +492,62 @@ Considering you have already practiced using `geom_histogram()` for the epi curv
 ```
 </br>
 </details>
+
+Great, now what if we want to produce the percentages? In order to do this, we will need to group the data and use `mutate()` in order to produce new columns.
+
+This part is a a lot more complicated than if we were using the **apyramid** function `age_pyramid()`
+
+In order to create the percent values, we need to employ `mutate()` and the tidyselect helper function `case_when`. For example, this would be the command to generate the percent
+
+```{r, eval = F, echo = T}
+ mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1), 
+         percent = case_when(
+            gender == "f" ~ percent,
+            gender == "m" ~ -percent,     # convert male to negative
+            TRUE          ~ NA_real_))    # NA val must by numeric as well
+```
+
+Can you add in the parts before this to assign aggregate values to an object called `pyramid_data` from `linelist`? Once you've done this, can you produce the previous age pyramid, but showing percentages instead of counts, adjust axis scale and labels as necessary?
+
+Remember, as in when creating an epi curve that has already been aggregated, you should use `geom_bar()` or `geom_col()` rather than `geom_histogram()`
+
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+# create dataset with proportion of total
+pyramid_data <- linelist %>%
+  count(age_cat,
+        gender,
+        name = "counts") %>% 
+  ungroup() %>%                 # ungroup so percents are not by group
+  mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1), 
+         percent = case_when(
+            gender == "female" ~ percent,
+            gender == "male" ~ -percent,     # convert male to negative
+            TRUE          ~ NA_real_))    # NA val must by numeric as well
+
+
+# begin ggplot
+  ggplot() +
+  
+  # histogram
+  geom_col(data = pyramid_data,
+           mapping = aes(
+             x = age_cat,
+             y = percent,
+             fill = gender),         
+           colour = "white") +       # white around each bar
+
+  # flip the X and Y axes
+  coord_flip() +
+  
+  # adjust counts-axis scale
+  scale_y_continuous(limits = c(-25, 25),
+                     breaks = seq(-25,25,25),
+                     labels = abs(seq(-25, 25, 25)))+
+  labs(y = "Percent (%)", x = "Age", fill = "Gender")
+```
+</br>
+</details>
