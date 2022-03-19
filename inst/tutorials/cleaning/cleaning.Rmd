@@ -2255,6 +2255,15 @@ NOTE: End of solution
 
 
 
+## End  
+
+Congratulations! You have completed the first exercise in this course!  
+
+Be sure to save your R script, and check-in with your facilitator.  
+
+
+
+
 
 
 

@@ -1303,7 +1303,6 @@ Congratulations! You have finished this exercise.
 
 Remember to save your R script before leaving RStudio.
 
-If you have extra time, complete the extra sections below.  
 
 
 

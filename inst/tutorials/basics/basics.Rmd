@@ -402,7 +402,34 @@ knitr::include_graphics("images/Rproject_dropdown.png")
 ```
 
 
+## Explore your RStudio project  
 
+Now we will practice opening your RStudio project.  
+
+**Close RStudio and open your File Explorer.** Navigate to the "intro_course" folder that you saved on your desktop, where you saved the R project.  
+
+The contents of the folder should look similar to this:  
+
+```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("images/README_images/new_r_project_explorer.png")
+```
+
+In the folder, you should see a small file with an icon that looks like an "R box" - this is the RStudio project file (.Rproj).  
+
+**To directly open the project next time, simply double-click this RStudio project file to open it. RStudio will open, and all your files for this project will be at-the-ready.**  
+
+
+**Now, double-click the RStudio Project file** to re-open your "intro_course" project. RStudio should open.  
+
+`r fontawesome::fa("eye", fill = "darkblue")`
+Observe in the "Files" RStudio pane (lower-right) that you can also see and access the contents of the "intro_course" project.  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("images/README_images/new_r_project.png")
+```
+
+You can read more about RStudio projects in [this chapter of the Epi R Handbook](https://epirhandbook.com/en/r-projects.html).  
 
 
 
@@ -481,7 +508,7 @@ As described in the class demonstration, you can run R commands the following wa
 
 **Let's begin with perhaps the most simple use of R, just to get comfortable running commands.**  
 
-Below are common mathematical operators in R. These are often used to perform addition, division, to create new columns in datasets, etc. Whether you put spaces around the operators will not affect the command, but does matter for readability.
+Below are common mathematical operators in R. These are often used to perform addition, division, to create new columns in datasets, etc. Spaces around the operators will not affect the command, but make the code more readable.
 
 | Purpose             | Example in R |
 |---------------------|--------------|
@@ -592,7 +619,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-Use parentheses ( ), the asterisk multiplication operator, and the addition + and subtraction - operators. First, total the known needs (200, 550, and two times 925). Wrap that all in parentheses, because you need to multiply that sum by the desired buffer (110%, but in deminal form). That total should also be wrapped in parentheses, because you need to then subtract the extra left-over from the previous month (which does not need to be purchased).  
+Use parentheses ( ), the asterisk multiplication operator, and the addition + and subtraction - operators. First, total the known needs (200, 550, and two times 925). Wrap that all in parentheses, because you need to multiply that sum by the desired buffer (110%, but in decimal form). That total should also be wrapped in parentheses, because you need to then subtract the extra left-over from the previous month (which does not need to be purchased).  
 
 </br>
 </details>
@@ -648,7 +675,7 @@ See the solution above for proper form. Future readers of your code will thank y
 
 ### Types of objects  
 
-R is built to allow you to store "*objects*" for later use. They are stored in your R **Environment**, which is visible in the Environment pane of RStudio (upper-left).  
+R is built to allow you to store "*objects*" for later use. They are stored in your R **Environment**, which is visible in the Environment pane of RStudio (upper-right).  
 
 Everything you store in R - datasets, variables, a list of village names, a total population number, even outputs such as graphs - are **objects** which are **assigned a name** and **can be referenced** in later commands.
 
@@ -814,9 +841,14 @@ In this case, you must re-run two commands to update the value of `total_cases` 
 
 At this point, you might wonder - "why do I need to run each line of my script one-by-one?". Well, you don't have to! You have two options to run multiple commands at once:  
 1) Use your mouse to highlight both commands in the script, and run  
-2) If you want to run ALL the commands in your script, from top-to-bottom, click the drop-down menu next to the "Source" button (to the right of "Run").  
+2) If you want to run ALL the commands in your script, from top-to-bottom, select all the commands by pressing Ctrl + a (Cmd + a for Mac), and click "Run"  
 
-Before you run the entire document, consider whether you have any unfinished code above your current selection that might cause an Error. Remember, if you click "Source", then R will run *every command in the entire script*.  
+
+Before you run the entire script, consider whether you have any unfinished code above your current selection that might cause an Error. Remember, you are asking R to run *every command in the entire script*, and R will stop if it encounters an error.   
+
+If there is one command you want to temporarily remove, place a # symbol at the beginning of this line to the left of the code. R will ignore this line. 
+
+
 
 
 ### Exercise: Medical supply chain calculation  
@@ -898,7 +930,7 @@ quiz(
 `r fontawesome::fa("pen", fill = "brown")`
 For extra credit, answer the following two questions:  
 
-* If you wanted to save the final output value, what operator would you add, and where?  
+* If you wanted to save the final output value to reference later, what operator would you add, and where?  
 * How would you need to modify your script if the two sub-sites of site 3 needed different numbers of tests?  
 
 `r fontawesome::fa("exclamation", fill = "red")` 
