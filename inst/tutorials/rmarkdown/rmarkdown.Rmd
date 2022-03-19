@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
-surv_raw <- rio::import(system.file("dat/surveillance_linelist_12012014.csv", package = "introexercises"))
+surv_raw <- rio::import(system.file("dat/surveillance_linelist_20141201.csv", package = "introexercises"))
 ```
 
 
@@ -270,13 +270,13 @@ If no output appears or you see an error in the console, notify your facilitator
 
 An HTML file is a very useful format, because you can customize the look with interactive components such as buttons, tabs, scrollable table of contents, etc.  
 
-An HTML file can be emailed as a static file, similar toa PDF or Word document. When the recipient receives it, the file will open in the internet browser - but the file is not online! It is only saved locally on their computer, but the internet browser is used to display the file. This is important to know, if you are concerned about sharing sensitive information in an HTML report.  
+An HTML file can be emailed as a static file, similar to a PDF or Word document. When the recipient receives it, the file will open in the internet browser - but the file is not online! It is only saved locally on their computer, but the internet browser is used to display the file. This is important to know, if you are concerned about sharing sensitive information in an HTML report.  
 
 *Note, it is also possible to post an HTML file online, but this is done through a different process*  
 
 ### Word  
 
-**Now click the "knit" button again, but use the drop-down to knit as Microsoft Word**  
+**Now click the "knit" button again, but use the drop-down to select the option to knit to Microsoft Word**  
 
 ### PDF  
 
@@ -284,7 +284,9 @@ Knitting to PDF is more difficult and you may encounter errors and challenges wi
 
 ### Other formats  
 
-Many other formats exist. You can try Powerpoint by clicking "Presentation" in the window that appeared when you opened the Rmd for the first time.  
+Many other formats exist. Some other time, you can try a Powerpoint format by clicking "Presentation" in the window that appeared when you opened the Rmd for the first time. The slides in this course are made using the {xaringan} package in conjunction with {rmarkdown}.  
+
+
 
 
 
@@ -296,8 +298,9 @@ Many other formats exist. You can try Powerpoint by clicking "Presentation" in t
 ## YAML  
 
 `r fontawesome::fa("eye", fill = "darkblue")`  
-Note the section in the top - the "YAML". This section is delimited by three dashes on its top and bottom 
+Note the section in the top of the Rmd script. This is the "YAML". What does YAML stand for, you might ask? The truth is, it stands for "Yet Another Markdown Language". Somebody had fun creating that name.  
 
+The YAML section of an R Markdown script is delimited by three dashes on its top and bottom. If you sucessfully knitted to PDF, HTML, and Word, then your YAML might look like this:  
 
 ```{results='asis'}
 ---
@@ -311,7 +314,7 @@ date: "`r Sys.Date()`"
 ```
 
 
-Edit the YAML to look exactly like this (with your name in the `author:` section):  
+Edit the YAML to look exactly like this (with your name in the `author:` section).   
 
 ```{results='asis'}
 ---
@@ -325,7 +328,7 @@ date: "`r Sys.Date()`"
 ```
 
 
-Note that we have removed the `pdf_document` and `html_document` output options for clarity. In this exercise we will build a Word document report, so that it is easy to edit after rendering.  
+Note that we have now removed any `pdf_document` and `html_document` output options, for clarity. In this exercise we will build a Word document report, so that it is easy to edit after rendering.  
 
 
 ### Params  
@@ -341,7 +344,7 @@ output:
   word_document: default
 date: "`r Sys.Date()`"
 params:
-  district: "Central Hospital"
+  district: "West II"
   publish_date: "2014-12-01"
 ---
 ```
@@ -455,11 +458,11 @@ Whether you select options for the code to appear in the report may very by the 
 
 ### Code folding  
 
-One particularly fun option is "code folding", which is only available for HTML reports.  
+Let's have a little bit of fun for a moment. One particularly fun option is "code folding", which is only available for HTML reports.  
 
 1) Edit the `setup` chunk at the top so that `echo = TRUE`  
 
-2) Edit your YAML to look like below (note the change to `output:` to `html_document:` with a colon after it. And then the indenting to `code_folding: hide`)  
+2) Edit your YAML to look like below (note the change to `output:` to `html_document:` with a colon after it. And then the new line and indenting to `code_folding: hide`)  
 
 
 ```{results='asis'}
@@ -472,7 +475,7 @@ output:
     code_folding: hide
 date: "`r Sys.Date()`"
 params:
-  district: "Central Hospital"
+  district: "West II"
   report_date: "2014-12-01"
 ---
 ```
@@ -492,12 +495,12 @@ output:
   word_document: default
 date: "`r Sys.Date()`"
 params:
-  district: "Central Hospital"
+  district: "West II"
   publish_date: "2014-12-01"
 ---
 ```
 
-**Change your `setup` default options to as below.**  
+**And change your `setup` default options to as below.**  
 
 ```{r, eval=F, echo=T}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
@@ -515,26 +518,54 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 knitr::include_graphics("images/2_text.png")
 ```
 
-**Using the image above as a guide, modify the default text to show the text below:** Note that to make a newline you need to add **two spaces and hit Enter** at the end of each bullet/sentence.  
+**Using the image above as a guide, modify the default text to show the text below**  
 
-Many people enjoy learning R because they seek:  
+Note that to make a newline you need to add **two spaces and hit Enter** at the end of each bullet/sentence.  
 
+Try to replicate this line of text and the three bullets below it:  
+
+
+>Many people enjoy learning R because they seek:  
+>
 * Analytical *flexibility*  
 * Advanced *graphics* and automated *reporting capability*  
 * Above all to **support the movement towards free, open-source software**  
 
 
+You can insert R code into text in what is called "inline code". You can create a mini R code line within some text by doing the following:  
+
+  * Start the code with a backtick \` and the letter `r`  
+  * Continue by writing your R code  
+  * Finish with another backtick \`  
+  
+Try to recreate this line in your R Markdown, and then render the Rmd to see the output:  
+
+>Today's date is 
+>`` `r knitr::inline_expr("Sys.Date()")` `` and I am taking an R class!
+
+The command `Sys.Date()` is convenient because it prints the current date, according to your computer. Note that the "Date" begins with a capital "D".  
+
+If you use any functions in these inline commands, or and R objects or values, they must have been defined *prior*/*above* the inline code. Otherwise R return an error when rendering the Rmd.  
+
+
+
+
+
+
+
+
+
 
 ## Build your report  
 
-Now that you know about YAML, knitting, code chunks, text, and inline text... begin to make your Ebola situation report!  
+Now that you know about YAML, knitting, code chunks, text, and inline code... begin to make your Ebola situation report!  
 
 Remove all the default text and chunks from the Rmd. Leave the topmost `setup` chunk and the YAML.  
 
 **Begin to transfer your R code from your "ebola_analysis.R" script into this Rmd.** A few tips:  
 
 * Put code for the same task, in the one chunk  
-* Test your progress often, by Knitting your report after adding each chunk  
+* Test your progress often, by knitting your report after adding each chunk  
 * Keep your # comments in the code chunks, to inform readers of your code  
 * Be aware of which dataset you are working on (e.g. `surv`, `hosp`, `combined`) and the ordering of the code  
 
@@ -554,7 +585,7 @@ Follow this order:
   * Clean and join the `investigations` dataset  
 5) Export the cleaned `combined` dataset  
 6) Create and print descriptive tables  
-7) Create and print plots for *person*, *time*, and *place*  
+7) Create and print plots  
 
 Do not hesitate to ask your facilitator for assistance if you get stuck!  
 
@@ -569,19 +600,76 @@ Do not hesitate to ask your facilitator for assistance if you get stuck!
 
 If you finish creating your report and still have time before the class re-convenes in the plenary debrief, follow the instructions below to make your report adaptable as new data arrive.  
 
-### Filter the data  
+### Filter the data by district
+
+In the YAML, you have written the parameter `district: "West II"`, which you can access in the Rmd via `params$district`.  
+
+**Add a section to your R Markdown in the Descriptive Tables** that creates a *"spotlight analysis"* on the district that is set in the YAML `params`.  
+
+* In the Rmd text, write a sentence that introduces this section as a spotlight on X hospital, where the X changes dynamically to print the name of the hospital.  
+
+* In a code chunk below this text, begin with the clean `combined` data frame and pipe it into a `filter()` function that restricts it to only rows that are equal to `params$district`.  
+
+* Then pipe this filtered dataset into a `tabyl()` function that shows the breakdown by hospital and by outcome (`died`).  
+
+
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+In the R Markdown text you would write something like:  
+
+>Below is a spotlight on hospital admissions and outcomes for patients reported in  
+>`` `r knitr::inline_expr("params$district")` `` :  
+
+And in the code chunk you could have code like this:  
+
+
+```{r eval = F, echo=T}
+# Spotlight on district defined at top of script in YAML  
+combined %>% 
+  filter(district == params$district) %>%   # filter dataset to the district in YAML
+  drop_na(outcome) %>%                      # remove patients with missing outcome, for clarity
+  tabyl(hospital, outcome) %>%              # begin the cross-tabulaton    
+  adorn_totals("both")                      # add totals for both rows and columns
+```
+
+Note the double equals to test equivalency, `==`  
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+
+
+### Filter the data by date  
 
 Let's try to add a dynamic filter on `combined`, so that only cases reported prior to a certain date are included in the report.  
 
-**Let's use this threshold**: Only include cases that were reported (column `report_date`) **on or before** the Sunday of the week **prior** to the `publish_date` set in the YAML.  
+**Let's use this threshold**: Only include cases that were reported **on or before** the Sunday of the week **prior** to the `publish_date` set in the YAML.  
 
-Ok, let's begin.  
+So in the calendar below, if the publish date is 1 December, we only show cases reported on or before 23 November. This will help reduce the perception of artificial declines in the epidemic curves, because there is some delay in the cases appearing in the surveillance dataset.  
+
+```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("images/calendar.png")
+```
+
+
 
 #### Class of the param `publish_date`  
 
-You have already created the `params` value `publish_date`, which can be accessed within the report by typing `params$publish_date`.  
+Ok, let's begin. You have already created the `params` value `publish_date`, which can be accessed within the report by typing `params$publish_date`.  
 
-But what class is this value? Try running just `params$publish_date` in the R Console. Then run `class(params$publish_date)`. What class is this? What function should you apply to convert it to a date?  
+But what class is this value? Its class will impact how we can use this date.  
+
+Try running just `params$publish_date` in the R Console. Then run `class(params$publish_date)`. What class is this? What function should you apply to convert it to a date?  
 
 I'll tell you the answer: you need to wrap it in the {lubridate} function that matches its current format (YYYY-MM-DD), like this: `ymd(params$publish_date)`.  
 
@@ -591,11 +679,8 @@ Try running `class(ymd(params$publish_date))` - you should see that this value i
 
 We want to apply a filter to `combined`, using *the Monday prior to the publish date*, because we know there is some delay in the number of cases being reported.  
 
-We can return the Sunday prior to a date using `floor_date(DATE, unit = "week")` from the {lubridate} package. To return the Sunday of the *prior* week, we can just subtract 7 days from the date: `floor_date(DATE - 7, unit = "week")`  
+We can return the Sunday prior to a date using `floor_date(DATE, unit = "week")` from the {lubridate} package. To return the *priort* Sunday, we can just subtract 7 days from the date: `floor_date(DATE - 7, unit = "week")`  
 
-```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("images/calendar.png")
-```
 
 Looking at the calendar above from 2014, we can see that if the publish date is Monday 1 December, we only want cases reported through Sunday 23 November. **This date will be our "data date".**   
 
@@ -648,7 +733,7 @@ Now that we have this "data date" defined as a value, we can use it in our outpu
 
 **Go to the section of your code with plots**  
 
-Add captions to each plot using `labs(caption = )` and make the character value dynamically describe the last date eligible for cases to be included in the plot. For example:  
+Add captions to at least one plot using `labs(caption = )` and make the character value dynamically describe the last date eligible for cases to be included in the plot. For example:  
 
 "650 cases were reported through 23 December 2014."  
 
@@ -695,7 +780,7 @@ NOTE: End of solution
 -->
 
 
-### Order of code  
+### Order of code and text  
 
 What if you want to write a sentence at the *top* of your report output, that uses this `data_date` value, for example:  
 

@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
-surv_raw <- rio::import(system.file("dat/surveillance_linelist_12012014.csv", package = "introexercises"))
+surv_raw <- rio::import(system.file("dat/surveillance_linelist_20141201.csv", package = "introexercises"))
 ```
 
 
@@ -320,7 +320,7 @@ NOTE: End of solution
 The next segment of your script will import the data.  
 
 
-**Write a command that imports the *"surveillance_linelist_12012014.csv"* from the "data/raw" subfolder of the R project.** Use `here()` and `import()`, and name the dataset `surv_raw`.  
+**Write a command that imports the *"surveillance_linelist_20141201.csv"* from the "data/raw" subfolder of the R project.** Use `here()` and `import()`, and name the dataset `surv_raw`.  
 
 
 
@@ -333,7 +333,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 </br>
 
 ```{r eval = F, echo=T}
-surv_raw <- import(here("data", "raw", "surveillance_linelist_12012014.csv"))
+surv_raw <- import(here("data", "raw", "surveillance_linelist_20141201.csv"))
 ```
 </br>
 </details>
