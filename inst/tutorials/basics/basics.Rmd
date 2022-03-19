@@ -73,12 +73,12 @@ surv_raw <- rio::import(system.file("dat/surveillance_linelist_12012014.csv", pa
 
 
 
-## Introduction to R for Applied Epidemiology and Public Health
+## Introduction to R for Applied Epidemiology  
 
 
 ### Welcome
 
-Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
+Welcome to the live course "Introduction to R for applied epidemiology", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
 knitr::include_graphics("images/logo.png")
@@ -210,17 +210,18 @@ In this exercise you will:
 * Learn basic syntax,  operators, and functions  
 * Install and load R packages  
 * Arrange an R project with well-named files  
-* Import an Excel dataset into R, and review it   
+* Import a CSV dataset into R, and review it   
 
 
 
-## Install  
+## Initial setup  
 
-Prior to this course, we held sent you a guide to help you install R, RStudio, and the important R packages for this course. If this was not successful, please contact one of our instructors immediately.
+Prior to beginning this exercise, you completed the initial setup steps to:  
 
-If you already had R installed, please update to the most recent version for the course. This involves re-installing R.  
-
-
+1) Install R and RStudio  
+2) Download the course files in the "intro_course" folder to your desktop  
+3) Create a new RStudio project in the "intro_course" folder  
+4) Download the exercises for this course, including this one  
 
 
 
@@ -314,15 +315,14 @@ quiz(caption = "Quiz - R and RStudio",
 
 ## RStudio tour 
 
-`r fontawesome::fa("window-restore", fill = "darkgrey")` Open RStudio from your desktop or computer's list of applications. As it opens, RStudio will automatically find and use R. There will almost never be a need to open R directly. 
+`r fontawesome::fa("eye", fill = "darkblue")` Look around RStudio. If the size of the script is too small or large, adjust it in the *View* menu.  
 
-
-`r fontawesome::fa("eye", fill = "darkblue")`  
-
-* Look around RStudio. If the size of the script is too small or large, adjust it in the *View* menu.  
 * Observe the major RStudio panes. How many panes do you see?  
-     * You should see at least 3 panes: the **R Console**, **Environment**, and **Files**.   
-     * If you see only these 3 panes, click *File -> New file -> R script* to open a new R Script and achieve the classic look pictured below.  
+     * You should see at least 3 panes:  
+        * The **Console, Terminal, Render, and Jobs** pane (left or lower-left)  
+        * The **Environment** (upper-right, which also holds the **Tutorials** that this exercise is in)  
+        * The **Files, Plots, Packages, Help, and Viewer** panes (lower-right)   
+     * If you see only these 3 panes, click *File -> New file -> R script* to open a new R Script and achieve the classic look pictured below. Now you will have the 4th pane, which is called the "Source" pane.  
      * Take a few minutes to familiarize yourself with the locations of the various panes, using the diagram below.  
      
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
@@ -332,8 +332,6 @@ quiz(caption = "Quiz - R and RStudio",
 knitr::include_graphics("images/RStudio-overview.png")
 ```
 
-TIP: If your RStudio displays only one left pane it is because you have no scripts open yet.
-
 **The Source Pane**
 This pane, by default in the upper-left, is a space to edit, run, and save your scripts. Scripts contain the commands you want to run. This pane can also display datasets (data frames) for viewing.
 
@@ -341,7 +339,7 @@ For Stata users, this pane is similar to your Do-file and Data Editor windows.
 
 **The R Console Pane**
 
-The R Console, by default the left or lower-left pane in R Studio, is the home of the R “engine”. This is where the commands are actually run and non-graphic outputs and error/warning messages appear. You can directly enter and run commands in the R Console, but realize that these commands are not saved as they are when running commands from a script.
+In the lower-left, you may need to click from "Jobs" tab to the "Console" tab to see the R Console (because this tutorial is running). This is the home of the R software itself, the “engine” where the commands are actually run and non-graphic outputs and error/warning messages appear. You can directly enter and run commands in the R Console, but realize that these commands are not saved as they are when running commands from a script.
 
 If you are familiar with Stata, the R Console is like the Command Window and also the Results Window.
 
@@ -392,7 +390,7 @@ An RStudio project is a **self-contained and portable R working environment** - 
 
 If you do not work in an R project, it will be harder to organize files, to share your work with others, and you may encounter lots of frustration struggling to import files with something called the "working directory". When you use an R project, your scripts become much more easy to share and less likely to "break" when someone else uses them.  
 
-#### Check if you are in a project  
+#### Confirm that you are in a project  
 
 If you are working in an RStudio project, you will see the name of the project indicated in the upper-right corner of RStudio. If you are not in an RStudio project, it will read "Project: (None)". **What do you see in your RStudio?**  
 
@@ -403,107 +401,24 @@ If you are working in an RStudio project, you will see the name of the project i
 knitr::include_graphics("images/Rproject_dropdown.png")
 ```
 
-### Create a new project  
-
-Ok, let's get started!  
-
-1) Click through to *File -> New Project*. Select **"Existing directory"**.  
-
-```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
-# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
-# It dynamically creates the ../../etc filepath.
-
-knitr::include_graphics("images/create_project.png")
-```
-
-2) Give your project the name "intro_course". This will be the project for ALL of your work in this course.  
-
-3) **Click "browse" and select the "intro_course" folder that you downloaded and which contains the course materials**.  
-
-`r fontawesome::fa("exclamation", fill = "red")`  
-
->For this course, do NOT save the intro_course folder/R project to a shared drive such as Sharepoint, OneDrive, Google Drive, etc. Save it to your desktop or a drive that is local to your computer only. While hosting projects on drives like this is possible (and important for team work), it requires some testing and coordination between team members.    
-
-4) Check the box "Open in new window"  
-
-5) Click "Create project"  
-
-Voila! A new RStudio window should open. Click on that window and look at it. It should look very similar to your old one, but see if the upper-right corner of this new RStudio shows that it is in the "intro_course" RStudio project.  
 
 
-### Explore your project  
-
-**Close this new RStudio window, but leave your old one (with this exercise) open.** If asked to save a 'workspace image", say NO (we'll explain why later).  
-
-`r fontawesome::fa("window-restore", fill = "darkgrey")`  **Open your File Explorer.** Navigate to where you saved the R project. *What do you see?*  
-
-If you saved the folder to your desktop, the file explorer would look like this:  
-
-```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
-# It dynamically creates the ../../etc filepath.
-
-knitr::include_graphics("images/new_r_project_explorer.png")
-```
-
-In the folder, you should see a small file with an icon that looks like an "R box" - this is the RStudio project file (.Rproj).  
-
-**To directly open the project next time, simply double-click this RStudio project file to open it. RStudio will open, and all your files for this project will be at-the-ready.**  
 
 
-**Now, double-click the RStudio Project file** to re-open your "intro_course" project. RStudio should open.  
 
-`r fontawesome::fa("eye", fill = "darkblue")`
-Observe in the "Files" RStudio pane (lower-right) that you can also see and access the contents of the "intro_course" project.  
-
-```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
-# It dynamically creates the ../../etc filepath.
-
-knitr::include_graphics("images/new_r_project.png")
-```
-
-You can read more about RStudio projects in [this chapter of the Epi R Handbook](https://epirhandbook.com/en/r-projects.html).  
-
-
-## Switch to your RStudio project  
-
-Until now, this exercise has been running from the RStudio window that is *not* associated with your RStudio project. At this moment, you should have two RStudio windows open:  
-
-1) The RStudio window *not associated with your "intro_course" RStudio project*, but is running this exercise  
-2) The RStudio window *that is associated with the "intro_course" project* but it not running any exercise  
-
-To simplify your workflow and de-clutter your screen, we will have you close this RStudio window (close this exercise) and re-open the exercise in your new RStudio window.  
-
-**First, open this same tutorial in your new RStudio window, using the image below as a guide.**  
-
-1) View the new RStudio window  
-2) Click open the "Tutorials" Pane in the upper-right  
-3) Click to start the exercise "Applied Epi - R setup, syntax, data import"  
-4) Navigate in the tutorial to this same section ("Switch to your RStudio project")  
-
-
-```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
-# It dynamically creates the ../../etc filepath.
-
-knitr::include_graphics("images/switch_exercise_windows.png")
-```
-
-**Once you are established in the new RStudio window, stop this exercise by pressing the red STOP icon in the upper-left of the exercise.  Then close this old RStudio window.**  
-
-You can now continue the exercise in your RStudio project.  
 
 
 ## Running R commands
 
 ### Open an R script
 
-**Open a new R script** by clicking *File -> New file -> R script* (if you have not already done so). You should see a new empty tab appear in the upper-left pane of RStudio.  
+**If you have not already done so, open a new R script** by clicking *File -> New file -> R script*. 
 
 ```{r script-new, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "35%", fig.cap = ""}
 knitr::include_graphics("images/new_script.jpg")
 ```
+
+You should see a new empty space appear in the upper-left of RStudio. This space is the R script.  
 
 Currently, the script is not saved. Click the save icon above the script, or click *File -> Save As*.  
 

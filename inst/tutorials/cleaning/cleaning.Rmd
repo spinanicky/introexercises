@@ -79,7 +79,7 @@ surv_raw <- rio::import(system.file("dat/surveillance_linelist_12012014.csv", pa
 
 ### Welcome
 
-Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
+Welcome to the live course "Introduction to R for applied epidemiology", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
 knitr::include_graphics("images/logo.png")
