@@ -244,23 +244,28 @@ In this exercise you will:
 
 You can do this by navigating to the "intro_course" folder, and double-clicking on the blue ".Rproj" file in the folder. RStudio should open.
 
+```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("images/README_images/new_r_project_explorer.png")
+```
+
+
 ### Begin a new R script  
 
 **Start a new R script**  
 
-Either click the new script icon in the upper-left corner of RStudio, or select *File -> New File -> R Script*.  
+Open a new R script, either by clicking the new script icon in the upper-left corner of RStudio, or by clicking *File -> New File -> R Script*.  
 
 
 **Save your script**  
 
-This will be the primary R script that you work in for the next 2 days. Name it something like **"ebola_analysis.R"** and **save it into the "scripts" subfolder of the R proejct.  
+This will be the primary R script that you work in for the next 2 days. Name it **"ebola_analysis.R"** and **save it into the "scripts" subfolder** of the R project.  
 
 **Prepare your script**
 
 Write # comment lines in the top to document:  
 
 * The purpose of the script  
-* The author(s) of the script  
+* The author of the script  
 * The date the script was last updated  
 
  
@@ -270,6 +275,20 @@ Write # comment lines in the top to document:
 The first coding step of any script is to install and/or load the packages for the entire script. It is best to do this at the very top, so that any reviewer can see which packages are used. 
 
 Write a # comment line that demarcates a section of the script for loading packages.  
+
+```{r, results='asis'}
+#################################
+### Install and load packages ###
+#################################
+# The pacman package will install each package if necessary,
+# and load it for use in the current session
+
+
+
+```
+
+
+
 
 Now write a command using {pacman} and its function `p_load()` that will install/load the following packages:  
 
@@ -282,7 +301,7 @@ Now write a command using {pacman} and its function `p_load()` that will install
 * gtsummary (for creating tables)  
 * tidyverse (for data management and visualization)  
 
-Write your command vertically so that you can add comments for each package.  
+Write your command vertically so that you can add descriptive comments for each package.  
 Try to write this command first, and then check the solution code below.  
 
 
@@ -306,7 +325,7 @@ pacman::p_load(
 )
 ```
 
-Don't forget to write `pacman::p_load()`, which loads the {pacman} package to be able to load all the other packages.  
+Don't forget to write `pacman::p_load()`, which loads the {pacman} package, to then be able to load all the other packages.  
 </br>
 </details>
 <!--
@@ -320,7 +339,7 @@ NOTE: End of solution
 The next segment of your script will import the data.  
 
 
-**Write a command that imports the *"surveillance_linelist_20141201.csv"* from the "data/raw" subfolder of the R project.** Use `here()` and `import()`, and name the dataset `surv_raw`.  
+**Write a command that imports the *"surveillance_linelist_20141201.csv"* from the "data/raw" subfolder of the R project.** Use `import()` and `here()`, and name the dataset in R as `surv_raw` (a shorthand for "surveillance linelist raw")  
 
 
 
@@ -346,27 +365,32 @@ NOTE: End of solution
 
 
 
-## Conduct exploratory analysis  
+## Exploratory analysis  
 
 First let's run some code to look at the different values in the dataset. 
 
-As we have not yet taught you this code, simply copy the code and paste it into your RStudio console. Then, answer the questions about the outputs that appear in the R Console and plots Pane.  
+Much of the code below you will learn in upcoming modules. For now, simply copypaste the code into your R Console and run it. Then, answer the questions about the outputs that appear in the Console and Plots panes.  
 
 
 ### Column names  
 
-We pipe the linelist in the {base} function `names()`, which prints the column names for us to review.  
+The {base} function `names()` returns the column names of a data frame. We can place the name of our dataset inside, and view the result in the Console.  
+
+```{r, echo=T, eval=F}
+names(surv_raw)
+```
+
+Another way to write the same command, is to pipe `surv_raw` into `names()`.  
 
 ```{r, echo=T, eval=F}
 surv_raw %>% names()
 ```
 
 
-Which of the column names contain non-standard syntax and will need to be cleaned?  
 
 ```{r quiz-column-names}
 quiz(caption = "Quiz - column names",
-  question("",
+  question("Which of the column names contain non-standard syntax and will need to be cleaned?",
     allow_retry = T,
     answer("onset date", correct = T, message = "This one contains a space"),
     answer("wt (kg)", correct = T, message = "Spaces and parentheses need to be removed"),
@@ -386,25 +410,23 @@ quiz(caption = "Quiz - column names",
 
 As we conduct our exploratory analysis, we need to be aware of how R handles missing values.  
 
-In R, missing values are represented by a reserved (special) value - `NA`. `NA` is treated differently by certain functions, and having missingness properly recognized is important.  
+In R, missing values are represented by a reserved (special) value - `NA`. Note that `NA` is treated differently by certain functions because having missingness recognized is important.  
 
-Note that this is typed without quotes. “NA” is different and is just a normal character value (also a Beatles lyric from the song Hey Jude).
+Note that `NA` is typed without quotes. “NA” is different and is just a normal character value (also a Beatles lyric from the song Hey Jude).
 
-Your data may have other ways of representing missingness, such as 99, “Missing”, or “Unknown”.  
+Your data may have other ways of representing missingness, such as 99, “Missing”, or “Unknown”. Similarly, when you import your datasets there may be empty cells in a CSV or XLSX that import into R with a blank space - it will look empty but actually there is a " " space!  
 
-When you import data, empty cells in a CSV or XLSX may import into R with a blank space - it will look empty but actually there is a " " space!  
+You may even have an *empty character value* which will look blank but would actually be referenced in R as: "" (different than `NA`).  
 
-You may even have an *empty character value* which will look blank but would actually be written like this: "".  
-
-`r fontawesome::fa("eye", fill = "darkblue")`
-
-Let's keep an eye out for how missing values have been imported in our data set, as we begin to clean.  
+`r fontawesome::fa("eye", fill = "darkblue")` Let's keep an eye out for how missing values have been imported in our data set, as we begin to clean.  
 
 
 
 ### Gender  
 
-The package {janitor} and its function `tabyl()` can be used to make a rapid tabulation of values:  
+The package {janitor} and its function `tabyl()` can be used to make a rapid tabulation of values in a specified column.  
+
+Below, we pipe our dataset into the `tabyl()` function, and tell the function to provide counts for each unique value in the column `gender`.  
 
 ```{r, echo=T, eval=F}
 # tabulate gender
@@ -436,7 +458,9 @@ We will need to address this in our cleaning steps later.
 
 ### Age  
 
-Let's review the age distribution
+Let's review the age distribution using the {ggplot2} package, which is the most common package for data visualization.  
+
+Below, the function `ggplot()` uses our data frame `surv_raw`, the column `age` is mapped to the X-axis, and the data are visualized as a histogram. Again, do not worry about understanding this function now - we will have two entire modules that cover {ggplot2}.  
 
 ```{r, echo=T, eval=F, message=F, warning=F}
 # a histogram of the case ages 
@@ -444,6 +468,9 @@ ggplot(data = surv_raw, mapping = aes(x = age))+
   geom_histogram()
 ```
 
+Note that a warning message may appear when you run this command. A "Warning" message in the Console means that R is able to execute your command, but there is something you should probably know. In contrast, an "Error" message means that R was not able to execute your command.  
+
+Below, the command is changed only slightly, to display a boxplot instead of a histogram.  
 
 ```{r, echo=T, eval=F, message=F, warning=F}
 # a boxplot of the case age distribution
@@ -462,14 +489,14 @@ quiz(caption = "Quiz - age distribution",
 )
 ```
 
-Ah! But some of the rows have recorded age in *months*.  
+Ah! But some of the cases have recorded age in *months*.  
 
 ```{r, echo=T, eval=F}
 surv_raw %>% 
   tabyl(`age unit`)
 ```
 
-Note that because this column name has a space in it, we had to write it surrounded by backticks, for R to understand that we are referring to a known column name.  
+Note that because this column name has a space in it, we had to write it surrounded by backticks, in order for R to understand that we are referring to a known column name. Cleaning this column name will be one of our first actions once we begin our data cleaning steps.  
 
 ```{r quiz-age-unit, echo = FALSE}
 quiz(caption = "Quiz - age unit",
@@ -496,7 +523,7 @@ Note the class of the object `surv_raw`, our linelist.
 class(surv_raw)
 ```
 
-Note the class of the column `hospital`. Here we use the `$` operator to specify that *within* the data frame `surv_raw`, we want to use the column `age`. 
+Below, we inspect the class of the column `age`. Here we use the `$` operator to specify that *within* the data frame `surv_raw`, we want to examine the column `age`. 
 
 Type this command letter-by-letter. When you type the $, you should see a list appear of all the columns in the data frame (this is an auto-complete feature, which can be adjusted in *RStudio -> Tools -> Global Options*).  
 
@@ -510,12 +537,20 @@ Now let's see what the class of the column `onset date` is:
 class(surv_raw$`onset date`)
 ```
 
-During the import of the data, R read this column as character values (e.g. "11/03/2014") and did not assume that it was a date. Indeed - how would R know which digits referred to months, or days? In CSV files in particular, these columns are usually imported as character values. It is best if this column is properly recognized as class "date". We will addresses in the cleaning steps.  
+During the import of the data, R has read this column as character values (e.g. "11/03/2014") and did not assume that it was a date. Indeed - how would R know which digits referred to months, or to days? In CSV files in particular, these columns are often first imported as character values. For analysis purposes, it is essential that this column is properly recognized as class "date" and the days and months correctly identified. We will address this in the cleaning steps.  
 
-
-**What is the class of the column `date of report`?**  
-
-
+```{r quiz-col-class, echo = FALSE}
+quiz(caption = "Quiz - column class",
+  question(question = "What is the class of the column `date of report`"),
+    allow_retry = TRUE,
+    answer("Numeric"),
+    answer("Character", correct = T),
+    answer("Proletariat"),
+    answer("Logical"),
+    answer("Date")
+  )
+)
+```
 
 
 ### Numeric columns  
