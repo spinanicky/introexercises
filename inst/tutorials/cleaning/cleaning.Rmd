@@ -245,7 +245,7 @@ In this exercise you will:
 You can do this by navigating to the "intro_course" folder, and double-clicking on the blue ".Rproj" file in the folder. RStudio should open.
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/README_images/new_r_project_explorer.png")
+knitr::include_graphics("images/new_r_project_explorer.png")
 ```
 
 
@@ -541,7 +541,7 @@ During the import of the data, R has read this column as character values (e.g. 
 
 ```{r quiz-col-class, echo = FALSE}
 quiz(caption = "Quiz - column class",
-  question(question = "What is the class of the column `date of report`"),
+  question("What is the class of the column `date of report`?",
     allow_retry = TRUE,
     answer("Numeric"),
     answer("Character", correct = T),
@@ -550,6 +550,7 @@ quiz(caption = "Quiz - column class",
     answer("Date")
   )
 )
+
 ```
 
 
