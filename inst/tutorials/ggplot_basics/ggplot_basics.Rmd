@@ -263,7 +263,7 @@ If you have arranged your script correctly and kept it clean, these commands sho
 Create a new section below the other code, well documented with # symbols, for these exercises to create simple plots.  
 
 
-```{r, results="asis}
+```{r, results="asis"}
 ###########################
 ### Data visualizations ###
 ###########################
