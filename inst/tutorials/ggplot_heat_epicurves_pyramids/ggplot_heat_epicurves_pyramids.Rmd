@@ -258,6 +258,7 @@ plot(hospitalisation_week)
 However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories. 
 
 `r fontawesome::fa("terminal", fill = "black")` Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `hospital` and `age_cat`, with the incidence set to every 2 weeks? Remember you always consult the help (`?incidence`) if you need more information! 
+
 * Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category?
 
 <details>
