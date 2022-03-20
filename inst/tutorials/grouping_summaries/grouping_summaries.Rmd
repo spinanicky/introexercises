@@ -726,7 +726,7 @@ As you remove `round()`, don't forget to also remove the comma and `digits = 0`,
 
 One of the more advanced calculation tools you can use are subsetting brackets `[ ]`. These symbols can be used after a column and will filter it according to whatever logical criteria you write inside.  
 
-For example, `max_temp_fvr = max(temp[fever == "yes"], na.rm = T)` will return the maximum temperature recorded in the group, *but only among the cases that did report a fever*.  
+For example, if placed within `summarise()`, `max_temp_fvr = max(temp[fever == "yes"], na.rm = T)` will return the maximum temperature recorded in the group, *but only among the cases that did report a fever*.  
 
 It is a complicated command - ask your facilitator if you do not understand it.  
 

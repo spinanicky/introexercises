@@ -751,7 +751,7 @@ We are going to build epidemic curves with {ggplot2}, which allows for advanced 
 
 As you have been through several exercises using {ggplot2}, you are now familiar with the syntax and customization it allows (themes, labels, axes, etc). 
 
-In its most basic form, plotting epidemic curves in {ggplot2} is a case of using the function `geom_histogram()`. However, there are 3 main things to watch out for:  
+In its most basic form, plotting epidemic curves in {ggplot2} is a case of using the ggplot function `geom_histogram()`. However, there are 3 main things to watch out for:  
 
 * The histogram bins (how the data are grouped by time unit)  
 * Scales for axes and their labels
@@ -759,7 +759,7 @@ In its most basic form, plotting epidemic curves in {ggplot2} is a case of using
 
 ### Simple bins  
 
-`r fontawesome::fa("terminal", fill = "black")` Can you make a simple histogram from the data frame `combined` which shows the incidence of `date_onset` using 5-day intervals? The histogram "binwidth" can be specified as a static aesthetic to `binwidth = `. Also, clean up the labels and use `theme_bw()`.  
+`r fontawesome::fa("terminal", fill = "black")` Can you make a simple histogram from the data frame `combined` which shows the incidence of `date_onset` using 5-day intervals? The histogram "binwidth" can be specified as a number (a static aesthetic) to `binwidth = `. Also, clean up the labels and use `theme_bw()`.  
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -787,7 +787,7 @@ What does `breaks =` expect as a value? It expects a *vector* of dates to use as
 
 How to make a vector of dates? We know that we can create a vector using `c()`, for example `c(54, 22, 89)` or `c("Paris", "Delhi", "Kigali")`.  
 
-We can even make a vector of dates: `c(ymd("2014-06-15"), ymd("2014-06-22"), ymd("2014-06-29")` But this would be have to be a very long code to include *all* the weekly break points throughout this outbreak!  
+We can even make a vector of dates: `c(ymd("2014-06-15"), ymd("2014-06-22"), ymd("2014-06-29"))` But this would be have to be a very long code to include *all* the weekly break points throughout this outbreak!  
 
 Instead we can use the {base} function `seq.Date()` to automatically create a *sequence* of dates between a `from = ` value, to a `to = ` value, and in increments specified to `by = `. You can specify `by` values such as "day", "week", "month", etc.  
 
@@ -835,7 +835,9 @@ seq.Date(from = floor_date(ymd("2014-05-06"), unit = "week", week_start = 1),
 
 Finally, what happens if our data are refreshed or updated with new data? Those static dates in our code will not be current!  
 
-Let's replace them with `min()` and `max()` applied to the column `combined$date_onset`. As this is not a {dplyr} pipe, we need to specify the data frame and column with the `$` index operator. Don't forget that these two functions need `na.rm=TRUE` to escape missing values.  
+Let's replace them with `min()` and `max()` applied to the column `combined$date_onset`.  
+
+As this is not a {dplyr} pipe, we need to specify the data frame and column with the `$` index operator. Don't forget that these two functions need `na.rm=TRUE` to remove missing values.  
 
 ```{r, echo=T, eval=T}
 seq.Date(from = floor_date(min(combined$date_onset, na.rm=T), unit = "week", week_start = 1),
@@ -846,9 +848,10 @@ seq.Date(from = floor_date(min(combined$date_onset, na.rm=T), unit = "week", wee
 In this way, we have made our code more *dynamic*. Dynamic code will be important if our dataset is refreshed/updated, so you want all the plots and tables to update automatically.  
 
 
-Finally the easiest way to insert this `seq.Date()` vector into the `ggplot()` command is by saving it in advance, with a name. So the command becomes two separate commands:  
+Finally, the easiest way to insert this `seq.Date()` vector into the `ggplot()` command is by saving it in advance, with a name. So the command becomes two separate commands:  
 
 ```{r, echo=T, eval=F}
+# Define and save the vector
 ebola_weeks <- seq.Date(
   from = floor_date(min(combined$date_onset, na.rm=T), unit = "week", week_start = 1),
   to =   ceiling_date(max(combined$date_onset, na.rm=T), unit = "week", week_start = 1),
@@ -857,15 +860,17 @@ ebola_weeks <- seq.Date(
 ```
 
 
-Now if you run just `ebola_breaks`, the vector is returned/printed. So we can provide `ebola_breaks` to the `breaks = ` argument of `geom_histogram()`.  
+Now if you run just `ebola_weeks`, the vector is returned/printed. So we can provide `ebola_weeks` to the `breaks = ` argument of `geom_histogram()`.  
 
 ```{r, echo=T, eval=F}
+# Define and save the vector
 ebola_weeks <- seq.Date(
   from = floor_date(min(combined$date_onset, na.rm=T), unit = "week", week_start = 1),
   to =   ceiling_date(max(combined$date_onset, na.rm=T), unit = "week", week_start = 1),
   by =   "week")
 
 
+# Run the plot, using the vector
 ggplot(data = combined, aes(x = date_onset)) +
   geom_histogram(breaks = ebola_weeks) +
   labs(x = "Date of onset", y = "Incidence") +
@@ -879,9 +884,9 @@ The above can seem like a lot of work to just produce a list of dates! But think
 
 ### Monthly epidemic curve  
 
-`r fontawesome::fa("terminal", fill = "black")` Now it is your turn. Adjust the code so that the breaks are by *month* from the month-start prior to the first case, until the month-start after the last case. 
+`r fontawesome::fa("terminal", fill = "black")` Now it is your turn. Copy the code and make a new epidemic curve in which the histogram bin breaks are by *month* from the month-start prior to the first case, until the month-start after the last case. 
 
-Once you have done this, can you create an epidemic curve in which the `fill` in the bars is by hospital, and the x-axis labels appear every month?
+Once you have done this, adjust the code so that the `fill` in the bars is by hospital, and the x-axis labels appear every month.  
 
 
 <!--
@@ -892,13 +897,17 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-As we want the values to be aggregated by calendar month, do the following: 
+As we want the values to be aggregated by calendar month, do the following:  
+
 * Set the `unit =` to "month" in the two {lubridate} functions `floor_date()` and `ceiling_date()` and remove the `week_start` arguments (check `?floor_date` for details).  
 * Change the `by = ` argument of `seq.Date()` to "month"  
 * Change the name of the vector `ebola_weeks` to `ebola_months`, and change it in the `ggplot()` command too.  
 
 * To set the fill, put `fill = hospital` in the aesthetic mappings  
-* To adjust the x-axis labels, add `scale_x_date()` and set `labels = date_label_easy()`
+* To adjust the x-axis labels, do the following within `scale_x_date()`:  
+  * set `labels = date_label_easy()`  
+  * set `date_breaks = "months"`  
+  
 </br>
 </details>
 
@@ -907,17 +916,18 @@ As we want the values to be aggregated by calendar month, do the following:
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
+# define and save the vector (by month)
 ebola_months <- seq.Date(
   from = floor_date(min(combined$date_onset, na.rm=T), unit = "month"),
   to =   ceiling_date(max(combined$date_onset, na.rm=T), unit = "month"),
   by =   "month")
 
-
-ggplot(data = combined, aes(x = date_onset)) +
+# run the plot with monthly breaks, and fill
+ggplot(data = combined, aes(x = date_onset, fill = hospital)) +
   geom_histogram(breaks = ebola_months) +
   scale_x_date(
     date_breaks = "months",
-    labels = scales::label_date_short())
+    labels = scales::label_date_short())+
   labs(x = "Date of onset", y = "Incidence") +
   theme_bw()
 ```
@@ -925,16 +935,73 @@ ggplot(data = combined, aes(x = date_onset)) +
 </details>
 
 
-##
+
+
+### Facets  
+
+It may be difficult to read this epicurve and to understand the case trends from each hospital.  
+
+*Faceting* the plots means creating "small-multiple" (mini plots) for each unique value in a column (e.g. `hospital`).  
+
+You create facets by adding `facet_wrap()` to the ggplot. Within this function, write a tilde ~ and then the name of the column, for example:  
+
+```{r, echo=T, eval=F}
+facet_wrap(~gender)
+```
+
+**Now, create facets based on `hospital` for your epidemic curve.**  
+
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+ggplot(data = combined, aes(x = date_onset, fill = hospital)) +
+  geom_histogram(breaks = ebola_months) +
+  scale_x_date(
+    date_breaks = "months",
+    labels = scales::label_date_short())+
+  labs(x = "Date of onset", y = "Incidence") +
+  theme_bw()+
+  facet_wrap(~hospital)
+```
+</br>
+</details>
+
+
+There are MANY other adjustments that you can make to your epidemic curve made with {ggplot2}. Many of them are outlined in the [Epidemic curves chapter of the Epi R Handbook](https://epirhandbook.com/en/epidemic-curves.html#epidemic-curves).  
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Age pyramids
 
-Age pyramids are a useful way of illustrating demographics, and can be customised in a variety of different ways. For our purposes, we will be using the function `age_pyramid()` from the **apyramid** package and `geom_histogram()` from **ggplot2**.
+Age pyramids are a useful way of illustrating demographics, and can be customised in a variety of different ways. For our purposes, we will be using the function `age_pyramid()` from the **apyramid** package.  
+
 
 ### **apyramid**
 
-`age_pyramid()` is a fairly simple function that produces high quality age pyramids with relatively few arguments. 
+The function `age_pyramid()` is fairly simple, in that it produces high quality age pyramids with relatively few arguments. 
 
-`r fontawesome::fa("terminal", fill = "black")` Can you look up the function (`?age_pyramid`) and then create an age pyramid from `combined` of `age_category` that is split by `gender`?
+It is good to practice trying to use a function by reading the documentation and trying to write the command yourself.  
+
+
+`r fontawesome::fa("eye", fill = "darkblue")` Look up the documentation for the function (`?age_pyramid`). Review the arguments, and the examples.  
+
+`r fontawesome::fa("terminal", fill = "black")` Now create an age pyramid using the `combined` data frame and the `age_cat` categories, that is split by `gender`.  
+
+
+
+
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -964,17 +1031,60 @@ age_pyramid(data = combined,
 </br>
 </details>
 
-Currently we are assuming that the data is in a linelist format, where each row is a unique observation. However, you may be given data that is already aggregated.
 
-This is easily dealt with in **apyramid** by simply specifying `count = `, where the column that contains the count values is specified.
 
-`r fontawesome::fa("terminal", fill = "black")` Knowing this, and checking with the function help if needed, can you create an age pyramid that is split by gender from the aggregate dataset `aggregate_data`?
+### Counts
+
+In the previous example, the data is in a linelist format, where each row is a unique observation. However, you may be given data that is already aggregated into counts.
+
+Just to practice, create this dataset `demo_wide_counts` in your RStudio by running the following command:  
+
+```{r, echo=T, eval=T}
+# Creates the object demo_agg
+#############################
+demo_wide_counts <- structure(list(
+  age_cat = structure(c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, NA),
+                      .Label = c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70+"), class = "factor"),
+  female = c(149L, 104L, 55L, 15L, 4L, 1L, NA, NA, NA),
+  male = c(96L, 80L, 65L, 39L, 19L, 5L, 5L, 1L, NA),
+  missing_gender = c(5L, 4L, 4L, 2L, NA, NA, 1L, NA, 26L)),
+  row.names = c(NA, -9L),
+  class = c("tbl_df", "tbl", "data.frame"))
+```
+
+It should look like this:  
+
+
+```{r, eval=T, echo=TRUE}
+demo_wide_counts
+```
+
+To be acceptable to `age_pyramid()` the data must be in "long" format, so first, you would need to *pivot longer* so that the gender information is in one column (remember tidy data!) and the counts are in one column.  
+
+You could use this command:  
+
+```{r, echo=T, eval=T}
+demo_long_counts <- demo_wide_counts %>% 
+  pivot_longer(
+    col = c(female, male, missing_gender),    # cols to elongate
+    names_to = "gender",                      # name for new col of categories
+    values_to = "counts") %>%                 # name for new col of counts
+  mutate(
+    gender = na_if(gender, "missing_gender")) # convert "missing_gender" to NA
+```
+
+Which results in: 
+```{r, echo=T, eval=T}
+demo_long_counts
+```
+
+Now, use your knowledge of the `age_pyramid()` documentation to adjust the plotting command to accept counts.  
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
-age_pyramid(data = combined,
+age_pyramid(data = demo_long_counts,
             age_group = "age_cat", 
             split_by = "gender",
             count = "counts")
@@ -982,138 +1092,141 @@ age_pyramid(data = combined,
 </br>
 </details>
 
-```{r quiz3}
-quiz(
-  question("Note the data format, which one of these is it?",
-    answer("long format", correct = T),
-    answer("wide format")
-  ))
-```
-
-### **ggplot2**
-
-Using `ggplot()` to build the age pyramid allows for much more flexibility, but requires more effort and an understanding of how `ggplot()` works.
-
-There are several steps to constructing the age pyramid:
-
-1) Within the ggplot(), we need to create **two** histograms using the numeric age column.
-2) We generate the incidence values through the specifying `y = ..count..`
-3) One of these must have its counts converted to _negative_ values. This creates the "pyramid" with the value of 0 in the middle. Negative values are created by multiplying the column by -1.
-4) The command `coord_flip()` switches the X and Y axes is required to flip the axes and create the pyramid.
-5) Finally, the count-axis value labels must be altered so they appear as "positive" on both sides of the pyramid, despite the underlying values on one side being negative.
-
-Considering you have already practiced using `geom_histogram()` for the epi curves, and given the instructions above. Can you re-create the a simple age pyramid, with age breaks ever 5 years, below?
-
-```{r, echo = F, eval = T}
-# begin ggplot
-  ggplot(mapping = aes(x = age, fill = gender)) +
-  
-  # female histogram
-  geom_histogram(data = combined %>% filter(gender == "female"),
-                 breaks = seq(0, 85, 5),
-                 colour = "white") +
-  
-  # male histogram (values converted to negative)
-  geom_histogram(data = combined %>% filter(gender == "male"),
-                 breaks = seq(0,85,5),
-                 mapping = aes(y = ..count..*(-1)),
-                 colour = "white") +
-  
-  # flip the X and Y axes
-  coord_flip() +
-  
-  # adjust counts-axis scale
-  scale_y_continuous(limits = c(-100, 100),
-                     breaks = seq(-100,100,25),
-                     labels = abs(seq(-100, 100, 25)))+
-  labs(y = "Count", x = "Age", fill = "Gender")
-```
-
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-```{r, eval = F, echo = T}
-# begin ggplot
-  ggplot(mapping = aes(x = age, fill = gender)) +
-  
-  # female histogram
-  geom_histogram(data = combined %>% filter(gender == "female"),
-                 breaks = seq(0, 85, 5),
-                 colour = "white") +
-  
-  # male histogram (values converted to negative)
-  geom_histogram(data = combined %>% filter(gender == "male"),
-                 breaks = seq(0,85,5),
-                 mapping = aes(y = ..count..*(-1)),
-                 colour = "white") +
-  
-  # flip the X and Y axes
-  coord_flip() +
-  
-  # adjust counts-axis scale
-  scale_y_continuous(limits = c(-100, 100),
-                     breaks = seq(-100,100,25),
-                     labels = abs(seq(-100, 100, 25)))+
-  labs(y = "Count", x = "Age", fill = "Gender")
-```
-</br>
-</details>
-
-Great, now what if we want to produce the percentages? In order to do this, we will need to group the data and use `mutate()` in order to produce new columns.
-
-This part is a a lot more complicated than if we were using the **apyramid** function `age_pyramid()`
-
-In order to create the percent values, we need to employ `mutate()` and the tidyselect helper function `case_when`. For example, this would be the command to generate the percent
-
-```{r, eval = F, echo = T}
- mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1), 
-         percent = case_when(
-            gender == "f" ~ percent,
-            gender == "m" ~ -percent,     # convert male to negative
-            TRUE          ~ NA_real_))    # NA val must by numeric as well
-```
-
-Can you add in the parts before this to assign aggregate values to an object called `pyramid_data` from `combined`? Once you've done this, can you produce the previous age pyramid, but showing percentages instead of counts, adjust axis scale and labels as necessary?
-
-Remember, as in when creating an epi curve that has already been aggregated, you should use `geom_bar()` or `geom_col()` rather than `geom_histogram()`
 
 
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-```{r, eval = F, echo = T}
-# create dataset with proportion of total
-pyramid_data <- combined %>%
-  count(age_cat,
-        gender,
-        name = "counts") %>% 
-  ungroup() %>%                 # ungroup so percents are not by group
-  mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1), 
-         percent = case_when(
-            gender == "female" ~ percent,
-            gender == "male" ~ -percent,     # convert male to negative
-            TRUE          ~ NA_real_))    # NA val must by numeric as well
+
+## End  
+
+Congratulations! You have finished the exercise on heat plots, epidemic curves, and age/sex pyramids! These are some challenging plots that you have been making!  
 
 
-# begin ggplot
-  ggplot() +
-  
-  # histogram
-  geom_col(data = pyramid_data,
-           mapping = aes(
-             x = age_cat,
-             y = percent,
-             fill = gender),         
-           colour = "white") +       # white around each bar
 
-  # flip the X and Y axes
-  coord_flip() +
-  
-  # adjust counts-axis scale
-  scale_y_continuous(limits = c(-25, 25),
-                     breaks = seq(-25,25,25),
-                     labels = abs(seq(-25, 25, 25)))+
-  labs(y = "Percent (%)", x = "Age", fill = "Gender")
-```
-</br>
-</details>
+
+
+<!-- ### **ggplot2** -->
+
+<!-- Using `ggplot()` to build the age pyramid allows for much more flexibility, but requires more effort and an understanding of how `ggplot()` works. -->
+
+<!-- There are several steps to constructing the age pyramid: -->
+
+<!-- 1) Within the ggplot(), we need to create **two** histograms using the numeric age column. -->
+<!-- 2) We generate the incidence values through the specifying `y = ..count..` -->
+<!-- 3) One of these must have its counts converted to _negative_ values. This creates the "pyramid" with the value of 0 in the middle. Negative values are created by multiplying the column by -1. -->
+<!-- 4) The command `coord_flip()` switches the X and Y axes is required to flip the axes and create the pyramid. -->
+<!-- 5) Finally, the count-axis value labels must be altered so they appear as "positive" on both sides of the pyramid, despite the underlying values on one side being negative. -->
+
+<!-- Considering you have already practiced using `geom_histogram()` for the epi curves, and given the instructions above. Can you re-create the a simple age pyramid, with age breaks ever 5 years, below? -->
+
+<!-- ```{r, echo = F, eval = T} -->
+<!-- # begin ggplot -->
+<!--   ggplot(mapping = aes(x = age, fill = gender)) + -->
+
+<!--   # female histogram -->
+<!--   geom_histogram(data = combined %>% filter(gender == "female"), -->
+<!--                  breaks = seq(0, 85, 5), -->
+<!--                  colour = "white") + -->
+
+<!--   # male histogram (values converted to negative) -->
+<!--   geom_histogram(data = combined %>% filter(gender == "male"), -->
+<!--                  breaks = seq(0,85,5), -->
+<!--                  mapping = aes(y = ..count..*(-1)), -->
+<!--                  colour = "white") + -->
+
+<!--   # flip the X and Y axes -->
+<!--   coord_flip() + -->
+
+<!--   # adjust counts-axis scale -->
+<!--   scale_y_continuous(limits = c(-100, 100), -->
+<!--                      breaks = seq(-100,100,25), -->
+<!--                      labels = abs(seq(-100, 100, 25)))+ -->
+<!--   labs(y = "Count", x = "Age", fill = "Gender") -->
+<!-- ``` -->
+
+<!-- <details> -->
+<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
+<!-- </br> -->
+<!-- ```{r, eval = F, echo = T} -->
+<!-- # begin ggplot -->
+<!--   ggplot(mapping = aes(x = age, fill = gender)) + -->
+
+<!--   # female histogram -->
+<!--   geom_histogram(data = combined %>% filter(gender == "female"), -->
+<!--                  breaks = seq(0, 85, 5), -->
+<!--                  colour = "white") + -->
+
+<!--   # male histogram (values converted to negative) -->
+<!--   geom_histogram(data = combined %>% filter(gender == "male"), -->
+<!--                  breaks = seq(0,85,5), -->
+<!--                  mapping = aes(y = ..count..*(-1)), -->
+<!--                  colour = "white") + -->
+
+<!--   # flip the X and Y axes -->
+<!--   coord_flip() + -->
+
+<!--   # adjust counts-axis scale -->
+<!--   scale_y_continuous(limits = c(-100, 100), -->
+<!--                      breaks = seq(-100,100,25), -->
+<!--                      labels = abs(seq(-100, 100, 25)))+ -->
+<!--   labs(y = "Count", x = "Age", fill = "Gender") -->
+<!-- ``` -->
+<!-- </br> -->
+<!-- </details> -->
+
+<!-- Great, now what if we want to produce the percentages? In order to do this, we will need to group the data and use `mutate()` in order to produce new columns. -->
+
+<!-- This part is a a lot more complicated than if we were using the **apyramid** function `age_pyramid()` -->
+
+<!-- In order to create the percent values, we need to employ `mutate()` and the tidyselect helper function `case_when`. For example, this would be the command to generate the percent -->
+
+<!-- ```{r, eval = F, echo = T} -->
+<!--  mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1),  -->
+<!--          percent = case_when( -->
+<!--             gender == "f" ~ percent, -->
+<!--             gender == "m" ~ -percent,     # convert male to negative -->
+<!--             TRUE          ~ NA_real_))    # NA val must by numeric as well -->
+<!-- ``` -->
+
+<!-- Can you add in the parts before this to assign aggregate values to an object called `pyramid_data` from `combined`? Once you've done this, can you produce the previous age pyramid, but showing percentages instead of counts, adjust axis scale and labels as necessary? -->
+
+<!-- Remember, as in when creating an epi curve that has already been aggregated, you should use `geom_bar()` or `geom_col()` rather than `geom_histogram()` -->
+
+
+<!-- <details> -->
+<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
+<!-- </br> -->
+<!-- ```{r, eval = F, echo = T} -->
+<!-- # create dataset with proportion of total -->
+<!-- pyramid_data <- combined %>% -->
+<!--   count(age_cat, -->
+<!--         gender, -->
+<!--         name = "counts") %>%  -->
+<!--   ungroup() %>%                 # ungroup so percents are not by group -->
+<!--   mutate(percent = round(100*(counts / sum(counts, na.rm=T)), digits = 1),  -->
+<!--          percent = case_when( -->
+<!--             gender == "female" ~ percent, -->
+<!--             gender == "male" ~ -percent,     # convert male to negative -->
+<!--             TRUE          ~ NA_real_))    # NA val must by numeric as well -->
+
+
+<!-- # begin ggplot -->
+<!--   ggplot() + -->
+
+<!--   # histogram -->
+<!--   geom_col(data = pyramid_data, -->
+<!--            mapping = aes( -->
+<!--              x = age_cat, -->
+<!--              y = percent, -->
+<!--              fill = gender),          -->
+<!--            colour = "white") +       # white around each bar -->
+
+<!--   # flip the X and Y axes -->
+<!--   coord_flip() + -->
+
+<!--   # adjust counts-axis scale -->
+<!--   scale_y_continuous(limits = c(-25, 25), -->
+<!--                      breaks = seq(-25,25,25), -->
+<!--                      labels = abs(seq(-25, 25, 25)))+ -->
+<!--   labs(y = "Percent (%)", x = "Age", fill = "Gender") -->
+<!-- ``` -->
+<!-- </br> -->
+<!-- </details> -->
