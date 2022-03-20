@@ -89,7 +89,7 @@ Welcome to the live course "Introduction to R for applied epidemiologists", offe
 knitr::include_graphics("images/logo.png")
 ```
 
-### Data cleaning  
+### Grouping and summarizing  
 
 This exercise focuses on **grouping and summarizing data in descriptive tables**.
 
@@ -327,7 +327,7 @@ Often, we want just a quick tabulation of counts of a categorical variable, or s
 
 The `tabyl()` function from {janitor} does this quickly by tabulating columns provided to it. Easy customization can follow, using the related `adorn_()` functions.  
 
-**Try making a simple `tabyl()` of the column `gender`**  
+**Try making a simple `tabyl()` of the column `district`**  
 
 
 <!--
