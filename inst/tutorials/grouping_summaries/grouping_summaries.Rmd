@@ -898,6 +898,10 @@ Read more about the many ways to customize a {gtsummary} table [here](https://ep
 
 
 
+## End  
+
+Congratulations! You finished the module on summary tables!
+
 
 
 

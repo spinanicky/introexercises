@@ -833,7 +833,7 @@ surv %>%
 You can also list some columns, to move them to the beginning, and finish with `everything()` to include all the other columns (note the empty parentheses at the end of `everything()`). There are other such "tidyselect" helpers available to you such as `contains()` and `starts_with()` that you can read more about in this [Epi R Handbook chapter](https://epirhandbook.com/en/cleaning-data-and-core-functions.html#clean_tidyselect).  
 
 ```{r, echo=T, eval=F}
-# keeps fever, vomit, and the columns in between them 
+# use everything()
 surv %>% 
   select(fever, gender, date_report, everything())
 ```
@@ -1118,12 +1118,12 @@ Now that we have date columns with the correct "date" class, we can create a col
 
 Some countries across the world formulate epiweeks differently (e.g. starting on Sundays, Mondays, or Fridays), but most of the world uses weeks that begin on Mondays.  
 
-To create this, we use the function `floor_date()` from the package {lubridate}, with the following argument settings:  
+To create this column, we use the function `floor_date()` from the package {lubridate}, with the following argument settings:  
 
 1) the column of dates (e.g. `date_onset`)  
 2) `unit = "week"` (this can be set to other values such as "month")  
 
-This will return a *date*, that is the Monday prior to the onset or report date - the "floor" Monday.  
+This will return a *date*, that is the Sunday prior to the onset or report date - the "floor" Sunday. This is the default.  
 
 For example:  
 
@@ -1131,7 +1131,7 @@ For example:
 floor_date(ymd("2022-03-25"), unit = "week")   # Returns the Sunday prior to Friday 25 March, 2022  
 ```
 
-If you are outside the US and need to create epiweeks that begin on Monday, you can set the argument `week_start = 1`.  
+If you need to create epiweeks that begin on Monday, you can set the argument `week_start = 1`.  
 
 ```{r, echo=T}
 floor_date(ymd("2022-03-25"), unit = "week", week_start = 1)   # Returns the Monday prior to Friday 25 March, 2022  
@@ -1399,7 +1399,7 @@ sum(is.na(surv$date_onset))
 sum(is.na(surv$date_report))
 ```
 
-**Run these two command** (not in your pipe chain, just as stand-alone commands)  
+**Run these two commands** (not in your pipe chain, just as stand-alone commands)  
 
 ```{r quiz-dates2}
 quiz(caption = "Quiz - Date",
@@ -1410,10 +1410,10 @@ quiz(caption = "Quiz - Date",
   ),
   question("Which percent of 'date_onset' is missing?",
     allow_retry = T,
-    answer("Increasing"),
-    answer("Decreasing", correct = T),
-    answer("Decreasing", correct = T),
-    answer("Decreasing", correct = T)
+    answer("16.4%"),
+    answer("10.2%"),
+    answer("1%"),
+    answer("5.3%", correct = T)
   )
 )
 ```
@@ -1655,8 +1655,7 @@ Notably, the criteria are applied to each row in the dataset **in the order they
 
 Along those lines, in your *final statement*, it is advised to place TRUE on the left-side, which will capture any row that did not meet any of the previous criteria. The right-side of this statement could be assigned a value like “check me!”, or missing, or as in the example above to the column name to revert to the original value.  
 
-`r fontawesome::fa("exclamation", fill = "red")`
-*DANGER: All outcome values on the RIGHT-side must all be the same class - either numeric, integer, character, date, logical, etc. Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric or POSIX), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html).*  
+`r fontawesome::fa("exclamation", fill = "red")` *DANGER: All outcome values on the RIGHT-side must all be the same class - either numeric, integer, character, date, logical, etc. Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html).*  
 
 
 
@@ -1668,9 +1667,24 @@ Now apply your `case_when()` knowledge to a slightly more difficult scenario.
 
 Create a new column `age_years` that converts the value in `age` correctly, depending on whether the value in `age_unit` is "years" or "months".  
 
-Try it first, see the hint if necessary, then check the answer below.  
+Below we give you the outline of the command - it is your responsibility to fill in the logic statements on the right, and the calculations on the right.  
 
 
+```{r, echo=T, eval=F}
+  # create age-in-years
+  mutate(age_years = case_when(
+    
+    # logic on age_unit    # adjustment to make age_years  
+    logic_if_months      ~ calculation,    # if age is given in months, return: age / 12
+    logic_if_years       ~ calculation,    # if age is given in years, leave as: age 
+    logic_if_missing ~   ~ age,            # if age unit is missing, assume years, and leave as: age
+    TRUE                 ~ NA_real_))      # leave this unchanged. In any other circumstance, assign missing.
+```
+
+
+Of note, the last line should remain unchanged. It is best practice to end a `case_when()` command with `TRUE`, that will catch all rows that have not met any of the previous logical criteria. In this case we set this to `NA`.
+
+It is important to know that in `case_when()`, all of the right-side values must be of the same class (numeric, integer, character, date, logical, etc). Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html). In this case our new variable will be numeric, so we use NA_real_.  
 
 <!--
 NOTE: Below is the hint (all within details tags collapsed)
@@ -1680,13 +1694,11 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the new column to create `age_years` and an equals sign. On the right side of the equals sign, you write the function `case_when()`. Within the parentheses of `case_when()`, you are writing logical criteria that will be assessed for each row in the dataset (on the left side of the ~), and on the right side of the ~ you write the resulting value to returned.  
+Within the parentheses of `case_when()`, on the left side of each ~ you are writing logical criteria that will be assessed for each row in the dataset, and on the right side of the ~ you write the resulting value to be returned.  
 
-You know that age should be treated differently if it was recorded in months. Therefore, your logical criteria should be: "is `age_unit` equal to "months"? In code, this is written `age_unit == "months"` (note the double equals, which asks the question of equivalence). One the right side of the ~, you would write an equation that would produce the correct outcome in the new column `age_years`. In this case, it would be the value in `age` divided by 12. In code this would be written as: `age_unit == "months" ~ age / 12`. Don't forget a comma at the end, and to continue on the next line with the next logical criteria.  
+The first logical criteria should be: "is `age_unit` equal to "months"? In code, this is written `age_unit == "months"` (note the double equals, which asks the question of equivalence). One the right side of the ~, you would write an equation that would produce the correct outcome in the new column `age_years`. In this case, it would be the value in `age` divided by 12. In code this would be written as: `age_unit == "months" ~ age / 12`. Don't forget a comma at the end, and to continue on the next line with the next logical criteria.  
 
-In `case_when()` it is best-practice to have a final logical criteria which has `TRUE` on the left-side, which will apply for any row in the dataset that did not meet any of the logical criteria above. The right-hand side for this criteria can be "Missing" or "Check Me" if the column you are creating is a character column. But in this case we are creating a numeric column - so we cannot have character values like "Missing" present - instead we put `NA` (R's value for Missing). In this circumstance, we use a special value of `NA` called `NA_real_`.  
-
-If you encounter this error: `'names' attribute [1] must be the same length as the vector [0]`, then confirm that you converted the `age` column to class numeric earlier in the pipe chain. This error is because by dividing by 12, we are introducing decimals, which is not acceptable if the column is still "integer" class.  
+If you happen to encounter this error: `'names' attribute [1] must be the same length as the vector [0]`, then confirm that you converted the `age` column to class numeric earlier in the pipe chain. This error is because by dividing by 12, we are introducing decimals, which is not acceptable if the column is still "integer" class.  
 
 </br>
 </details>
@@ -1748,8 +1760,8 @@ surv <- surv_raw %>%
      
   # create age-in-years
   mutate(age_years = case_when(
-    age_unit == "years"  ~ age,       # if age is given in years
     age_unit == "months" ~ age/12,    # if age is given in months
+    age_unit == "years"  ~ age,       # if age is given in years
     is.na(age_unit)      ~ age,       # if age unit is missing, assume years
     TRUE                 ~ NA_real_)) # any other circumstance, assign missing
 ```
@@ -1771,19 +1783,19 @@ Now that we have a valid `age_years` column, let's create a categorical column f
 
 There are several ways to do this (see [this chapter of the Epi R Handbook](https://epirhandbook.com/en/cleaning-data-and-core-functions.html#num_cats) for details), but here we just apply the most simple method.  
 
-The function `age_categories()` from {epikit} can be used within `mutate()` to define a new column `age_cat5`.  
+The function `age_categories()` from {epikit} can be used within `mutate()` to define a new column `age_cat10` with 10-year age categories.  
 
 The arguments for `age_categories` are:  
 
 1) The numeric column to divide into categories (`age_years`)  
 2) `lower = ` A number that is the lower numeric boundary (0)  
-3) `upper = ` A number that is the upper numeric boundary for categories (e.g. if 70, all above 70 are lumped into "70+")  
-4) `by = ` A number for the width of the categories (5 or 10)  
+3) `upper = ` A number that is the upper numeric boundary for categories (e.g. set this to 70, so that all ages above 70 are put in the category "70+")  
+4) `by = ` A number for the width of the categories (10)  
 
 
 Is that enough information for you to try adding this to the pipe chain?
 
-**Try adding this command to the pipe chain** To see if the code is correct, compare the values in `age_years` and `age_cat5`.  
+**Try adding this command to the pipe chain** To see if the code is correct, compare the values in `age_years` and `age_cat10`.  
 If you get stuck, see the solution code hidden below.  
 
 
@@ -1843,8 +1855,8 @@ surv <- surv_raw %>%
      
   # create age-in-years
   mutate(age_years = case_when(
-    age_unit == "years"  ~ age,            # if age is given in years
     age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
     is.na(age_unit)      ~ age,            # if age unit is missing, assume years
     TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
        
@@ -1918,13 +1930,13 @@ This is a question that each outbreak epidemiology team must answer given their 
 **Create a new column in the data simply named `district`.** Create it using the `coalesce()` function, which will take its first value if it is available, else it will take its second value. This function allows us to "fill-in" missing values by using the first non-missing value (given a preference order), or to prioritize one value over another if they differ.  
 
 ```{r, echo=T, eval=F}
-surv <- surv %>% 
-  mutate(district = coalesce(district_det, district_res))
+# Add this command to the pipechain
+mutate(district = coalesce(district_det, district_res))
 ```
 
 **View the dataset again, and verify that this code worked as expected**  
 
-Use the filters in the dataset viewer to answer this question:  
+Use the manual **filters** in the dataset viewer to answer this question:  
 
 ```{r quiz-moved-home, echo = FALSE}
 quiz(caption = "Quiz - Moving cases origin",
@@ -2000,8 +2012,8 @@ surv <- surv_raw %>%
      
   # create age-in-years
   mutate(age_years = case_when(
-    age_unit == "years"  ~ age,            # if age is given in years
     age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
     is.na(age_unit)      ~ age,            # if age unit is missing, assume years
     TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
        
@@ -2078,7 +2090,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 
 Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the column to re-define `hospital` and an equals sign. On the right side of the equals sign, you write the function `recode()`. Within the parentheses of `recode()`, the first argument is again the name of the column to re-define.
 
-After a comma, continue with one line per change, with the new value on the left, and the old value on the right. As these are character values, put them in quotes. Don't forget commas between each line, and to close with the correct number of parentheses.  
+After a comma, continue with one line per change, with the old value on the left, and the new value on the right. As these are character values, put them in quotes. Don't forget commas between each line, and to close with the correct number of parentheses.  
 
 </br>
 </details>
@@ -2140,8 +2152,8 @@ surv <- surv_raw %>%
      
   # create age-in-years
   mutate(age_years = case_when(
-    age_unit == "years"  ~ age,            # if age is given in years
     age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
     is.na(age_unit)      ~ age,            # if age unit is missing, assume years
     TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
        
@@ -2189,7 +2201,7 @@ The simplest way of filtering, is to use a logical condition ("==", "!=", ">", "
 
 ```{r, echo = T, eval = FALSE}
 surv %>% 
-  filter(gender == "f")
+  filter(gender == "female")
 ```
 
 Multiple logical criteria can be combined using & (and), | (or), and parentheses.  
@@ -2306,53 +2318,11 @@ For example, if you work in an epidemiology team and need to send files to a GIS
 
 ```{r, echo=T, eval=F}
 # Export cleaned file  
-rio::export(surv, here("data", "clean", "surveillance_linelist_clean.rds"))
+rio::export(surv, here("data", "clean", "surveillance_linelist_clean_20141201.rds"))
 ```
 
 Above, we write the name of the R object (`surv`), and then provide the file path and file namethat we want to save it to (using the same `here()` syntax that we used to import data). Note the file extension ".rds".  
 
-
-
-
-## Set report parameters  
-
-Finally, now that we have our cleaned data, let's use it to define a few parameters which could change as the data are updated.  
-
-**Write one line of code for each of the below items, that defines these values as stored R objects:** These lines should be written *below* your cleaning pipe chain.  
-
-The most recent dates present in the data:  
-
-* An object `last_date_onset` as equal to `max(surv$date_onset, na.rm=T)` (the last date of symptom onset present in the data)  
-* An object `last_date_report` as equal to `max(surv$date_report, na.rm=T)` (the last date of case report present in the data)  
-
-The most recent epiweeks present in the data:  
-
-* An object `last_wk_onset` as equal to `max(surv$week_onset, na.rm=T)` (the last week of symptom onset present in the data)  
-* An object `last_wk_report` as equal to `max(surv$week_report, na.rm=T)` (the last date of symptom onset present in the data)  
-
-
-
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
-
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-
-```{r eval = F, echo=T}
-last_date_onset <- max(surv$date_onset, na.rm=T)
-last_date_report <- max(surv$date_report, na.rm=T)
-
-last_week_onset <- max(surv$week_onset, na.rm=T)
-last_week_report <- max(surv$week_report, na.rm=T)
-```
-
-</br>
-</details>
-<!--
-NOTE: End of solution
--->
 
 
 
