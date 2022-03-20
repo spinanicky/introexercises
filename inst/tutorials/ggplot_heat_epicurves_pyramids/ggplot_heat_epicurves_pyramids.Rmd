@@ -158,9 +158,11 @@ ggplot(data = hospital_week_adjusted) +
 </br>
 </details>
 
+### Setting up the data, creating and customising a heatmap
+
 Now you have got the hang of heatmaps and some basic customisation, we are going to move onto a harder exercise where you create the dataframe from scratch and customize the display.
 
-Can you do the following
+`r fontawesome::fa("terminal", fill = "black")` Can you do the following
 
 * Create a new object, `age_outcome_summary`, where you summarise `linelist` in order to output the percent of those in each `outcome` category when it is grouped by `age_cat` and `gender`
 * Drop any `NA` values
@@ -235,7 +237,7 @@ In order to explore epicurves, we are going to use the object `count_data`. Expl
 
 From this, we can use the function `incidence()` from **incidence2** to produce a simple epicurve. 
 
-Can you read the documentation of `incidence()` (`?incidence`) in order to produce a simple incidence object for the column `date_hospitalisation` with an interval of 1 week? Can you then assign this to an object `hospitalisation_week`?
+`r fontawesome::fa("terminal", fill = "black")` Can you read the documentation of `incidence()` (`?incidence`) in order to produce a simple incidence object for the column `date_hospitalisation` with an interval of 1 week? Can you then assign this to an object `hospitalisation_week`?
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -253,9 +255,10 @@ Okay, now that you have made the object its time to plot. In it's simplest form,
 plot(hospitalisation_week)
 ```
 
-However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories. Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `hospital` and `age_cat`, with the incidence set to every 2 weeks? Remember you always consult the help (`?incidence`) if you need more information! 
+However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `linelist`, such as age categories. 
 
-Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category?
+`r fontawesome::fa("terminal", fill = "black")` Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `hospital` and `age_cat`, with the incidence set to every 2 weeks? Remember you always consult the help (`?incidence`) if you need more information! 
+* Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category?
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -273,9 +276,9 @@ plot(hospitalisation_week,
 </details>
 
 
-By default, the epi curves categories are stacked to show the overall incidence. Sometimes we would want to show them separately as it can be easier to see individual trends among groups. 
+By default, the epi curves categories are stacked to show the overall incidence. Sometimes we would want to show them separately as it can be easier to see individual trends among groups, to do this we add the argument `stack = FALSE`.
 
-By default, when you plot an incidence object, the bars are stacked with `stack = TRUE`, can you update this to re-plot `hospitalisation_week`, showing with the fill of `age_cat` side-by-side (NOT stacked)?
+`r fontawesome::fa("terminal", fill = "black")` Can you update this to re-plot `hospitalisation_week`, showing with the fill of `age_cat` side-by-side (NOT stacked)?
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -292,7 +295,7 @@ Now there is a lot of very useful information here, but it would also be helpful
 
 Rather than manually specifying each hospital using a filter, we can use the function `facet_plot` from **incidence2** to produce individual plots for each hospital.
 
-After looking at the help for `facet_plot`, can you plot `hospitalisation_week` with stacked bars, filled by `age_cat` and faceted by `hospital`?
+`r fontawesome::fa("terminal", fill = "black")` After looking at the help for `facet_plot`, can you plot `hospitalisation_week` with stacked bars, filled by `age_cat` and faceted by `hospital`?
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -306,6 +309,7 @@ facet_plot(hospitalisation_week,
 </details>
 
 Great job, now that you have mastered the **incidence2** package, we will move onto using **ggplot2** in order to plot our incidence curves.
+
 ### ggplot2
 
 As you have been through several exercises using **ggplot2**, you are now familiar with the syntax and customization it allows (themes, labels, axes, etc). 
@@ -415,11 +419,9 @@ age_pyramid(data = linelist,
 </br>
 </details>
 
-Note the data format, which one of these is it?
-
 ```{r quiz3}
 quiz(
-  question("",
+  question("Note the data format, which one of these is it?",
     answer("long format", correct = T),
     answer("wide format")
   ))
@@ -431,10 +433,11 @@ Using `ggplot()` to build the age pyramid allows for much more flexibility, but 
 
 There are several steps to constructing the age pyramid:
 
-1) Within the ggplot(), we need to create **two** histograms using the numeric age column. 
-2) One of these must have its counts converted to _negative_ values. This creates the "pyramid" with the value of 0 in the middle. Negative values are created by multiplying the column by -1.
-3) The command `coord_flip()` switches the X and Y axes is required to flip the axes and create the pyramid.
-4) Finally, the count-axis value labels must be altered so they appear as "positive" on both sides of the pyramid, despite the underlying values on one side being negative.
+1) Within the ggplot(), we need to create **two** histograms using the numeric age column.
+2) We generate the incidence values through the specifying `y = ..count..`
+3) One of these must have its counts converted to _negative_ values. This creates the "pyramid" with the value of 0 in the middle. Negative values are created by multiplying the column by -1.
+4) The command `coord_flip()` switches the X and Y axes is required to flip the axes and create the pyramid.
+5) Finally, the count-axis value labels must be altered so they appear as "positive" on both sides of the pyramid, despite the underlying values on one side being negative.
 
 Considering you have already practiced using `geom_histogram()` for the epi curves, and given the instructions above. Can you re-create the a simple age pyramid, with age breaks ever 5 years, below?
 
