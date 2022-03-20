@@ -411,7 +411,7 @@ Now we will practice opening your RStudio project.
 The contents of the folder should look similar to this:  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/README_images/new_r_project_explorer.png")
+knitr::include_graphics("images/new_r_project_explorer.png")
 ```
 
 In the folder, you should see a small file with an icon that looks like an "R box" - this is the RStudio project file (.Rproj).  
@@ -426,7 +426,7 @@ Observe in the "Files" RStudio pane (lower-right) that you can also see and acce
 
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/README_images/new_r_project.png")
+knitr::include_graphics("images/new_r_project.png")
 ```
 
 You can read more about RStudio projects in [this chapter of the Epi R Handbook](https://epirhandbook.com/en/r-projects.html).  
