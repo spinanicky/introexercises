@@ -89,7 +89,7 @@ Welcome to the live course "Introduction to R for applied epidemiologists", offe
 knitr::include_graphics("images/logo.png")
 ```
 
-### Data cleaning  
+### Grouping and summarizing  
 
 This exercise focuses on **grouping and summarizing data in descriptive tables**.
 
@@ -327,7 +327,7 @@ Often, we want just a quick tabulation of counts of a categorical variable, or s
 
 The `tabyl()` function from {janitor} does this quickly by tabulating columns provided to it. Easy customization can follow, using the related `adorn_()` functions.  
 
-**Try making a simple `tabyl()` of the column `gender`**  
+**Try making a simple `tabyl()` of the column `district`**  
 
 
 <!--
@@ -726,7 +726,7 @@ As you remove `round()`, don't forget to also remove the comma and `digits = 0`,
 
 One of the more advanced calculation tools you can use are subsetting brackets `[ ]`. These symbols can be used after a column and will filter it according to whatever logical criteria you write inside.  
 
-For example, `max_temp_fvr = max(temp[fever == "yes"], na.rm = T)` will return the maximum temperature recorded in the group, *but only among the cases that did report a fever*.  
+For example, if placed within `summarise()`, `max_temp_fvr = max(temp[fever == "yes"], na.rm = T)` will return the maximum temperature recorded in the group, *but only among the cases that did report a fever*.  
 
 It is a complicated command - ask your facilitator if you do not understand it.  
 

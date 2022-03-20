@@ -72,6 +72,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
 surv <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package = "introexercises"))
+
 ```
 
 
