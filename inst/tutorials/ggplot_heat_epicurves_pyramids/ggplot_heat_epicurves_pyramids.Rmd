@@ -18,7 +18,7 @@ linelist <- rio::import(system.file("dat/linelist_combined_20141201.rds", packag
 
 linelist$hospital <- factor(linelist$hospital)
 
-#Create an easy heatmap dataset
+#Create an easy heat plot dataset
 hospital_week_raw <- linelist %>%
   group_by(hospital, week_onset) %>%
   summarise(n = n())
@@ -62,13 +62,13 @@ aggregate_data <- demo_agg %>%
 
 ```
 
-# Advanced ggplot2 - Heatmaps, Epi curves and Age pyramids
+# Advanced ggplot2 - heat plots, Epi curves and Age pyramids
 
 ## Welcome
 
-Welcome to the advanced ggplot2 module where we will be learning how to code and customise more advanced plots such as heatmaps, epi curves and age pyramids. We will be building on what you have learned previously from tidyverse and ggplot2 to produce these.
+Welcome to the advanced ggplot2 module where we will be learning how to code and customise more advanced plots such as heat plots, epi curves and age pyramids. We will be building on what you have learned previously from tidyverse and ggplot2 to produce these.
 
-This will involve using previously explored aspects such as `ggplot()`, pipe chains `%>%`, themes (e.g. `theme_minimal()`, `theme_bw()`), custom axis scales (e.g. `scale_y_continuous()`) and new functions such as `geom_tile()` for heatmaps, `incidence` (from **incidence2**) and `geom_histogram()` for epi curves, and `age_pyramid` (from **apyramid**) for age pyramids.
+This will involve using previously explored aspects such as `ggplot()`, pipe chains `%>%`, themes (e.g. `theme_minimal()`, `theme_bw()`), custom axis scales (e.g. `scale_y_continuous()`) and new functions such as `geom_tile()` for heat plots, `incidence` (from **incidence2**) and `geom_histogram()` for epi curves, and `age_pyramid` (from **apyramid**) for age pyramids.
 
 But first, let us refresh ourselves on the basics of **ggplot2**!
 
@@ -109,15 +109,15 @@ quiz(
 )
 ```
 
-Great, now we have refreshed our memory with a quiz, we will start on our first topic, *heatmaps*.
+Great, now we have refreshed our memory with a quiz, we will start on our first topic, *heat plots*.
 
-## Heatmaps
+## heat plots
 
-Heatmaps, also called heat plots and heat tiles, are useful visualizations when trying to display 3 variables (x-axis, y-axis and fill). For instance, you might want to look at a breakdown of how many cases were reported by week across a hospitals to get an idea of how the epidemic is/has progressed.
+heat plots, also called heat plots and heat tiles, are useful visualizations when trying to display 3 variables (x-axis, y-axis and fill). For instance, you might want to look at a breakdown of how many cases were reported by week across a hospitals to get an idea of how the epidemic is/has progressed.
 
 We have a dataset called `hospital_week`, which has columns labelling the hospital, the week of onset and the number of these in the week. Use `head()` to look at the data.
 
-`r fontawesome::fa("terminal", fill = "black")` With the aid of the help function `?geom_tile` can you create a heatmap that has the week of onset on the x-axis, the hospital on the y-axis and is colored by the number of onsets in that week?
+`r fontawesome::fa("terminal", fill = "black")` With the aid of the help function `?geom_tile` can you create a heat plot that has the week of onset on the x-axis, the hospital on the y-axis and is colored by the number of onsets in that week?
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -129,7 +129,7 @@ ggplot(data = hospital_week) +
 </br>
 </details>
 
-### Customising your heatmap
+### Customising your heat plot
 
 `r fontawesome::fa("terminal", fill = "black")` Great job, but there are still a few things we can do to refine this plot.
 
@@ -158,15 +158,15 @@ ggplot(data = hospital_week_adjusted) +
 </br>
 </details>
 
-### Setting up the data, creating and customising a heatmap
+### Setting up the data, creating and customising a heat plot
 
-Now you have got the hang of heatmaps and some basic customisation, we are going to move onto a harder exercise where you create the dataframe from scratch and customize the display.
+Now you have got the hang of heat plots and some basic customisation, we are going to move onto a harder exercise where you create the dataframe from scratch and customize the display.
 
 `r fontawesome::fa("terminal", fill = "black")` Can you do the following
 
 * Create a new object, `age_outcome_summary`, where you summarise `linelist` in order to output the percent of those in each `outcome` category when it is grouped by `age_cat` and `gender`
 * Drop any `NA` values
-* Once this is done, create a heatmap that is coloured by the percent of those that have an outcome of "Death" when broken down by `gender` and `age_cat`
+* Once this is done, create a heat plot that is coloured by the percent of those that have an outcome of "Death" when broken down by `gender` and `age_cat`
 * Clean up the axis names to "Age category", "Gender" and label to "Percent of cases fatal"
 * Using the **viridis** package (`scale_fill_viridis()`) and pick a colour scheme, and set the scale limits to go from 0 to 100
 * Display the percent, rounded to 1 decimal place 
@@ -216,7 +216,7 @@ quiz(
 ```
 
 
-Great work, you have managed to build datasets for heatmap plotting and customize these plots to produce interesting graphics you can then analyze. As with all aspects of R and ggplot, there are numerous additional ways of coding and customizing your plots to edit almost every specification you can think of. For further reading, please see the R Epidemiologists Handbook chapter on [heatmaps](https://www.epirhandbook.com/en/heat-plots.html?q=heat%20plot#heat-plots).
+Great work, you have managed to build datasets for heat plot plotting and customize these plots to produce interesting graphics you can then analyze. As with all aspects of R and ggplot, there are numerous additional ways of coding and customizing your plots to edit almost every specification you can think of. For further reading, please see the R Epidemiologists Handbook chapter on [heat plots](https://www.epirhandbook.com/en/heat-plots.html?q=heat%20plot#heat-plots).
 
 ## Epi curves
 
