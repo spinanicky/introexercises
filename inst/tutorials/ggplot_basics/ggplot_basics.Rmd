@@ -229,7 +229,11 @@ In this exercise you will:
 
 ## Prepare  
 
-Open the R project "intro_course", as usual, by clicking on the R project icon in the "intro_course" folder. Open your script "ebola_analysis.R". You can locate this file by clicking the menus for *"File -> Open File", or by clicking your RStudio Files Pane (lower-right) and navigating to the file there.  
+Open the R project "intro_course", as usual, by clicking on the R project icon in the "intro_course" folder.  
+
+Then, open your script "ebola_analysis.R". You can locate this file by clicking the menus for "File -> Open File", or by clicking your RStudio Files Pane (lower-right) and navigating to the file there.  
+
+
 
 ### Load packages  
 
@@ -240,20 +244,27 @@ The {ggplot2} package does not need to be listed explicitly in this command, bec
 
 ### Run the previous code in your script  
 
-R does not necessarily remember which commands you ran in the previous session. In fact, it is better for reproducibility if R does *not* remember. This forces you to write scripts that are independent, and do not rely on any previous commands having been run.  
+R does not necessarily remember which commands you ran in the previous session.  
 
-**Run all the commands in your script section-by-section**, to do the following:  
+In fact, it is better for reproducibility if R does *not* remember. This forces you to write scripts that are independent, and do not rely on any previous commands having been run.  
+
+`r fontawesome::fa("eye", fill = "darkblue")` Look at your R environment pane (upper-right of RStudio). If you are viewing this tutorial in RStudio you may need to toggle to that pane for a moment.  
+
+Do you see any objects saved from the last session in the Environment? If so, click the small "broom" icon to clear all objects. This ensure that you start with a clean environment and you do not rely on any objects created in the last session.  
+
+
+**Now, run all the commands in your script section-by-section**, to do the following:  
 
 1) Load packages  
 2) Import the "raw"/unclean surveillance linelist 
-3) The cleaning pipeline ( %>% ) that produces the clean surveillance linelist  
+3) Run the cleaning pipeline ( %>% ) that produces the clean surveillance linelist  
 4) Export the clean dataset  
 
-If you have arranged your script correctly and kept it clean, these commands should all be able to be run in sequence with no interruptions.  
+If you have arranged your script correctly and kept it clean, these commands should all be able to be run in sequence with no interruptions or errors.  
 
 **Verify that you now have the data frame object `surv` in your R Environment, with rows and columns ready to be plotted**  
 
-`r fontawesome::fa("bookmark", fill = "orange")` IF your script is malfunctioning and causing errors, you can write a command to import the clean `surv` dataset that you saved at the end of the previous module. You saved it as "surveillance_linelist_cleaned.rds" in the "data/clean" subfolder. You can import it with the command `import(here("data", "clean", "surveillance_linelist_cleaned.rds"))". After doing this, please notify your facilitator that you will need assistance cleaning your script so that it runs smoothly.  
+`r fontawesome::fa("bookmark", fill = "orange")` IF your script is malfunctioning and causing errors, you can write a command to import the clean `surv` dataset that you saved at the end of the previous module. You saved it as "surveillance_linelist_clean_20141201.rds" in the "data/clean" subfolder. You can import this with the command `import(here("data", "clean", "surveillance_linelist_clean_20141201.rds"))`. After doing this, please notify your facilitator that you will need assistance cleaning your script so that it runs smoothly next time.  
 
 
 

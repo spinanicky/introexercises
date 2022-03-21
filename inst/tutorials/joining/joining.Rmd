@@ -594,7 +594,7 @@ quiz(
 
 **Below your cleaning code (pipe chain), create a new script section for "Joining data"**.  
 
-```{r, results='asis'}
+```{r, results="asis", echo=T}
 
 ####################
 ### Joining data ###
@@ -652,9 +652,7 @@ NOTE: End of solution
 -->
 
 
-`r fontawesome::fa("eye", fill = "darkblue")`  
-
-**Open the data frames in R, and observe the column names**  
+`r fontawesome::fa("eye", fill = "darkblue")` **Open the data frames in R, and observe the column names**  
 
 ```{r quiz-hosp_linelists}
 quiz(caption = "Quiz - Hospital linelists",
@@ -1205,6 +1203,7 @@ Some of the new column have improper syntax (e.g. spaces). The few new date colu
 * Use one function to convert all the columns to lowercase and convert spaces to underscores  
 * Use `rename()` to switch the names of any date columns from "xxx_date" to "date_xxx"  
 * Use `mutate()` to properly classify the new date columns as class date, using a function we learned from {lubridate}  
+* Use `mutate()` to replace empty characters "" with `NA`, using `na_if()`, for the columns `outcome` and `hospital`.  
 
 
 <!--

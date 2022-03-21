@@ -28,6 +28,7 @@ library(lubridate)
 library(forcats)
 library(fontawesome)
 library(scales)
+library(stringr)
 library(apyramid)
 library(incidence2)
 library(viridis)
@@ -144,7 +145,14 @@ knitr::include_graphics("images/logo.png")
 
 This exercise focuses on learning how to code and customize more advanced plots such as heat plots, epidemic curves and age/sex demographic pyramids. We will be building on what you have learned previously from tidyverse and ggplot2 to produce these.
 
-This will involve using previously explored aspects such as `ggplot()`, pipe chains `%>%`, themes (e.g. `theme_minimal()`, `theme_bw()`), custom axis scales (e.g. `scale_y_continuous()`) and new functions such as `geom_tile()` for heat plots, `incidence` (from **incidence2**) and `geom_histogram()` for epidemic curves, and `age_pyramid` (from **apyramid**) for age/sex pyramids.
+This will involve using previously explored aspects such as:  
+
+* `ggplot()`  
+* Pipe chains `%>%`  
+* Themes (e.g. `theme_minimal()`, `theme_bw()`)  
+* Custom axis scales (e.g. `scale_y_continuous()`)  
+* New functions such as `geom_tile()` for heat plots and `geom_histogram()` for epidemic curves, and `age_pyramid()` (from {apyramid}) for age/sex pyramids  
+
 
 ### Format
 
@@ -326,7 +334,12 @@ Great, now we have refreshed our memory with a quiz, we will start on our first 
 
 ## Preparation  
 
-Open your R project and run your entire "ebola_analysis.R" script, so that you are able to use the data frame `combined`. This will involve running all the parts of your R script, including to import data, clean, perform joins, and create the `combined` dataset.  
+Open your R project and run your entire "ebola_analysis.R" script, so that you are able to use the data frame `combined`.  
+
+This will involve running all the parts of your R script, including to import data, clean, perform joins, and create the `combined` dataset.  
+
+If you encounter errors, remember that you saved the `combined` data frame in your "data/clean" subfolder, so you can import it again directly to continue with the exercise (be sure to clean up your script errors later).  
+
 
 
 

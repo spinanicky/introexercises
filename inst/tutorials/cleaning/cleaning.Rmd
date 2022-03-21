@@ -26,6 +26,8 @@ library(dplyr)
 library(flair)
 library(ggplot2)
 library(lubridate)
+library(epikit)
+library(skimr)  
 library(fontawesome)
 library(janitor)
 
@@ -238,9 +240,7 @@ In this exercise you will:
 
 ### Open your RStudio project  
 
-`r fontawesome::fa("window-restore", fill = "darkgrey")`  
-
-**Open the "intro_course" R project that you created in the previous exercise.**  
+`r fontawesome::fa("window-restore", fill = "darkgrey")` **Open the "intro_course" R project that you created in the previous exercise.**  
 
 You can do this by navigating to the "intro_course" folder, and double-clicking on the blue ".Rproj" file in the folder. RStudio should open.
 

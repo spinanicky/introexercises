@@ -487,6 +487,7 @@ quiz(
 
 There are many other {forcats} functions to handle factors, see this chapter of the [Epi R Handbook](https://epirhandbook.com/en/factors.html).  
 
+
 ### fct_lump()  
 
 One {forcats} function that is worth showing you is `fct_lump()`. This function will aggregate together values in a column into an "Other" category based on frequency.  
@@ -534,7 +535,7 @@ We will not focus on pivoting wider in this exercise, as it is less common. Howe
 
 ## End  
 
-Congratulations! You are done with this exercise. You have made case timelines, have practiced pivoting data wider, and using some functions to handle factors!  
+Congratulations! You are done with this exercise. You have made case timelines, have practiced pivoting data longer, and using some functions to handle factors!  
 
 
 

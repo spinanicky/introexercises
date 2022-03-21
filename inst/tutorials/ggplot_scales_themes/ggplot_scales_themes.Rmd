@@ -240,13 +240,14 @@ Add the following R packages to your {pacman} command at the top of your script:
 
 * {RColorBrewer}  
 * {viridis}  
+* {scales}  
 
 Run the code to install your R packages.  
 
 
-### Import data  
+### Run previous code  
 
-Run the command at the bottom of your data cleaning code that imports the clean surveillance linelist ("surveillance_linelist_clean.rds") and saves it in R as `surv`.  
+If you left RStudio since the previous exercise, clear your environment and then re-run all code in your script in order to again use the cleaned `surv` dataset. If you encounter errors, you always have the option of importing the clean dataset from "data/clean" subfolder.  
 
 
 

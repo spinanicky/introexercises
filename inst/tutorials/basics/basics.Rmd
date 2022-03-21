@@ -406,7 +406,7 @@ knitr::include_graphics("images/Rproject_dropdown.png")
 
 Now we will practice opening your RStudio project.  
 
-**Close RStudio and open your File Explorer.** Navigate to the "intro_course" folder that you saved on your desktop, where you saved the R project.  
+Navigate to the "intro_course" folder that you saved on your desktop, where you saved the R project.  
 
 The contents of the folder should look similar to this:  
 
@@ -418,8 +418,6 @@ In the folder, you should see a small file with an icon that looks like an "R bo
 
 **To directly open the project next time, simply double-click this RStudio project file to open it. RStudio will open, and all your files for this project will be at-the-ready.**  
 
-
-**Now, double-click the RStudio Project file** to re-open your "intro_course" project. RStudio should open.  
 
 `r fontawesome::fa("eye", fill = "darkblue")`
 Observe in the "Files" RStudio pane (lower-right) that you can also see and access the contents of the "intro_course" project.  
@@ -1047,9 +1045,7 @@ Likewise, the function `sum()` accepts an unlimited number of numeric values and
 sum(2, 5, 10, -8, 100)
 ```
 
-`r fontawesome::fa("terminal", fill = "black")` 
-
-Time for you to practice in RStudio. In your R script (named "demo.R"), use the function `min()` and `max()` to find the minimum and maximum of the numbers 3, 55, 9, -4, and 33.  
+`r fontawesome::fa("terminal", fill = "black")` Time for you to practice this coding in RStudio! In your R script (named "demo.R"), use the function `min()` and `max()` to find the minimum and maximum of the numbers 3, 55, 9, -4, and 33.  
 
 We won't do a quiz, because the answers should be quite easy... but did your code work?  
 
@@ -1068,7 +1064,9 @@ max(3, 55, 9, -4, 33)
 
 Try the function `c()`. What does that function do? The "c" represents the term "concatenate", because this function combines the values within its parentheses into one unit.
 
-We call this unit a **vector**. A vector is a unit of several values, *which must be of the same class* (either all numic, all character, all logical, etc.) and *must be separated by commas*.   
+We call this unit a **vector**. A vector is a unit of several values, *which must be of the same class* (either all numeric, all character, all logical, etc.) and *must be separated by commas*.   
+
+Vectors may seem abstract right now, but will be useful in later modules of this course. For example, you may need to create a vector of column names that will be printed in a table, or a vector of colors to use in a plot.  
 
 See this example, where we create a named vector of numeric values (the ages of 5 patients).  
 
@@ -1215,7 +1213,7 @@ A function's arguments and any default values can be read in the function's *doc
 
 The documentation details will look something like this (we can help you interpret, as they can be difficult to understand at first):  
 
-```{r, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "50%", fig.cap = ""}
+```{r, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "60%", fig.cap = ""}
 knitr::include_graphics("images/r-help.png")
 ```
 
@@ -1252,7 +1250,7 @@ quiz(
 
 ### Creating functions  
 
-The magic of R really happens when you **create your own functions**. This is an advanced skill that we do not cover in this course, and you do not typically need to create functions until you are a more experienced R user.  
+The magic of R really happens when you **create your own functions**. This is an advanced skill that we do not cover in this course, and you do not typically need to create functions until you are a more experienced R user. You do not need to try this code, unless you want to. This is purely background information.  
 
 However, this aspect of R is where its versatility really begins to shine. Imagine if you could convert your entire workflow into one command?
 
@@ -1352,9 +1350,8 @@ install.packages(c("tidyverse", "rio", "here"))
 `r fontawesome::fa("exclamation", fill = "red")` 
 Note: this command installs a package, but does not load it for use in the current session.
 
-`r fontawesome::fa("terminal", fill = "black")` 
 
-**Now you try it: install the package "pacman".** If a pop-up window asks if you want to re-start R, say "No".  
+`r fontawesome::fa("terminal", fill = "black")` **Now you try it: install the package "pacman".** If a pop-up window asks if you want to re-start R, say "No".  
 
 
 <!--
@@ -1708,9 +1705,7 @@ quiz(caption = "Quiz - file names",
 
 ### Clean file names  
 
-`r fontawesome::fa("window-restore", fill = "darkgrey")`
-
-In your File Explorer, view the "intro_course" folder that we gave to you at the beginning of the course, in which you have created the R project.  
+`r fontawesome::fa("window-restore", fill = "darkgrey")` In your File Explorer, view the "intro_course" folder that we gave to you at the beginning of the course, in which you have created the R project.  
 
 Here is how your folder structure should look:  
 
@@ -1724,7 +1719,7 @@ Here is how your folder structure should look:
      * `r emo::ji("folder")` outputs  
      * `r emo::ji("folder")` learning materials  
           * `r emo::ji("folder")` slides
-          * `r emo::ji("folder")` exercises  
+          * `r emo::ji("folder")` covid_case_study  
      * `r emo::ji("document")` surveillance_linelist_20141201.csv
      * intro_course.Rproj  
 
@@ -1733,9 +1728,7 @@ Here is how your folder structure should look:
 
 #### Clean file names  
 
-`r fontawesome::fa("window-restore", fill = "darkgrey")`
-
-**Enter the folder "data/raw/hospital".**  
+`r fontawesome::fa("window-restore", fill = "darkgrey")` **Now enter the folder "data/raw/hospital".**  
 
 Regard the files - these are linelists of Ebola patients admitted for care, as sent to you on the 1st of December 2014, from 4 different hospitals (**Port Hospital**, **Military Hospital**, **St. Mark's Maternity Hospital (SMMH)**, and **Central Hospital**). There are also files containing records from **"Other" hospitals**, and of patients for whom the **hospital is "Missing"**.  
 
@@ -1850,10 +1843,8 @@ import("surveillance_linelist_20141201.csv")
 ```
 
 
-`r fontawesome::fa("exclamation", fill = "red")`  
+`r fontawesome::fa("exclamation", fill = "red")` Did you see this error?  
 
->Did you see this error?  
->  
 >Error in import("surveillance_linelist_20141201.csv") :  could not find function "import"  
 >  
 >If so, it means that you did not install and load the **rio** package. If you need help, review the previous section and look for the `pacman::p_load()` command that loads several packages including **rio**.  
@@ -1908,8 +1899,7 @@ You should now see the new object `surv_raw` appear in the R **Environment pane*
 
 In most cases, it is better organizationally to store data in a subfolder - even perhaps by week, or by status as either "raw" or "clean". In this course, most of the data are initially stored in a subfolder named "data".  
 
-`r fontawesome::fa("window-restore", fill = "darkgrey")`  
-Now, go to your File Explorer to the root folder of the R project.  
+`r fontawesome::fa("window-restore", fill = "darkgrey")` Now, go to your File Explorer to the root folder of the R project.  
 
 **Cut the file *"surveillance_linelist_20141201.csv"* from the root folder, and paste it into the "data/raw" subfolder.**  
 
@@ -1926,16 +1916,17 @@ surv_raw <- import("C:/Users/Laura/Documents/intro_course/data/surveillance_line
 
 The problem with this is all of the path before "intro_course" ... the C: ... the "Laura" ... etc. None of these may be present in the computer of Laura's colleague, and this command would not run. The file path would be "broken". Or, the next user may be using a Mac, so the slashes would all need to be reversed! Thankfully there is a solution:  
 
-### The here package and relative file paths  
-
-The package **here** and its function `here()` make it easy to tell R where to find and to save your files - in essence, it builds *relative file paths*.
-
-Used in conjunction with an RStudio project, here allows you to describe the location of files in your RStudio project *in relation to the project’s root directory (the top-level folder)*. This is useful when the project may be shared or accessed by multiple people/computers. It prevents complications due to the unique file paths on different computers (e.g. "C:/Users/Laura/Documents...") by “starting” the file path in a place common to all users (the project root).  
 
 
-`r fontawesome::fa("terminal", fill = "black")` 
+### The {here} package and relative file paths  
 
-Make sure you have installed and loaded the package **here**. Then try running the command `here()` - leave the parentheses empty. What do you see?  
+The package {here} and its function `here()` make it easy to tell R where to find and to save your files - in essence, it builds *relative file paths*.
+
+Used in conjunction with an RStudio project, {here} allows you to describe the location of files in your RStudio project *in relation to the project’s root directory (the top-level folder)*. This is useful when the project may be shared or accessed by multiple people/computers or when a script may be moved around.  
+Used with an R project, it prevents complications due to the unique file paths on different computers (e.g. "C:/Users/Laura/Documents...") by “starting” the file path in a place common to all users (the project root).  
+
+
+`r fontawesome::fa("terminal", fill = "black")` Make sure you have installed and loaded the package {here}. Then try running the command `here()` - leave the parentheses empty. What do you see?  
 
 In "Laura"'s situation, the output might look like this:  
 
@@ -1998,8 +1989,7 @@ You do not know who will be using your script later, or what kind of computer th
 ### Import from a subfolder  
 
 
-`r fontawesome::fa("terminal", fill = "black")` 
-Now in RStudio, write a command to import the "surveillance_linelist_20141201.csv" dataset and save it as `surv_raw`.  
+`r fontawesome::fa("terminal", fill = "black")` Now in RStudio, write a command to import "surveillance_linelist_20141201.csv" from the subfolder "data/raw" (where you moved it, earlier) and save it in R as `surv_raw` using the assignment operator.  
 
 
 <!--
@@ -2010,7 +2000,8 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-Begin the command with the object name that you want to assign, then the assignment operator, and then the `import()` command. Within the `import()` parentheses, place the `here()` function, which should list the names of the sub-folders (in quotes) and include the file name with extension (.xlsx).  
+Begin the command with the object name that you want to assign, then the assignment operator, and then the `import()` command. Within the `import()` parentheses, place the `here()` function, which should list the names of the sub-folders (in quotes) and include the file name with extension (.csv).  
+
 </br>
 </details>
 
