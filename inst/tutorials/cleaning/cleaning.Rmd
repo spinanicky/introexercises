@@ -1783,7 +1783,7 @@ Now that we have a valid `age_years` column, let's create a categorical column f
 
 There are several ways to do this (see [this chapter of the Epi R Handbook](https://epirhandbook.com/en/cleaning-data-and-core-functions.html#num_cats) for details), but here we just apply the most simple method.  
 
-The function `age_categories()` from {epikit} can be used within `mutate()` to define a new column `age_cat10` with 10-year age categories.  
+The function `age_categories()` from {epikit} can be used within `mutate()` to define a new column `age_cat` with 10-year age categories.  
 
 The arguments for `age_categories` are:  
 
@@ -1795,7 +1795,7 @@ The arguments for `age_categories` are:
 
 Is that enough information for you to try adding this to the pipe chain?
 
-**Try adding this command to the pipe chain** To see if the code is correct, compare the values in `age_years` and `age_cat10`.  
+**Try adding this command to the pipe chain** To see if the code is correct, compare the values in `age_years` and `age_cat`.  
 If you get stuck, see the solution code hidden below.  
 
 

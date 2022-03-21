@@ -27,7 +27,9 @@ library(dplyr)
 library(ggplot2)
 library(gghighlight)
 library(janitor)
+library(stringr)
 library(lubridate)
+library(epikit)
 library(fontawesome)
 library(scales)
 
@@ -336,7 +338,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r, warning=F, message=F}
+```{r, echo=T, warning=F, message=F}
 ggplot(
   data = surv,
   mapping = aes(
@@ -401,7 +403,7 @@ scale_fill_viridis_d(na.value = "grey")
 
 ```{r quiz-brewer}
 quiz(caption = "Quiz - color brewer",
-  question("What color is the age group 10-19 using scale_fill_brewer()?",
+  question("What color is the age group 10-19 using scale_fill_brewer(palette = 'pastel2')?",
     allow_retry = T,
     answer("green"),
     answer("yellow"),
@@ -421,7 +423,7 @@ quiz(caption = "Quiz - color brewer",
 
 ### Continuous color scales  
 
-Try applying what you have learned to add a continuous viridis palette to the following plot. Be aware that here we are dealing with a *color* rather than *fill* aesthetic because we use `geom_point()`. It is best practice to also specify an `na.value = `
+Try applying what you have learned to add a *continuous* viridis palette to the following plot. Be aware that here we are dealing with a *color* rather than *fill* aesthetic because we use `geom_point()`. It is best practice to also specify an `na.value = `
 
 ```{r, eval=F, echo=T, warning=F, message=F}
 ggplot(
@@ -443,7 +445,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r manual-color, warning=F, message=F}
+```{r manual-color, echo=T, warning=F, message=F}
 ggplot(
   data = surv,
   mapping = aes(
@@ -490,7 +492,7 @@ scale_fill_viridis_d(na.value = "grey")
 
 In `scale_y_continuous()` we adjust the Y-axis breaks using `seq()` to define a numeric sequence.  
 
-**Try running the command `seq(from = 0, to = 250, by = 10)` in the R Console, just to see the result.** Try it again with different argument values.  
+**Try running the command `seq(from = 0, to = 250, by = 25)` in the R Console, just to see the result.** Try it again with different argument values.  
 
 Now, add the function `scale_y_continuous()`. Inside this function, set the argument `breaks = ` to `seq()` as written above.    
 
@@ -504,7 +506,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 </br>
 
 
-```{r, eval= F, echo=T, warning = F, message = F}
+```{r, echo=T, warning=F, message=F}
 ggplot(
   data = surv,
   mapping = aes(
@@ -514,7 +516,7 @@ geom_bar() +
 scale_fill_viridis_d(na.value = "grey") +
 scale_y_continuous(breaks = seq(from = 0,
                                 to = 250,
-                                by = 10))
+                                by = 25))
 ```
 
 </br>
@@ -543,7 +545,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 </br>
 
 
-```{r axis-end, eval= T, echo=T, warning = F, message = F}
+```{r axis-end, echo=T, warning=F, message=F}
 ggplot(
   data = surv,
   mapping = aes(
@@ -552,8 +554,8 @@ ggplot(
 geom_bar() +
 scale_fill_viridis_d(na.value = "grey") +
 scale_y_continuous(breaks = seq(from = 0,
-                                to = 3000,
-                                by = 500),
+                                to = 250,
+                                by = 25),
                    expand = c(0,0))
 ```
 
@@ -580,17 +582,17 @@ NOTE: Below is the solution (all within details tags collapsed)
 
 
 
-```{r expand-solution, echo=T, eval= FALSE}
+```{r expand-solution, echo=T, warning=F, message=F}
 ggplot(
-  data = linelist,
+  data = surv,
   mapping = aes(
-    x = outcome,
+    x = district,
     fill = gender)) +
 geom_bar() +
 scale_fill_viridis_d(na.value = "grey") +
 scale_y_continuous(breaks = seq(from = 0,
-                                to = 3000,
-                                by = 500),
+                                to = 250,
+                                by = 25),
                    expand = c(0,0)) +
 scale_x_discrete(expand = c(0,0))
 ```
@@ -603,6 +605,32 @@ NOTE: End of solution
 -->
 
 
+### Flip axes  
+
+Finally, we can flip the X and Y axes by adding `coord_flip()` (with empty parentheses). This is useful in bar charts so that more discrete value names can be displayed without overlapping each other on the x-axis.  
+
+```{r flip-axes, echo=T, eval= TRUE, warning=F, message=F}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = district,
+    fill = gender)) +
+geom_bar() +
+scale_fill_viridis_d(na.value = "grey") +
+scale_y_continuous(breaks = seq(from = 0,
+                                to = 250,
+                                by = 25),
+                   expand = c(0,0)) +
+scale_x_discrete(expand = c(0,0))+
+coord_flip()
+```
+
+Note that if adjusting the labels with `labs()` you still edit `x = ` to adjust the label that now appears on the y-axis.  
+
+
+
+
+
 ## Date axis labels  
 
 Date axes also have scales that can be adjusted with `scale_*()` functions.  
@@ -611,7 +639,7 @@ The default scale for date axis labels will vary by the range of your data. Here
 
 ```{r date-x, eval= F, echo=T, warning = F, message = F}
 ggplot(
-  data = linelist,
+  data = surv,
   mapping = aes(x = date_onset)) +
 geom_histogram()
 ```
@@ -689,7 +717,7 @@ For example: the value `"%d %b %Y"` will change the display to DD MMM YYYY (note
 
 ```{r date-labs, eval= F, echo = T, warning = F, message = F}
 ggplot(
-  data = linelist,
+  data = surv,
   mapping = aes(x = date_onset)) +
 geom_histogram() +
 scale_x_date(date_breaks = "2 months",
@@ -753,16 +781,16 @@ Thankfully, we have the `percent()` function.
 
 We can easily display proportions as percents with `percent()` from **scales** within `scale_y_continuous()`. 
 
-To test this, let's create a dataset using `group_by()` and `summarise()` that creates a proportion - the *weekly proportion of cases that have more than 7 days delay between symptom onset and their report date.  
+To test this, let's create a dataset using `group_by()` and `summarise()` that creates a proportion - the *weekly proportion of cases that have more than 7 days delay between symptom onset and their report date*.  
 
 ```{r CFR, echo = T, eval = T}
 delay_1wk <- surv %>%                                      # begin with surveillance linelist
   mutate(diff_1wk = as.numeric(diff) > 7) %>%              # create column that is TRUE is diff is greater than 7
   group_by(week = floor_date(date_report, "week")) %>%     # create column "week" and group by it  
   summarise(                                               # begin summarise command     
-    cases = n(),                                             # number of cases in the week
-    delayed = sum(diff_1wk == TRUE, na.rm=T),                # number of delayed cases in the week 
-    delayed_pct = delayed / cases)                           # calculate proportion
+    cases = n(),                                           # number of cases in the week
+    delayed = sum(diff_1wk == TRUE, na.rm=T),              # number of delayed cases in the week 
+    delayed_pct = delayed / cases)                         # calculate proportion
 ```
 
 
@@ -789,7 +817,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r, echo = F, eval = F}
+```{r, echo=T, warning=F, message=F}
 ggplot(data = delay_1wk, mapping = aes(x = week, y = delayed_pct))+
   geom_line(size = 2, color = "brown")
 ```
@@ -877,7 +905,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r, echo = T, eval = F}
+```{r, echo=T, warning=F, message=F}
 ggplot(data = delay_1wk, mapping = aes(x = week, y = delayed_pct))+
   geom_line(size = 2, color = "brown")+
   labs(caption = "n = 663.\nReport produced on 2022-04-02.Data collected from 5 major hospitals in the epidemic-affected area.\nLast reported case on 2014-12-21.\n7 cases missing date of onset.")
@@ -900,7 +928,7 @@ To use this function, first, wrap the character string within `str_glue()`, like
 
 To make it dynamically reflect the number of rows in the data frame `surv`, you can insert curly brackets *within the quotation marks*. Within the brackets, insert your R code, for example, the function `nrow()`    
 
-8 `str_glue("n = {nrow(surv)}")` (Try running this in your R console)  
+* `str_glue("n = {nrow(surv)}")` (Try running this in your R console)  
 
 Within the quotation marks, you can continue your writing, and even include other sections of code:  
 
@@ -924,10 +952,10 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r, echo = T, eval = F}
+```{r, echo=T, warning=F, message=F}
 ggplot(data = delay_1wk, mapping = aes(x = week, y = delayed_pct))+
   geom_line(size = 2, color = "brown")+
-  labs(caption = str_glue("n = {nrow(surv)}.\nReport produced on {Sys.Date()}\nData collected from {length(unique(surv$hospital))-2} major hospitals in the epidemic-affected area.\nLast reported case on {max(surv$date_report, na.rm = TRUE)}.\n{fmt_count(surv, is.na(date_report))} cases missing date of onset and not shown.")
+  labs(caption = str_glue("n = {nrow(surv)}.\nReport produced on {Sys.Date()}\nData collected from {length(unique(surv$hospital))-2} major hospitals in the epidemic-affected area.\nLast reported case on {max(surv$date_report, na.rm = TRUE)}.\n{fmt_count(surv, is.na(date_report))} cases missing date of onset and not shown."))
 ```
 
 Did you catch that `unique()` will also count the values `NA` and "Other"? You may want to subtract 2 from that calculation.  
@@ -968,9 +996,7 @@ Themes are non-data design features (background, text size/color, etc).
 
 Try the argument `base_size = 16` inside the theme function, to quickly increase text sizes.  
 
-`r fontawesome::fa("bookmark", fill = "orange")`
-
-Which one do you prefer? Bookmark and save it for later!  
+`r fontawesome::fa("bookmark", fill = "orange")` Which one do you prefer? Bookmark and save it for later!  
 
 
 
@@ -982,7 +1008,7 @@ Micro-adjustments to the theme can be made with `theme()`. As these are mostly s
 The syntax for themes takes time to learn and is not used often enough to commit to memory for most R users. See [this list](https://ggplot2.tidyverse.org/reference/theme.html) of feature-specific arguments. Or run, `theme_get()` in your R window to get a list of all theme arguments in the console.  
 
 
-Try this example below (theme micro-adjustments at the bottom):  
+Copy and paste this example below into RStudio (theme micro-adjustments at the bottom). There is no need to type it, as that would take a long time. The purpose is just for your to see.  
 
 ```{r theme-adjustment, echo = T, message = F, warning = F}
 ggplot(data = surv,
@@ -1001,7 +1027,7 @@ labs(
   x = "Age (years)",
   y = "Height (cm)",
   caption = "Fictional Ebola data",
-  color = "Outcome"
+  color = "Gender"
 ) +
 theme_classic(base_size = 16) +
 theme(

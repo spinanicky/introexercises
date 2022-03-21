@@ -565,7 +565,7 @@ Now that you are familiar with the plotting syntax, we will move to an exercise 
 
 1) Use `combined` to create a new data frame named `age_outcome_summary`.  
   * First, drop any rows with  `NA` values by piping to `drop_na(gender, age_cat)`.  
-  * Then, use `group_by()` and `summarise()` to show summary counts for each unique combination (group) of `age_cat10` and `gender`.  
+  * Then, use `group_by()` and `summarise()` to show summary counts for each unique combination (group) of `age_cat` and `gender`.  
   * In addition to case counts, include a column showing the number of rows in each group whose `outcome` is equal to "Death".  
   * Finally, include a column calculating with the proportion in each group equal to "Death".  
 
@@ -582,8 +582,7 @@ age_outcome_summary <- combined %>%
     n = n(),
     n_death = sum(outcome == "Death",  # sum the number of rows where outcome is Death
                   na.rm = TRUE),
-    pct_death = n_death / n            # create proportion dead in the group
-  )
+    pct_death = n_death / n)           # create proportion dead in the group
 ```
 </br>
 </details>
@@ -862,6 +861,8 @@ ebola_weeks <- seq.Date(
 
 Now if you run just `ebola_weeks`, the vector is returned/printed. So we can provide `ebola_weeks` to the `breaks = ` argument of `geom_histogram()`.  
 
+One final change before we finish is that we also add `closed = "left"` to `geom_histogram()` which sets the bars to also count the cases reported on the break days themselves.    
+
 ```{r, echo=T, eval=F}
 # Define and save the vector
 ebola_weeks <- seq.Date(
@@ -872,7 +873,7 @@ ebola_weeks <- seq.Date(
 
 # Run the plot, using the vector
 ggplot(data = combined, aes(x = date_onset)) +
-  geom_histogram(breaks = ebola_weeks) +
+  geom_histogram(breaks = ebola_weeks, closed = "left") +
   labs(x = "Date of onset", y = "Incidence") +
   theme_bw()
 
@@ -924,7 +925,7 @@ ebola_months <- seq.Date(
 
 # run the plot with monthly breaks, and fill
 ggplot(data = combined, aes(x = date_onset, fill = hospital)) +
-  geom_histogram(breaks = ebola_months) +
+  geom_histogram(breaks = ebola_months, closed = "left") +
   scale_x_date(
     date_breaks = "months",
     labels = scales::label_date_short())+
@@ -957,7 +958,7 @@ facet_wrap(~gender)
 </br>
 ```{r, eval = F, echo = T}
 ggplot(data = combined, aes(x = date_onset, fill = hospital)) +
-  geom_histogram(breaks = ebola_months) +
+  geom_histogram(breaks = ebola_months, closed = "left") +
   scale_x_date(
     date_breaks = "months",
     labels = scales::label_date_short())+
@@ -1026,7 +1027,7 @@ age_pyramid(data = combined,
             age_group = "age_cat", #note that the column must be enclosed in quotation marks (" ")
             split_by = "gender",
             proportional = TRUE,
-            na.rm = FALSE)  #note that the column must be enclosed in quotation marks (" ")
+            na.rm = FALSE) 
 ```
 </br>
 </details>
@@ -1092,6 +1093,31 @@ age_pyramid(data = demo_long_counts,
 </br>
 </details>
 
+
+### Adding ggplot to age pyramids  
+
+Finally, you can add ( + ) ggplot commands to {apyramid} age pyramids. For example, the code below adds labels and adjusts the color scale:  
+
+
+```{r}
+# Age pyramid with ggplot modifications
+age_pyramid(
+     data = combined,
+     age_group = "age_cat",
+     split_by = "gender",
+     proportional = TRUE,
+     show_midpoint = FALSE)+
+     
+  theme_minimal()+
+     
+  scale_fill_brewer(type = "qual", palette = 2)+
+  
+  labs(title = str_glue("Age and gender of confirmed cases"),
+       x = "Proportion of all cases",
+       y = "Age group",
+       caption = str_glue("Ebola outbreak"),
+       fill = "Gender")
+```
 
 
 

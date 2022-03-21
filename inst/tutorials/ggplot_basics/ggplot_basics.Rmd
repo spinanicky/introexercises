@@ -216,7 +216,7 @@ Icon  |Meaning
 In this exercise you will:  
 
 * Learn the "grammar of graphics" syntax used by {ggplot2}  
-* Make simple histograms, box plots, bar plots, scatter plots, and line plotss  
+* Make simple histograms, box plots, bar plots, scatter plots, and line plots  
 * Adjust the color, fill, and shape by adjusting plot aesthetic parameters  
 
 
@@ -460,10 +460,10 @@ quiz(caption = "Quiz - aesthetics",
   ),
   question("What shape is produced by setting `shape = 3` within geom_jitter()?",
     allow_retry = T,
-    answer("Alphabetical ordering"),
-    answer("Axis color"),
-    answer("Transparency", correct = T),
-    answer("Size")
+    answer("Circle"),
+    answer("Triange"),
+    answer("Plus", correct = T),
+    answer("Square")
   )
 )
 ```
@@ -612,7 +612,34 @@ ggplot(data = surv, mapping = aes(x = district, y = age_years))+
      geom_boxplot(fill = "blue", alpha = 0.5)
 ```
 
-**Now change the command so that `fill` is assigned to the column `district`.** There are two important steps:  
+**Now change the command so that `fill` is assigned to the column `district`.** 
+
+```{r quiz_blue}
+quiz(caption = "Quiz - aesthetic assignments",
+  question("What happens if you run the command above, but replace 'blue' with the column name: district?",
+    allow_retry = T,
+    answer("The boxplots re-arrange by district"),
+    answer("The boxes become the geographical shape of the district"),
+    answer("The boxes fill (color) become different for each district", message = "No... this is what we wanted, but it did not happen."),
+    answer("There is an R error saying 'object district not found'", correct = T)
+  )
+)
+```
+
+
+```{r quiz-aes-dynamic}
+quiz(caption = "Quiz - Dynamic aesthetic assignments",
+  question("What needs to change in order to make each boxplot a different fill?",
+    allow_retry = T,
+    answer("Try another column name"),
+    answer("Move this part of the command ('fill = district') inside the aes()", correct = T),
+    answer("Try the command five more times, as written"),
+    answer("Restart R and try again")
+  )
+)
+```
+
+There are two important steps to resolve this error:  
 
 1) Change the value "blue" to `district` (note the lack of quotes around `district`)  
 2) Move this argument to *within* the `mapping = aes()` in the top `ggplot()` function  
@@ -641,31 +668,10 @@ NOTE: End of solution
 -->
 
 
-```{r quiz-aes-dynamic}
-quiz(caption = "Quiz - Dynamic aesthetic assignments",
-  question("What happens if you run the command above, but replace 'blue' with the column name: district?",
-    allow_retry = T,
-    answer("The boxplots re-arrange by district"),
-    answer("The boxes become the geographical shape of the district"),
-    answer("The boxes fill (color) become different for each district", message = "No... this is what we wanted, but it should not have happened."),
-    answer("There is an R error saying 'object district not found'", correct = T)
-  ),
-  question("What needs to change in order to make each boxplot a different fill?",
-    allow_retry = T,
-    answer("Try another column name"),
-    answer("Move this part of the command ('fill = district') inside the aes()", correct = T),
-    answer("Try the command five more times, as written"),
-    answer("Restart R and try again")
-  )
-)
-```
-
-**If you did not move `fill = district` within the mappings, what error would you see in the R console?**  
 
 
-`r fontawesome::fa("eye", fill = "darkblue")`  
 
-**Note the legend that has automatically appeared on the right side of the plot**.  
+`r fontawesome::fa("eye", fill = "darkblue")`  **Note the legend that has automatically appeared on the right side of the plot**.  
 
 How have missing values been treated in this plot? How are they marked? Which color was automatically assigned to them? Where in the order do they appear, along the X-axis and in the legend?  
 
@@ -860,7 +866,7 @@ Can you change the bars to all be the color "lightblue" using the `fill` argumen
 
 The previous plot examined age as a continuous variable (on the Y-axis).  
 
-**How would we show the age distribution using the bar plot?**  
+**How would we change the previous plot show the age distribution in each district?**  
 
 **Change the plot so that the `fill` aesthetic is assigned dynamically, to a *categorical* column in the dataset**.  
 
@@ -1025,7 +1031,9 @@ The function `geom_col()` is built to handle count data - it does not stack the 
 It is important to remember the difference between `geom_bar()` (for linelist data) and `geom_col()` for count data.  
 
 
-**Lastly, try to adjust the `fill =` aesthetic.** Can you assign it to another column? In this new counts data frame, which columns are available to you?  
+**Lastly, try to add a `fill =` aesthetic mapping to make the bar show age group.** Can you do this with count data?  
+
+(no, you cannot, because in using count data we have lost the detail available in a linelist)  
 
 
 
@@ -1313,7 +1321,14 @@ That stacked histogram can be difficult to interpret. **Faceting** in R is the p
 
 This is done by adding the command `facet_wrap()` to the ggplot command. Within this function, write a tilde (~) and the name of the faceting column on the right side.  
 
-**Try to facet this histogram by `gender` (leave `fill = gender` as well).**  
+**Try to facet this histogram by `gender` (leave `fill = district` as well).**  
+
+```{r, echo=T, eval=F}
+ggplot(data = surv, mapping = aes(x = date_onset, fill = district))+
+  geom_histogram()+
+  facet_wrap(~ district)
+
+```
 
 <!--
 NOTE: Below is the solution (all within details tags collapsed)
@@ -1325,9 +1340,9 @@ NOTE: Below is the solution (all within details tags collapsed)
 
 
 ```{r, echo=T, eval=F}
-ggplot(data = surv, mapping = aes(x = age_years, fill = gender))+
-  geom_histogram(binwidth = 5)+
-  facet_wrap(~ gender)
+ggplot(data = surv, mapping = aes(x = date_onset, fill = district))+
+  geom_histogram()+
+  facet_wrap(~ district)
 
 ```
 
@@ -1361,24 +1376,28 @@ You can read more about faceting in [this section of the Epi R Handbook](https:/
 
 
 
-## gghighlight  
+## End  
+
+Congratulations! ggplot is a difficult subject, but a tool that offers many rewards once you understand the basics. We will reinforce this more in the coming days.  
+
+
+## Extra - gghighlight
+
 
 Just like {ggExtra}, the package {gghighlight} is an extension that works with {ggplot2} to add functionalities for your plotting.  
 
-Go to your **Help** pane in RStudio, and type in "gghighlight". Ensure that you have already installed the package.  
-
-**Read the documentation.**
+Many R packages have "vignettes" to assist people using the package. Go online and view this [{gghighlight} vignette](https://cran.r-project.org/web/packages/gghighlight/vignettes/gghighlight.html) to answer the questions below:  
 
 ```{r quiz-gghighlight}
 quiz(caption = "Quiz - gghighlight",
-  question("When was the package documentation created?",
+  question("When was this vignette created?",
     allow_retry = T,
     answer("2021-01-01"),
     answer("1999-04-03"),
     answer("2021-06-05", correct = T),
     answer("2022-03-12")
   ),
-    question("The author believe's that this package is the equivalent of which function, but for ggplot2?",
+    question("The author believes that this package is the equivalent of which function, but for ggplot2?",
     allow_retry = T,
     answer("select()", message = "Look at the bottom of the Motivation section"),
     answer("filter()", correct = T),
@@ -1391,12 +1410,6 @@ quiz(caption = "Quiz - gghighlight",
     answer("stark()", message = "Look at the section called gghighlight()"),
     answer("gghighlight()", correct = T),
     answer("highlighter()", message = "Look at the section called gghighlight()")
-  ),
-    question("Select all the geoms have labels automatically added by gghighlight()?",
-    allow_retry = T,
-    answer("points", correct = T),
-    answer("lines", correct = T),
-    answer("bars", correct = T)
   )
 )
 ```
@@ -1436,7 +1449,7 @@ gghighlight()
 ########
 ggplot(data = surv, mapping = aes(x = date_onset, fill = district))+
   geom_histogram()+
-  gghighlight(district == "West II")
+  gghighlight(district == "West III")
 ```
 
 </br>
@@ -1444,9 +1457,6 @@ ggplot(data = surv, mapping = aes(x = date_onset, fill = district))+
 <!--
 NOTE: End of solution
 -->
-
-
-
 
 
 
