@@ -29,6 +29,7 @@ library(lubridate)
 library(janitor)
 library(flextable)
 library(fontawesome)
+library(gtsummary)
 library(scales)
 
 
@@ -891,7 +892,18 @@ surv %>%
 NOTE: End of solution
 -->
 
+### Add p-values  
 
+Although in this example it does not make much sense to run statistical tests (we do not yet have an "outcome" in our data set), it is easy to add tests with a p-value in these tables. One simple option is to pipe to `add_p()`.  
+
+```{r eval = T, echo=T, warning=F, message=F}
+surv %>% 
+  select(district, age_cat, fever, chills, cough, aches, vomit, wt_kg, ht_cm, gender) %>% 
+  tbl_summary(by = gender) %>% 
+  add_p()
+```
+
+You can see at the bottom the details of where the p-value originates. This can be adjusted.  
 
 Read more about the many ways to customize a {gtsummary} table [here](https://epirhandbook.com/en/descriptive-tables.html#tbl_gt).  
 

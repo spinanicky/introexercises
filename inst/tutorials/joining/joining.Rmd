@@ -1303,7 +1303,9 @@ Take a moment to ensure that your script aligns with the above, and that you can
 
 ## End  
 
-Congratulations! You have finished this exercise.  
+Congratulations! You have finished this exercise on joining data.  
+
+We now have a much more complete dataset to work with, including columns like `outcome`, `date_hospitalisation`, `blood_ct`, and `source`.  
 
 Remember to save your R script before leaving RStudio.
 
