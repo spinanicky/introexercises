@@ -247,8 +247,7 @@ R does not necessarily remember which commands you ran in the previous session. 
 1) Load packages  
 2) Import the "raw"/unclean surveillance linelist 
 3) The cleaning pipeline ( %>% ) that produces the clean surveillance linelist  
-4) Define the parameters such as `last_date_onset`  
-5) Export the clean dataset  
+4) Export the clean dataset  
 
 If you have arranged your script correctly and kept it clean, these commands should all be able to be run in sequence with no interruptions.  
 

@@ -278,13 +278,26 @@ An HTML file can be emailed as a static file, similar to a PDF or Word document.
 
 **Now click the "knit" button again, but use the drop-down to select the option to knit to Microsoft Word**  
 
+This format is very useful if you want automated analytics, but human-written interpretation in the report.  
+
 ### PDF  
 
-Knitting to PDF is more difficult and you may encounter errors and challenges with formatting. Nevertheless, try to knit directly to PDF. If you encounter errors, do not worry. We will not stop now to deal with them. You can discuss them with your instructor during some spare time. *Remember, you can always knit to Word, and then convert to PDF.*  
+Knitting to PDF is more difficult and you may encounter errors and challenges with formatting. Nevertheless, try to knit directly to PDF. If you encounter errors, do not worry. We will not stop now to deal with them. You can discuss them with your instructor during some spare time.  
+
+*Remember, you can always knit to Word, and then convert to PDF.*  
 
 ### Other formats  
 
-Many other formats exist. Some other time, you can try a Powerpoint format by clicking "Presentation" in the window that appeared when you opened the Rmd for the first time. The slides in this course are made using the {xaringan} package in conjunction with {rmarkdown}.  
+Many other formats exist, for example:  
+
+- Some other time, you can try a Powerpoint format by clicking "Presentation" in the window that appeared when you opened the Rmd for the first time.  
+
+- The slides in this course are made using the {xaringan} package in conjunction with {rmarkdown}.  
+
+- This tutorial was written in {rmarkdown}, used with the {learnr} package  
+
+
+
 
 
 
@@ -314,7 +327,7 @@ date: "`r Sys.Date()`"
 ```
 
 
-Edit the YAML to look exactly like this (with your name in the `author:` section).   
+Edit the YAML to look exactly like this (with your name in the `author:` section). Note that the colons and indenting must be exactly correct.  
 
 ```{results='asis'}
 ---
@@ -333,7 +346,7 @@ Note that we have now removed any `pdf_document` and `html_document` output opti
 
 ### Params  
 
-Add further lines to your YAML as shown below. These will be the `params` list for your report. 
+Add further lines to your YAML as shown below. Note that the colons and indenting must be exactly correct. These will be the `params` list for your report. 
 
 ```{results='asis'}
 ---
@@ -455,58 +468,11 @@ quiz(caption = "Quiz - chunk options",
 Whether you select options for the code to appear in the report may very by the context. For a short situation update or public document you would likely not include the R code. For an analytical report, you might want to make the code available so that other scientists or readers can quickly inspect your process.  
 
 
-
-### Code folding  
-
-Let's have a little bit of fun for a moment. One particularly fun option is "code folding", which is only available for HTML reports.  
-
-1) Edit the `setup` chunk at the top so that `echo = TRUE`  
-
-2) Edit your YAML to look like below (note the change to `output:` to `html_document:` with a colon after it. And then the new line and indenting to `code_folding: hide`)  
-
-
-```{results='asis'}
----
-title: "Situation Report"
-subtitle: "Ebola outbreak in Sierra Leone"
-author: "(Your name or agency here)"
-output: 
-  html_document:
-    code_folding: hide
-date: "`r Sys.Date()`"
-params:
-  district: "West II"
-  report_date: "2014-12-01"
----
-```
-
-**Now render your report as HTML** You should see small icons on the right side of the outputs, which you can click to reveal the code. At the top-right of the output you will also see an button "Code" that offers a menu to "Show all code" or "Hide all code".  
-
-You can read more about code folding [here](https://bookdown.org/yihui/rmarkdown/html-document.html#code-folding).  
-
-**Now, revert your Rmd YAML back to a Word document output.**  
-
-```{results='asis'}
----
-title: "Situation Report"
-subtitle: "Ebola outbreak in Sierra Leone"
-author: "(Your name or agency here)"
-output:
-  word_document: default
-date: "`r Sys.Date()`"
-params:
-  district: "West II"
-  publish_date: "2014-12-01"
----
-```
-
-**And change your `setup` default options to as below.**  
+**Finally, make sure that your `setup` chunk (at the top of the script) default options to as below.**  
 
 ```{r, eval=F, echo=T}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-
-
 
 
 
@@ -520,7 +486,7 @@ knitr::include_graphics("images/2_text.png")
 
 **Using the image above as a guide, modify the default text to show the text below**  
 
-Note that to make a newline you need to add **two spaces and hit Enter** at the end of each bullet/sentence.  
+Note that to make a newline you need to add **two spaces and hit Enter** at the end of each bullet/sentence. For bullets, there must be a newline above the bullets, and at the end of every bullet.  
 
 Try to replicate this line of text and the three bullets below it:  
 
@@ -529,12 +495,12 @@ Try to replicate this line of text and the three bullets below it:
 >
 * Analytical *flexibility*  
 * Advanced *graphics* and automated *reporting capability*  
-* Above all to **support the movement towards free, open-source software**  
+* To **support the movement towards free, open-source software**  
 
 
 You can insert R code into text in what is called "inline code". You can create a mini R code line within some text by doing the following:  
 
-  * Start the code with a backtick \` and the letter `r`  
+  * Start the code with a backtick \` and the letter `r` and a space  
   * Continue by writing your R code  
   * Finish with another backtick \`  
   
@@ -543,9 +509,9 @@ Try to recreate this line in your R Markdown, and then render the Rmd to see the
 >Today's date is 
 >`` `r knitr::inline_expr("Sys.Date()")` `` and I am taking an R class!
 
-The command `Sys.Date()` is convenient because it prints the current date, according to your computer. Note that the "Date" begins with a capital "D".  
+The command `Sys.Date()` is convenient for inline code because it prints the current date, according to your computer. Note that the "Date" begins with a capital "D".  
 
-If you use any functions in these inline commands, or and R objects or values, they must have been defined *prior*/*above* the inline code. Otherwise R return an error when rendering the Rmd.  
+If you use any functions in these inline commands, or and R objects or values, they must have been defined *prior* or *above* the inline code. Otherwise R return an error when rendering the Rmd.  
 
 
 
@@ -587,18 +553,22 @@ Follow this order:
 6) Create and print descriptive tables  
 7) Create and print plots  
 
-Do not hesitate to ask your facilitator for assistance if you get stuck!  
+For the plots and tables, choose just 2-5 tables and plots to highlight in this report.  
 
-**Do not forget to save your file as you do this!**  
+Do not include all of the exploratory analysis that you have in your ebola_analysis.R script. Keep the report relatively minimal.  
+
+Ask your facilitator for assistance if you get stuck!  
+
+**Also, do not forget to save your file as you do this!**  
 
 
 
 
 
 
-## Make your report adaptable  
+## Extra - adaptable report  
 
-If you finish creating your report and still have time before the class re-convenes in the plenary debrief, follow the instructions below to make your report adaptable as new data arrive.  
+If you finish creating your report and still have time before the class re-convenes in the plenary debrief, follow the instructions below to make your report adaptable as the data are updated or when new data arrive.  
 
 ### Filter the data by district
 
@@ -663,7 +633,7 @@ knitr::include_graphics("images/calendar.png")
 
 
 
-#### Class of the param `publish_date`  
+### Class of the param `publish_date`  
 
 Ok, let's begin. You have already created the `params` value `publish_date`, which can be accessed within the report by typing `params$publish_date`.  
 
@@ -675,7 +645,7 @@ I'll tell you the answer: you need to wrap it in the {lubridate} function that m
 
 Try running `class(ymd(params$publish_date))` - you should see that this value is a date.  
 
-#### Filter logic  
+### Filter logic  
 
 We want to apply a filter to `combined`, using *the Monday prior to the publish date*, because we know there is some delay in the number of cases being reported.  
 
@@ -769,7 +739,7 @@ Below is one example of a caption:
 
 ```{r eval = F, echo = T}
 labs(
-  caption = str_glue("{nrow(combined)} cases were reported through {format(data_date), '%d %B, %Y'}. {fmt_count(combined, is.na(date_onset))} cases are missing date of symptom onset and not shown.")
+  caption = str_glue("{nrow(combined)} cases were reported through {format(data_date, '%d %B, %Y')}. {fmt_count(combined, is.na(date_onset))} cases are missing date of symptom onset and not shown.")
   )
 ```
 
@@ -796,9 +766,65 @@ Therefore, we should begin the *text* of the report output after ALL the data cl
 
 
 
-## Extras
 
-If you have extra time, try to make your report look nicer with the following options.  
+
+
+
+## More extras  
+
+Below are more extras  
+
+### Code folding  
+
+Let's have a little bit of fun for a moment. One particularly fun option is "code folding", which is only available for HTML reports.  
+
+1) Edit the `setup` chunk at the top so that `echo = TRUE`  
+
+2) Edit your YAML to look like below (note the change to `output:` to `html_document:` with a colon after it. And then the new line and indenting to `code_folding: hide`)  
+
+
+```{results='asis'}
+---
+title: "Situation Report"
+subtitle: "Ebola outbreak in Sierra Leone"
+author: "(Your name or agency here)"
+output: 
+  html_document:
+    code_folding: hide
+date: "`r Sys.Date()`"
+params:
+  district: "West II"
+  report_date: "2014-12-01"
+---
+```
+
+**Now render your report as HTML** You should see small icons on the right side of the outputs, which you can click to reveal the code. At the top-right of the output you will also see an button "Code" that offers a menu to "Show all code" or "Hide all code".  
+
+You can read more about code folding [here](https://bookdown.org/yihui/rmarkdown/html-document.html#code-folding).  
+
+**Now, revert your Rmd YAML back to a Word document output.**  
+
+```{results='asis'}
+---
+title: "Situation Report"
+subtitle: "Ebola outbreak in Sierra Leone"
+author: "(Your name or agency here)"
+output:
+  word_document: default
+date: "`r Sys.Date()`"
+params:
+  district: "West II"
+  publish_date: "2014-12-01"
+---
+```
+
+**And change your `setup` default options to as below.**  
+
+```{r, eval=F, echo=T}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
 
 
 

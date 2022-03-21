@@ -1243,7 +1243,11 @@ combined <- combined %>%
   # covert new columns to class date
   mutate(date_hospitalisation = mdy(date_hospitalisation),
          date_outcome         = mdy(date_outcome),
-         date_infection       = ymd(date_infection))
+         date_infection       = ymd(date_infection)) %>% 
+  
+  # clean outcome and hospital missings
+  mutate(outcome = na_if(outcome, ""),
+         hospital = na_if(hospital, ""))
 ```
 
 

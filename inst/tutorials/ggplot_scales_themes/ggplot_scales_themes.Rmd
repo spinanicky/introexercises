@@ -248,11 +248,6 @@ Run the code to install your R packages.
 
 Run the command at the bottom of your data cleaning code that imports the clean surveillance linelist ("surveillance_linelist_clean.rds") and saves it in R as `surv`.  
 
-### Define report parameters  
-
-Run the commands at the bottom of your data cleaning code that define the most recent dates and epidemiological weeks in the data. There should be four of these commands.  
-
-
 
 
 
@@ -804,6 +799,7 @@ delay_1wk %>%
 
 Write a ggplot command using `geom_line()` that has the following settings:  
 
+* Uses the `delay_1wk` dataset  
 * `week` on the X-axis  
 * `delayed_pct` on the Y-axis  
 * `size = 2` and `color = "brown" `within `geom_line()`  
@@ -891,7 +887,7 @@ NOTE: Below is the hint (all within details tags collapsed)
 <summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
 </br>
 
-Add a `labs()` function, using `caption = `. Within the quotes, place "\n" in each place where you want a newline to appear.  
+Add a `labs()` function, using `caption = `. Within the quotes, place "\\n" in each place where you want a newline to appear.  
 </br>
 </details>
 
@@ -996,7 +992,7 @@ Themes are non-data design features (background, text size/color, etc).
 
 Try the argument `base_size = 16` inside the theme function, to quickly increase text sizes.  
 
-`r fontawesome::fa("bookmark", fill = "orange")` Which one do you prefer? Bookmark and save it for later!  
+`r fontawesome::fa("bookmark", fill = "orange")` Which one do you prefer? Mentally bookmark to use later!  
 
 
 
@@ -1092,6 +1088,11 @@ quiz(
 )
 ```
 
+
+## End  
+
+
+Congratulations! You finished the entire module on ggplot! This is a difficult topic, but you now have all the essential tools to go forth and make many kinds of plots.  
 
 
 
