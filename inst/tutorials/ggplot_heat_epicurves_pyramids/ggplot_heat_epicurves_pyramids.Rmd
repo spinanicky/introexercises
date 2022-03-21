@@ -813,7 +813,7 @@ seq.Date(from = ymd("2014-05-06"),
 
 So, we could write an epicurve command like the below:  
 
-```{r, echo=T, eval=T}
+```{r, echo=T, eval=T, warning=F, message=F}
 ggplot(data = combined, aes(x = date_onset))+
   geom_histogram(
     breaks = seq.Date(
@@ -826,7 +826,7 @@ ggplot(data = combined, aes(x = date_onset))+
 
 Now we are confident that the breaks are using 7-day intervals from the first case to the last case.  
 
-But typically we want the intervals to start on **Mondays** (or some other day), so we can add `floor_date()` and it's companion `ceiling_date()` :  
+But typically we want the intervals to start on **Mondays** (or some other day), so we add `floor_date()` and it's companion `ceiling_date()` :  
 
 ```{r, echo=T, eval=T}
 # Monday BEFORE the earliest case
@@ -1097,7 +1097,7 @@ Now, use your knowledge of the `age_pyramid()` documentation to adjust the plott
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
-```{r, eval = F, echo = T}
+```{r, eval = F, echo = T, warning=F, message=F}
 age_pyramid(data = demo_long_counts,
             age_group = "age_cat", 
             split_by = "gender",
@@ -1112,7 +1112,7 @@ age_pyramid(data = demo_long_counts,
 Finally, you can add ( + ) ggplot commands to {apyramid} age pyramids. For example, the code below adds labels and adjusts the color scale:  
 
 
-```{r}
+```{r, message=F, warning=F, echo=T, eval=T}
 # Age pyramid with ggplot modifications
 age_pyramid(
      data = combined,
@@ -1137,6 +1137,7 @@ age_pyramid(
 ## End  
 
 Congratulations! You have finished the exercise on heat plots, epidemic curves, and age/sex pyramids! These are some challenging plots that you have been making!  
+
 
 
 

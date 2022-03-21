@@ -2333,6 +2333,10 @@ Congratulations! You have completed the cleaning exercise!
 
 Be sure to save your R script, and check-in with your facilitator.  
 
+**In case you did not finish, do not worry.** *In the case that you can not finish, look in the "scripts/backup" folder. You will find R scripts for the Ebola analysis at every stage of this course. So you can always us these as a "backup".*  
+
+
+
 
 
 

@@ -240,7 +240,7 @@ In the window that appears:
 * Select the checkbox that says "Use current date when rendering document"  
 * Click "OK" (you can edit the title and author later)  
 
-Once the new Rmd script appears, click to "File -> Save As" and save it in the folder "intro_course/scripts" as the name **"ebola_sitrep.Rmd"**.  
+Once the new Rmd script appears, click to "File -> Save As" and **save it in the folder "intro_course/scripts"** as the name **"ebola_sitrep.Rmd"**.  
 
 
 
@@ -848,4 +848,9 @@ knitr::include_graphics("images/9_html.png")
 ```
 
 
+## End
+
+Congratulations! You can written an R Markdown situation report with lots of interesting R code!  
+
+If you want to compare your Rmd to the one we made, open the "backups" folder in the "scripts" subfolder. There you will see R scripts reflecting the Ebola analysis at each stage of this course, and finally an Ebola Rmd.  
 
