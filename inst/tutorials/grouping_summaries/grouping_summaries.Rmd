@@ -314,6 +314,7 @@ Everyone develops their own style for adding comments and using the hash (#) sym
 #################################
 ```
 
+
 Just make sure that yours is easy for someone else to read.  
 
 **Now, add a header for a section called "descriptive summary tables".**  
@@ -521,13 +522,13 @@ The {dplyr} function `count()` provides a simple alternative way to tabulate cou
 
 ```{r, echo=T, eval=F}
 surv %>% 
-  count(district)
+  count(hospital)
 ```
 
 How does it compare to the simple `tabyl()` on the same column?  
 
 
-**Now, adjust the command so that instead of printing, the output is saved as a new data frame named `district_counts`.**  
+**Now, adjust the command so that instead of printing, the output is saved as a new data frame named `hospital_counts`.**  
 
 This is just to show you, that you in are in fact creating another data frame! You could conduct analyses on this data frame, or even export it as a csv or xlsx file.  
 
@@ -541,7 +542,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 
 ```{r eval = F, echo=T}
 district_counts <- surv %>% 
-  count(district)
+  count(hospital)
 ```
 
 </br>
@@ -567,7 +568,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 
 ```{r eval = F, echo=T}
 surv %>% 
-  count(district, gender)
+  count(hospital, gender)
 ```
 
 </br>
@@ -598,20 +599,20 @@ One major advantage of `summarise()` is the ability to return more customized st
 
 ```{r, echo=T, eval=F}
 surv %>% 
-  group_by(district) %>% 
+  group_by(hospital) %>% 
   summarise(n_rows = n())
 ```
 
 You might wonder why anyone would write the command this way, when they could simply write `count()`? The answer is that you can add more lines within `summarise()` that will create new calculated summary columns.  
 
 * The `n_rows` is the *name we are designating for a new column in the summary dataset  
-* The `= n()` is a function `n()` that counts the number of rows (in this case, within the *group*/district)  
+* The `= n()` is a function `n()` that counts the number of rows (in this case, within the *group*/hospital)  
 
 Regard below how 3 new columns are created, each with their respective calculations:  
 
 ```{r, echo=T, eval = T}
 surv %>% 
-  group_by(district) %>% 
+  group_by(hospital) %>% 
   summarise(
     n_rows  = n(),                           # use function n() to count the number of rows
     age_avg = mean(age_years, na.rm = T),    # mean age in the group
@@ -735,16 +736,15 @@ It is a complicated command - ask your facilitator if you do not understand it.
 
 ### Final exercise  
 
-Create a data frame that summarises the following, for each district:  
+Create a data frame that summarises the following, for each hospital:  
 
 * Number of cases  
-* The percent of cases that were female  
 * The most recent onset date  
 * Number of cases under age 5 years  
 * The percent of cases that reported vomiting  
 * The maximum weight, *among male cases*  
 
-Be sure to write this command in your R script, and adjust your command to save this data frame in your R Environment as `district_info`, to keep for later.  
+Be sure to write this command in your R script, and adjust your command to save this data frame in your R Environment as `hospital_info`, to keep for later.  
 
 
 
