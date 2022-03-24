@@ -138,7 +138,7 @@ aggregate_data <- demo_agg %>%
 Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### Heat plots, epidemic curves, and pyramids  
@@ -668,6 +668,83 @@ You can always find sample code in the Heat Plots chapter of the [Epi R Handbook
 
 
 
+
+
+
+
+
+
+
+
+## Epiweeks  
+
+
+Before we discuss Epidemic curves, it is worth covering the creation of "weeks", or "epiweeks" (epidemiological weeks) in your data frame. You may want to create a new column that contains the "epiweek", based on a date such as `date_onset`, in order to create tables of the number of cases by week.  
+
+There are many different ways to define what a "week" is. Likewise, some countries formulate epiweeks differently (e.g. starting on Sundays, Mondays, or Fridays). Most of the world uses weeks that begin on Mondays. There are several ways to do this in R. Below we present the most common approach in detail, and provide you with a reference sheet for the rest.  
+
+
+### {lubridate} floor_date()  
+
+In your code that cleans the `combined` dataset (after the joins are used to create it), add a `mutate()` function to create an `epiweek` column.  
+
+Assign this new column to the function `floor_date()` from the package {lubridate}, with the following argument settings:  
+
+1) the column of dates (`date_onset`)  
+2) `unit = "week"` (this can be set to other values such as "month")  
+
+This will return a *date*, that is the Sunday prior to the onset or report date - the "floor" Sunday. This is the default.  
+
+For example:  
+
+```{r, echo=T}
+floor_date(ymd("2022-03-25"), unit = "week")   # Returns the Sunday prior to Friday 25 March, 2022  
+```
+
+If you need to create epiweeks that begin on Monday, you can set the argument `week_start = 1`.  
+
+```{r, echo=T}
+floor_date(ymd("2022-03-25"), unit = "week", week_start = 1)   # Returns the Monday prior to Friday 25 March, 2022  
+```
+
+The `mutate()` function is also used to *create* new columns. If the column name on the left side of the equals sign ( = ) does not yet exist, then it is created. As we have already done, if the column name on the right does already exist, then it is modified.  
+
+**Try adding another `mutate()` command that creates epiweek of report, using `date_report`.**  
+
+This time, adjust your command so that you nest the creation of these two columns *within one `mutate()` command*. For example:  
+
+```{r, echo=T, eval=F}
+combined %>% 
+  mutate(col1 = floor_date(___),
+         col2 = floor_date(___))
+```
+
+
+
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+```{r, eval = F, echo = T}
+combined %>% 
+  mutate(epiweek_onset = floor_date(date_onset, unit = "week", week_start = 1),
+         epiweek_report = floor_date(date_onset, unit = "week", week_start = 1))
+```
+</br>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Epi curves
 
 An epidemic curve (also known as an “epi curve”) is a core epidemiological chart typically used to visualize the temporal pattern of illness onset among a cluster or epidemic of cases.
@@ -679,85 +756,7 @@ We are going to build epidemic curves with {ggplot2}, which allows for advanced 
 
 
 
-<!-- ### incidence2 -->
 
-<!-- In order to explore epicurves, we are going to use the object `count_data`. Explore the dataframe to look at the dimensions, column names and example data. -->
-
-<!-- From this, we can use the function `incidence()` from **incidence2** to produce a simple epicurve.  -->
-
-<!-- `r fontawesome::fa("terminal", fill = "black")` Can you read the documentation of `incidence()` (`?incidence`) in order to produce a simple incidence object for the column `date_hospitalisation` with an interval of 1 week? Can you then assign this to an object `hospitalisation_week`? -->
-
-<!-- <details> -->
-<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
-<!-- </br> -->
-<!-- ```{r, eval = F, echo = T} -->
-<!-- hospitalisation_week <- incidence(combined, -->
-<!--           date_index = date_hospitalisation, -->
-<!--           interval = "weeks") -->
-<!-- ``` -->
-<!-- </br> -->
-<!-- </details> -->
-
-<!-- Okay, now that you have made the object its time to plot. In it's simplest form, you can just type type `plot(hospitalisation_week)` -->
-<!-- ```{r, eval = T, echo = F} -->
-<!-- plot(hospitalisation_week) -->
-<!-- ``` -->
-
-<!-- However, we may want to customise this output. In particular, we are not displaying potentially useful information found within `combined`, such as age categories.  -->
-
-<!-- `r fontawesome::fa("terminal", fill = "black")` Can you reform the `incidence()` object `hospitalisation_week` to additionally have the groups `hospital` and `age_cat`, with the incidence set to every 2 weeks? Remember you always consult the help (`?incidence`) if you need more information!  -->
-
-<!-- * Once you have done this, can you plot the object using `plot()` and "fill" using `age_cat` in order to see how the epidemic curves differ by age category? -->
-
-<!-- <details> -->
-<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
-<!-- </br> -->
-<!-- ```{r, eval = F, echo = T} -->
-<!-- hospitalisation_week <- incidence(combined, -->
-<!--           date_index = date_hospitalisation, -->
-<!--           groups = c(age_cat, hospital), -->
-<!--           interval = "2 weeks") -->
-
-<!-- plot(hospitalisation_week, -->
-<!--      fill = age_cat) -->
-<!-- ``` -->
-<!-- </br> -->
-<!-- </details> -->
-
-
-<!-- By default, the epi curves categories are stacked to show the overall incidence. Sometimes we would want to show them separately as it can be easier to see individual trends among groups, to do this we add the argument `stack = FALSE`. -->
-
-<!-- `r fontawesome::fa("terminal", fill = "black")` Can you update this to re-plot `hospitalisation_week`, showing with the fill of `age_cat` side-by-side (NOT stacked)? -->
-
-<!-- <details> -->
-<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
-<!-- </br> -->
-<!-- ```{r, eval = F, echo = T} -->
-<!-- plot(hospitalisation_week, -->
-<!--      fill = age_cat, -->
-<!--      stack = FALSE) -->
-<!-- ``` -->
-<!-- </br> -->
-<!-- </details> -->
-
-<!-- Now there is a lot of very useful information here, but it would also be helpful to show how these epi curves of different ages differ by hospital. In order to do this, we will need more than one plot. -->
-
-<!-- Rather than manually specifying each hospital using a filter, we can use the function `facet_plot` from **incidence2** to produce individual plots for each hospital. -->
-
-<!-- `r fontawesome::fa("terminal", fill = "black")` After looking at the help for `facet_plot`, can you plot `hospitalisation_week` with stacked bars, filled by `age_cat` and faceted by `hospital`? -->
-
-<!-- <details> -->
-<!-- <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary> -->
-<!-- </br> -->
-<!-- ```{r, eval = F, echo = T} -->
-<!-- facet_plot(hospitalisation_week, -->
-<!--      fill = age_cat, -->
-<!--      facets = hospital) -->
-<!-- ``` -->
-<!-- </br> -->
-<!-- </details> -->
-
-<!-- Great job, now that you have mastered the **incidence2** package, we will move onto using **ggplot2** in order to plot our incidence curves. -->
 
 ### {ggplot2} epicurves
 
@@ -984,11 +983,6 @@ ggplot(data = combined, aes(x = date_onset, fill = hospital)) +
 
 
 There are MANY other adjustments that you can make to your epidemic curve made with {ggplot2}. Many of them are outlined in the [Epidemic curves chapter of the Epi R Handbook](https://epirhandbook.com/en/epidemic-curves.html#epidemic-curves).  
-
-
-
-
-
 
 
 

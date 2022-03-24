@@ -82,7 +82,7 @@ surv_raw <- rio::import(system.file("dat/surveillance_linelist_20141201.csv", pa
 Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### R Markdown  
@@ -229,7 +229,7 @@ Open the R project "intro_course", as usual, by clicking on the R project icon i
 Click to *"File -> New File -> R Markdown..."*. 
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
-knitr::include_graphics("images/1_gettingstarted.png")
+knitr::include_graphics("images/1_gettingstarted.png", error = F)
 ```
 
 
@@ -256,7 +256,7 @@ Review the new menu of buttons across the top of this Rmd script:
 * Near the center is a blue "Knit" button with a drop-down menu  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "10%"}
-knitr::include_graphics("images/4_knitbutton.png")
+knitr::include_graphics("images/4_knitbutton.png", error = F)
 ```
 
 * On the right is a "Run" button with a drop-down menu  
@@ -436,7 +436,7 @@ You can also adjust chunks individually with by typing `echo = TRUE` in top of t
 If the typing syntax is intimidating, you can also set the options by clicking the small "Gear" icon on the right side of the chunk and selecting from the "Output" drop-down menu. It will insert the appropriate code into this chunk's options.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("images/3_chunk.png")
+knitr::include_graphics("images/3_chunk.png", error = F)
 ```
 
 
@@ -481,7 +481,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ## Text
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("images/2_text.png")
+knitr::include_graphics("images/2_text.png", error = F)
 ```
 
 **Using the image above as a guide, modify the default text to show the text below**  
@@ -628,7 +628,7 @@ Let's try to add a dynamic filter on `combined`, so that only cases reported pri
 So in the calendar below, if the publish date is 1 December, we only show cases reported on or before 23 November. This will help reduce the perception of artificial declines in the epidemic curves, because there is some delay in the cases appearing in the surveillance dataset.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("images/calendar.png")
+knitr::include_graphics("images/calendar.png", error = F)
 ```
 
 
@@ -844,7 +844,7 @@ Review this chapter of the [Definitive guide to R Markdown](https://bookdown.org
 Here are two examples:  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
-knitr::include_graphics("images/9_html.png")
+knitr::include_graphics("images/9_html.png", error = F)
 ```
 
 

@@ -81,7 +81,7 @@ surv_raw <- rio::import(system.file("dat/surveillance_linelist_20141201.csv", pa
 Welcome to the live course "Introduction to R for applied epidemiology", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### R setup, basic syntax, and importing data  
@@ -329,7 +329,7 @@ quiz(caption = "Quiz - R and RStudio",
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/RStudio-overview.png")
+knitr::include_graphics("images/RStudio-overview.png", error = F)
 ```
 
 **The Source Pane**
@@ -379,7 +379,7 @@ Most of the time when you use R, it will make your life drastically easier to or
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/project_briefcase.png")
+knitr::include_graphics("images/project_briefcase.png", error = F)
 ```
 
 
@@ -398,7 +398,7 @@ If you are working in an RStudio project, you will see the name of the project i
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/Rproject_dropdown.png")
+knitr::include_graphics("images/Rproject_dropdown.png", error = F)
 ```
 
 
@@ -411,7 +411,7 @@ Navigate to the "intro_course" folder that you saved on your desktop, where you 
 The contents of the folder should look similar to this:  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/new_r_project_explorer.png")
+knitr::include_graphics("images/new_r_project_explorer.png", error = F)
 ```
 
 In the folder, you should see a small file with an icon that looks like an "R box" - this is the RStudio project file (.Rproj).  
@@ -424,7 +424,7 @@ Observe in the "Files" RStudio pane (lower-right) that you can also see and acce
 
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/new_r_project.png")
+knitr::include_graphics("images/new_r_project.png", error = F)
 ```
 
 You can read more about RStudio projects in [this chapter of the Epi R Handbook](https://epirhandbook.com/en/r-projects.html).  
@@ -440,7 +440,7 @@ You can read more about RStudio projects in [this chapter of the Epi R Handbook]
 **If you have not already done so, open a new R script** by clicking *File -> New file -> R script*. 
 
 ```{r script-new, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "35%", fig.cap = ""}
-knitr::include_graphics("images/new_script.jpg")
+knitr::include_graphics("images/new_script.jpg", error = F)
 ```
 
 You should see a new empty space appear in the upper-left of RStudio. This space is the R script.  
@@ -483,7 +483,7 @@ A typical R script for public health analysis/reporting might include sections l
 In the example below, the green text and hash (#) symbols are "comments" or "notes" for the reader, or used to delineate sections of the script. The black and blue text is R code commands.  
 
 ```{r script-example, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "85%", fig.cap = ""}
-knitr::include_graphics("images/example_script.png")
+knitr::include_graphics("images/example_script.png", error = F)
 ```
 
 
@@ -708,7 +708,7 @@ By running the command with the assignment operator, you can **create** an objec
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/empty_environment.png")
+knitr::include_graphics("images/empty_environment.png", error = F)
 ```
 
 
@@ -948,7 +948,7 @@ Here is a picture of a simple R script that has good commenting:
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/example_script.png")
+knitr::include_graphics("images/example_script.png", error = F)
 ```
 
 
@@ -1117,7 +1117,7 @@ Most functions you will encounter in R have *named arguments*, which means you n
 # adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
 # It dynamically creates the ../../etc filepath.
 
-knitr::include_graphics("images/arguments-buttons.png")
+knitr::include_graphics("images/arguments-buttons.png", error = F)
 ```
 
 
@@ -1214,7 +1214,7 @@ A function's arguments and any default values can be read in the function's *doc
 The documentation details will look something like this (we can help you interpret, as they can be difficult to understand at first):  
 
 ```{r, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "60%", fig.cap = ""}
-knitr::include_graphics("images/r-help.png")
+knitr::include_graphics("images/r-help.png", error = F)
 ```
 
 
@@ -1324,7 +1324,7 @@ Once a package is **installed**, it is stored in **your R “library”**. You c
 Think of R as your personal library: *when you install a package, your library gains a new "book" of functions. But each time you want to use a function from that book, you must borrow (“load”) it from your library.*
 
 ```{r, fig.margin = TRUE, echo = FALSE, fig.width = 3, out.width = "50%", fig.cap = ""}
-knitr::include_graphics("images/bookshelf1.png")
+knitr::include_graphics("images/bookshelf1.png", error = F)
 ```
 
 In summary: to use the functions available in an R package, 2 steps must be implemented:

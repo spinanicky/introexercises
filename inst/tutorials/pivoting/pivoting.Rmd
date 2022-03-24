@@ -87,7 +87,7 @@ knitr::opts_chunk$set(echo = FALSE)
 Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### Pivoting data  

@@ -146,7 +146,7 @@ knitr::opts_chunk$set(echo = FALSE)
 Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### Joining data  
@@ -289,7 +289,7 @@ Take a few minutes to review the informaton below. We give it to you as text des
 #### Schematic  
 
 ```{r eval = TRUE, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("images/summary_joins.png")
+knitr::include_graphics("images/summary_joins.png", error = F)
 ```
 
 #### Text descriptions  
@@ -313,27 +313,27 @@ knitr::include_graphics("images/summary_joins.png")
 #### Animations  
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/left-join.gif")
+knitr::include_graphics("images/left-join.gif", error = F)
 ```
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/right-join.gif")
+knitr::include_graphics("images/right-join.gif", error = F)
 ```
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/full-join.gif")
+knitr::include_graphics("images/full-join.gif", error = F)
 ```
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/inner-join.gif")
+knitr::include_graphics("images/inner-join.gif", error = F)
 ```
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/anti-join.gif")
+knitr::include_graphics("images/anti-join.gif", error = F)
 ```
 
 ```{r eval = TRUE, echo=FALSE, out.width = '75%'}
-knitr::include_graphics("images/semi-join.gif")
+knitr::include_graphics("images/semi-join.gif", error = F)
 ```
 
 

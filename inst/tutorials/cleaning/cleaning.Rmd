@@ -84,7 +84,7 @@ surv_raw <- rio::import(system.file("dat/surveillance_linelist_20141201.csv", pa
 Welcome to the live course "Introduction to R for applied epidemiology", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### Data cleaning  
@@ -245,7 +245,7 @@ In this exercise you will:
 You can do this by navigating to the "intro_course" folder, and double-clicking on the blue ".Rproj" file in the folder. RStudio should open.
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "75%"}
-knitr::include_graphics("images/new_r_project_explorer.png")
+knitr::include_graphics("images/new_r_project_explorer.png", error = F)
 ```
 
 
@@ -647,7 +647,7 @@ Because the command will use the assignment operator **`<-`**, the modified data
 
 You should view the dataset after each function is applied, so that you can track the changes.  
 
-Here is a simplified example of cleaning code, with only a few (empty) functions. Note that this code will not run. In the coming sections of this exercise, we will build a chain like this together.   
+Here is a simplified example of cleaning code, with only a few (empty) functions (**do NOT try to run this code** - it is simply to demonstrate the outline of a cleaning pipe chain). In the coming sections of this exercise, we will build a chain like this together.   
 
 ```{r, echo=T, eval=F}
 
@@ -1017,11 +1017,10 @@ and the `dmy()` in the format as day, month , year
 Within a pipe chain, it may may look like this:  
 
 ```{r, eval = F, echo = T}
-surv <- surv_raw %>%
-  mutate(date_onset = ymd(date_onset))
+mutate(date_onset = mdy(date_onset))
 ```
  
-Above, the code is in effect saying: "change (mutate) the `date_onset` column, such that it becomes the `date_onset` column as modified by the function `ymd()`.  
+Above, the code is in effect saying: "change (mutate) the `date_onset` column, such that it becomes the `date_onset` column as modified by the function `mdy()`.  
 
 **The most important thing to remember is to use the function that matches the *current* (raw) date format**
 
@@ -1112,89 +1111,6 @@ quiz(caption = "Quiz - Date",
 
 
 
-### Epi weeks  
-
-Now that we have date columns with the correct "date" class, we can create a column to represent the "epiweek" (epidemiological week).  
-
-Some countries across the world formulate epiweeks differently (e.g. starting on Sundays, Mondays, or Fridays), but most of the world uses weeks that begin on Mondays.  
-
-To create this column, we use the function `floor_date()` from the package {lubridate}, with the following argument settings:  
-
-1) the column of dates (e.g. `date_onset`)  
-2) `unit = "week"` (this can be set to other values such as "month")  
-
-This will return a *date*, that is the Sunday prior to the onset or report date - the "floor" Sunday. This is the default.  
-
-For example:  
-
-```{r, echo=T}
-floor_date(ymd("2022-03-25"), unit = "week")   # Returns the Sunday prior to Friday 25 March, 2022  
-```
-
-If you need to create epiweeks that begin on Monday, you can set the argument `week_start = 1`.  
-
-```{r, echo=T}
-floor_date(ymd("2022-03-25"), unit = "week", week_start = 1)   # Returns the Monday prior to Friday 25 March, 2022  
-```
-
-
-The `mutate()` function is also used to *create* new columns. If the column name on the left side of the equals sign ( = ) does not yet exist, then it is created. As we have already done, if the column name on the right does already exist, then it is modified.  
-
-**Try adding two `mutate()` commands that create two epiweek columns (`week_onset` and `week_report)`, from `date_onset` and `date_report` respectively. Make both using Mondays as the week start.**  
-
-
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
-
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-
-```{r eval = F, echo=T}
-surv <- surv_raw %>% 
-  
-  # automatically clean column names
-  clean_names() %>% 
-  
-  # manually clean column names   
-  rename(
-    date_onset = onset_date,
-    date_report = date_of_report,
-    district_res = adm3_name_res,
-    district_det = adm3_name_det) %>%
-     
-  # remove unnecessary column
-  select(-row_num) %>% 
-
-  # de-duplicate rows  
-  distinct() %>% 
-     
-  # convert date_onset to date class
-  mutate(date_onset = mdy(date_onset)) %>% 
-  mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1))
-```
-</br>
-</details>
-<!--
-NOTE: End of solution
--->
-
-
-
-For more details, see the [Dates chapter of the Epi R Handbook](https://epirhandbook.com/en/working-with-dates.html#dates_epi_wks).  
-
-
-
-
-
-
-
-
 ### Age as numeric
 
 There is another column that we should check the class of: `age`. What is the class of this column?  
@@ -1254,10 +1170,6 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
      
   # convert age to numeric class
   mutate(age = as.numeric(age))
@@ -1359,10 +1271,6 @@ surv <- surv_raw %>%
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
      
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
-     
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
      
@@ -1455,10 +1363,6 @@ surv <- surv_raw %>%
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
      
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
-     
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
      
@@ -1550,10 +1454,6 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
@@ -1734,11 +1634,7 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
-     
+
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
      
@@ -1829,10 +1725,6 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
@@ -1987,10 +1879,6 @@ surv <- surv_raw %>%
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
      
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
-     
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
      
@@ -2127,10 +2015,6 @@ surv <- surv_raw %>%
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
      
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
-     
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
      
@@ -2238,10 +2122,6 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
-  # create epiweek columns  
-  mutate(week_onset = floor_date(date_onset, unit = "week", week_start = 1)) %>% 
-  mutate(week_report = floor_date(date_report, unit = "week", week_start = 1)) %>% 
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 

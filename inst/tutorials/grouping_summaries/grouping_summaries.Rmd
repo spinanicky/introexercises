@@ -87,7 +87,7 @@ surv <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package =
 Welcome to the live course "Introduction to R for applied epidemiologists", offered by [Applied Epi](www.appliedepi.org) - a nonprofit organisation that offers open-source tools, training, and support to frontline public health practitioners.  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "25%"}
-knitr::include_graphics("images/logo.png")
+knitr::include_graphics("images/logo.png", error = F)
 ```
 
 ### Grouping and summarizing  
@@ -814,7 +814,7 @@ There are a lot of further adjustments that you can make to your flextable. See 
 Here is one example, of a different table, used in the Handbook:  
 
 ```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("images/flextable.png")
+knitr::include_graphics("images/flextable.png", error = F)
 ```
 
 
