@@ -690,10 +690,10 @@ In your code that cleans the `combined` dataset (after the joins are used to cre
 
 Assign this new column to the function `floor_date()` from the package {lubridate}, with the following argument settings:  
 
-1) the column of dates (`date_onset`)  
+1) the column of dates to use (`date_onset`)  
 2) `unit = "week"` (this can be set to other values such as "month")  
 
-This will return a *date*, that is the Sunday prior to the onset or report date - the "floor" Sunday. This is the default.  
+This `floor_date()` function will return a *date*, that is the Sunday *prior* to the onset date - the "floor" Sunday. In effect, it is "rounding down" the date to previous Sunday.  
 
 For example:  
 
@@ -701,34 +701,29 @@ For example:
 floor_date(ymd("2022-03-25"), unit = "week")   # Returns the Sunday prior to Friday 25 March, 2022  
 ```
 
-If you need to create epiweeks that begin on Monday, you can set the argument `week_start = 1`.  
+If you need to create epiweeks that begin on Monday, you can set the additional argument `week_start = 1` (Sundays are 7, and Mondays are 1).  
 
 ```{r, echo=T}
 floor_date(ymd("2022-03-25"), unit = "week", week_start = 1)   # Returns the Monday prior to Friday 25 March, 2022  
 ```
 
-The `mutate()` function is also used to *create* new columns. If the column name on the left side of the equals sign ( = ) does not yet exist, then it is created. As we have already done, if the column name on the right does already exist, then it is modified.  
-
-**Try adding another `mutate()` command that creates epiweek of report, using `date_report`.**  
-
-This time, adjust your command so that you nest the creation of these two columns *within one `mutate()` command*. For example:  
+**Now try adding another `mutate()` command that creates epiweek of report, using `date_report`.** But this time, adjust your first `mutate()` command so that you nest the creation of these two columns *within one `mutate()` command*. For example:  
 
 ```{r, echo=T, eval=F}
 combined %>% 
-  mutate(col1 = floor_date(___),
-         col2 = floor_date(___))
+  mutate(epiweek_onset  = floor_date(___),    # create first new column, followed by a comma
+         epiweek_report = floor_date(___))    # create second new column, close mutate parentheses
 ```
 
-
+This is one way to make your code more concise and efficient. Each mutate statement does not require its own `mutate()` command.  
 
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 ```{r, eval = F, echo = T}
-combined %>% 
-  mutate(epiweek_onset = floor_date(date_onset, unit = "week", week_start = 1),
-         epiweek_report = floor_date(date_onset, unit = "week", week_start = 1))
+mutate(epiweek_onset = floor_date(date_onset, unit = "week", week_start = 1),
+       epiweek_report = floor_date(date_onset, unit = "week", week_start = 1))
 ```
 </br>
 </details>
