@@ -414,19 +414,26 @@ In R, missing values are represented by a reserved (special) value - `NA`. Note 
 
 Note that `NA` is typed without quotes. “NA” is different and is just a normal character value (also a Beatles lyric from the song Hey Jude).
 
-Your data may have other ways of representing missingness, such as 99, “Missing”, or “Unknown”. Similarly, when you import your datasets there may be empty cells in a CSV or XLSX that import into R with a blank space - it will look empty but actually there is a " " space!  
+Your data may have other ways of representing missingness, such as 99, “Missing”, or “Unknown”. Similarly, when you import your datasets there may be empty cells in a CSV or XLSX that import into R with a blank space - it will look empty but actually there is a " " space! 
 
-You may even have an *empty character value* which will look blank but would actually be referenced in R as: "" (different than `NA`).  
+You may even have an *empty character value* which will look blank but would actually be referenced in R as: "" (different than `NA`). For example, below we pipe our raw data frame into the `tabyl()` function, and tell this function to print the number of rows for each unique value in the column `fever`.  
+
+```{r, echo=T, eval=F}
+# tabulate gender
+surv_raw %>% 
+  tabyl(fever)
+```
+
+Do you see the counts for "no", "yes", and the third value is ... an empty space. This is not properly recognized as `NA` (missing) by R, so we will need to recode this value in our cleaning.  
 
 `r fontawesome::fa("eye", fill = "darkblue")` Let's keep an eye out for how missing values have been imported in our data set, as we begin to clean.  
-
 
 
 ### Gender  
 
 The package {janitor} and its function `tabyl()` can be used to make a rapid tabulation of values in a specified column.  
 
-Below, we pipe our dataset into the `tabyl()` function, and tell the function to provide counts for each unique value in the column `gender`.  
+Below, we again run a command to pipe our dataset into the `tabyl()` function, to get the counts for each unique value in the column `gender`.  
 
 ```{r, echo=T, eval=F}
 # tabulate gender
@@ -438,7 +445,7 @@ surv_raw %>%
 ```{r quiz-gender, echo = FALSE}
 quiz(caption = "Quiz - Gender",
   question_numeric(
-    "How many rows are missing a value for gender?",
+    "How many rows are coded as 'Unknown' gender?",
     answer(26, correct = T),
     allow_retry = TRUE,
     correct = "Correct, nice work.",
@@ -451,7 +458,7 @@ quiz(caption = "Quiz - Gender",
 
 In the previous section we noted that missing values should be listed as `NA`. Is that the case here?  
 
-**No. The missing values have been read as "" - an empty character space**.  
+**No. The missing values are coded as "Unknown".** This may be sufficient for some analyses, but usually we want to start our analysis with these as `NA` so that R correctly handles them as missing data.  
 
 We will need to address this in our cleaning steps later.  
 
@@ -774,6 +781,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 surv <- surv_raw %>% 
   clean_names() %>% 
   rename(
+    # NEW NAME     # OLD NAME
     date_onset = onset_date,
     date_report = date_of_report,
     district_res = adm3_name_res,
@@ -990,46 +998,72 @@ Compare the number of rows in `surv` to the number of rows in `surv_raw` (in the
 
 ## Column classes
 
+Each column in the data frame has a specific "class". Classes reflect how R understands the values in the column. 
+
+You reviewed the classes of each column with the `skim()` function from the {skimr} package. You can also view the class of a single column using this syntax:  
+
+```{r}
+# print the class of a column
+class(surv$gender)
+```
+
+Common classes include:  
+
+- "Numeric"  
+- "Integer" (whole numbers only)  
+- "Character"  
+- "Logical"  
+- "Date"  
+
+An early part of the data cleaning process is ensuring that R correctly understands the class for each column. R is generally good about guessing this, but sometimes it needs your help.  
+
+
+### Date class  
+
 We recognized that the column `date_onset` (previously named "onset date" in the raw dataset) is recognized by R as class "character". Often, dates in Excel worksheets arrive in this class, or in numeric (e.g. 48256), or in an even stranger class called "POSIXct". Either way, we want to designate this column as a normal and dependable class "date".  
 
-We can do this with functions from {lubridate}. We need to tell the function *how* the date is currently written - otherwise it cannot tell the month and day apart!  
+First, we need to understand *how* the date is *currently written* in the data *before the function is applied*.  
 
-{lubridate} has several helper functions designed to convert character objects to dates in a more intuitive and lenient way. These functions are specific to the rough date format, but allow for a variety of separators, and synonyms for dates (e.g. 01 vs Jan vs January) - they are named after abbreviations of date formats.
+Use the following command to look at the first six values of `date_onset` in the data frame `surv`:  
 
-The `ymd()` function converts date values supplied as year, month, day.  
+```{r, eval=F, echo=T}
+head(surv$date_onset)
+```
+
+```{r quiz-date-format}
+quiz(caption = "Quiz - raw date format",
+  question("Which format is date_onset??",
+    allow_retry = T,
+    answer("YYYY-MM-DD"),
+    answer("DD/MM/YYYY"),
+    answer("MM/DD/YYYY", correct = T)
+  )
+)
+```
+
+
+{lubridate} has several helper functions designed to convert character objects to dates in a more intuitive and lenient way. These three functions correspond to the *format of the date prior to use of the function*. The three functions are `ymd()`, `mdy()`, and `dmy()`. Their names correspond to the approximate format they expect the date be in *before* this function is applied.
+
+Thankfully, they are adaptable in that they allow for a variety of separators, and synonyms for dates (e.g. 01 vs Jan vs January):  
+
+The `ymd()` function converts values to date class that are written as: year, month, day.  
 
 * `ymd("2020-10-11")`  
 * `ymd("20201011")`
 
 
-The `mdy()` does the same but in the order of month, day, year.  
+The `mdy()` does the same but for values written as month, day, year.  
 
 * `mdy("Oct 11 20")` 
 * `mdy("10/11/20")`  
 
 
-and the `dmy()` in the format as day, month , year  
+and the `dmy()` for values written as day, month , year  
 
 * `dmy("11 October 2020")`  
 * `dmy("11/10/2020")`  
 
-
-Within a pipe chain, it may may look like this:  
-
-```{r, eval = F, echo = T}
-mutate(date_onset = mdy(date_onset))
-```
- 
-Above, the code is in effect saying: "change (mutate) the `date_onset` column, such that it becomes the `date_onset` column as modified by the function `mdy()`.  
-
-**The most important thing to remember is to use the function that matches the *current* (raw) date format**
-
-Now back to our coding. Use the function `head()` to quickly see the first 6 rows of `surv` printed to the R console.  
-
-```{r, eval=F, echo=T}
-head(surv)                # the first six rows
-head(surv$date_onset)     # the first six values in the column date_onset
-```
+**In ALL of the above commands, the *outcome* is values in date class that display as YYYY-MM-DD.**  
 
 
 ```{r quiz-date-format}
@@ -1042,6 +1076,17 @@ quiz(caption = "Quiz - date format",
   )
 )
 ```
+
+
+Within a pipe chain, the `mutate()` command it may may look like this:  
+
+```{r, eval = F, echo = T}
+mutate(date_onset = mdy(date_onset))
+```
+ 
+Above, the code is in effect saying: "change (mutate) the `date_onset` column, such that it becomes the `date_onset` column as modified by the function `mdy()`.  
+
+**The most important thing to remember is to use the function that matches the *current* (raw) date format**
 
 
 **Now add two `mutate()` commands to the pipe chain, that convert `date_onset` and `date_report` to class "date".**  
@@ -1200,9 +1245,13 @@ NOTE: End of solution
 
 ## Simple recoding  
 
+There are a variety of function that can be used to perform simple recoding of values. We will show you some in the sections below, as you add them to your pipe chain.  
+
+
+
 ### Missing values  
 
-As identified earlier, when R imported the "raw" file it recorded missing values in "character" columns as an empty character `""`, instead of as the special symbol `NA` for missing values. This is a somewhat common occurrence when importing from CSV and XLSX.  
+As identified earlier, in "raw" data there is a value "Unknown" in the column `gender`.  
 
 **Run the code below, which creates a counts table of the unique values in the column `gender`.**  
 
@@ -1211,34 +1260,20 @@ surv_raw %>%
   tabyl(gender)
 ```
 
-We need to tell R that if the value in `gender` is empty "" then R should change the value to `NA`.  
+We want to tell R that if the value in `gender` is "Unknown" then R should change the value to `NA`. We may change this later, but for now, let's convert it to `NA`.  
 
-**Use `mutate()` on the column `gender` and set it equal to the function `na_if()`.** In the parentheses of `na_if()`, again write `gender`, then a comma, and then two quote marks with no space in between: `na_if(gender, "")`.
+**Use `mutate()` on the column `gender` and set it equal to the function `na_if()`.** In the parentheses of `na_if()`, again write `gender`, then a comma, and then "Unknown" in quote marks: `mutate(gender = na_if(gender, "Unknown"))`.
 
-This code is saying: "Change `gender`, such that its values are equivalent to the column `gender` as changed by the function `na_if()` so that any instances of `""` are replaced by `NA`".  
-
-```{r, echo=T, eval=F}
-mutate(gender = na_if(gender, ""))
-```
-
-**Run this short code below to test the new command - it makes the change and prints the tabyl.** Do you see how the missing values are now listed as NA's?  
-
-```{r, eval=F, echo=T}
-surv %>% 
-  mutate(gender = na_if(gender, "")) %>% 
-  tabyl(gender)
-```
-
-We need to apply this change for *all* the columns in the dataset that are class "character" (gender, hospital, gender, wt_kg, ht_cm, fever, chills, cough...). It is a long list...  
-
-It is totally possible to write one `mutate()` command for each of these columns, but that would take a long time. Below we give you some advanced R code that automatically applies this change across all columns that are of class "character". Later, you can read more about `across()` in the [Epi R Handbook here](https://epirhandbook.com/en/cleaning-data-and-core-functions.html#clean_across).  
+The function `na_if()` replace a specified value with `NA`. This code is saying: "Change `gender`, such that its values are equivalent to the column `gender` as changed by the function `na_if()` so that any instances of "Unknown" are replaced by `NA`".  
 
 ```{r, echo=T, eval=F}
-surv <- surv_raw %>% 
-  mutate(across(.cols = where(is.character), .fns = na_if, ""))
+mutate(gender = na_if(gender, "Unknown"))
 ```
 
-We have added this code to the pipe chain in the solution below.  
+Add this command to your pipe chain.
+
+Note: it is also useful to know the opposite function, `replace_na()`, which replaces `NA` with a specified value.  
+
 
 <!--
 NOTE: Below is the solution (all within details tags collapsed)
@@ -1273,9 +1308,10 @@ surv <- surv_raw %>%
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
-     
-  # properly record missing values
-  mutate(across(.cols = where(is.character), .fns = na_if, ""))
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown"))
+
 ```
 
 </br>
@@ -1284,57 +1320,40 @@ surv <- surv_raw %>%
 NOTE: End of solution
 -->
 
-`r fontawesome::fa("bookmark", fill = "orange")` **Please note the below commands related to missingness in R**.  
+**Now re-run the `tabyl()` command on `gender` and see how the missing values are represented as `NA`.**  
 
-* `is.na()` is used to assess whether a value is `NA`  
-* `!is.na()` is used to assess whether a value is NOT `NA`  
+Run this short code below to test the new command - it makes the change and prints the tabyl.** Do you see how the missing values are now listed as NA's?  
 
 
-### Assessing missingness  
+We need to apply this change for *all* the columns in the dataset that are class "character" (gender, hospital, gender, wt_kg, ht_cm, fever, chills, cough...). It is a long list...  
 
-We have two date columns: `date_onset` and `date_report`. The first is the date of symptom onset, as recorded by the surveillance team. The second is the date the case was reported to the surveillance team.  
 
-**Which one should we be primarily using?**  
+### Across  
 
-There are many factors that go into a decision like this, such as the purpose of the analysis, the audience, etc. One important factor is data quality and missingness.  
+As mentioned earlier, when R imports "raw" files from CSV or XLSX sometimes it records missing values in "character" columns as an empty character `""`, instead of as the special symbol `NA`.  
 
-Missingness in R is represented by `NA` - or at least it should be - as we discussed above. The function to assess missingness is `is.na()` (whereas `!is.na()` is used to test for non-missingness). In both of these functions, the object you want to assess in placed within the parentheses.  
+**Run the code below, which creates a counts table of the unique values in the column `gender`.**  
 
-To *count* the number of rows that meet a certain logical criteria, you can further wrap them in `sum()`, as below:  
+```{r, echo=T}
+surv_raw %>% 
+  tabyl(fever)
+```
+
+We need to tell R that if the value in `fever` is empty "" then R should change the value to `NA`. Don't spend the time to look, but there are many columns in the dataset where missing is recorded as "". How can we make all these changes efficiently?  
+
+We are going to give you a command that uses `across()` within the `mutate()` to change multiple columns at once. This is an intermediate R command, so *please do not spend time trying to understand it*. Later, you can read more about `across()` in the [Epi R Handbook here](https://epirhandbook.com/en/cleaning-data-and-core-functions.html#clean_across). **Add this command to your pipe chain.**  
 
 ```{r, echo=T, eval=F}
-sum(is.na(surv$date_onset))
-sum(is.na(surv$date_report))
+mutate(across(.cols = where(is.character), .fns = na_if, ""))
 ```
 
-**Run these two commands** (not in your pipe chain, just as stand-alone commands)  
-
-```{r quiz-dates2}
-quiz(caption = "Quiz - Date",
-  question("Which column has more missing data?",
-    allow_retry = T,
-    answer("date_onset", correct = T),
-    answer("date_report")
-  ),
-  question("Which percent of 'date_onset' is missing?",
-    allow_retry = T,
-    answer("16.4%"),
-    answer("10.2%"),
-    answer("1%"),
-    answer("5.3%", correct = T)
-  )
-)
-```
+Briefly, this command is saying: 'Mutate all the columns that are character class, and use the function `na_if()` to convert any instances of "" to `NA`'.  If should change the columns `fever`, `vomit`, `hospital`, `district`, and any other character columns.  
 
 
 
-
-
-### Date difference  
-
-Now that both of the date columns are correctly classified as "date", we can do math on them with simple + and - operators.  
-
-**Add a `mutate()` command to the pipe chain, to create a new column named `diff`**. Define this new column to equal the number of days between `date_onset` and `date_report` for each case.  
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
 
 <details>
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
@@ -1365,12 +1384,12 @@ surv <- surv_raw %>%
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
      
-  # properly record missing values
-  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset)
+  # properly record missing values in many character columns
+  mutate(across(.cols = where(is.character), .fns = na_if, ""))
 ```
 
 </br>
@@ -1380,42 +1399,187 @@ NOTE: End of solution
 -->
 
 
-Check the calculation for a few rows, manually. Is it how you expect?  
+### Assessing missingness  
 
-Note that this column's values appear like "4 days" - this is a special class called "difftime". If you want the result to be purely numeric, you have to wrap the result in `as.numeric()`. That would look like this:  
+While we are discussing missing values, let's introduce you to the core R functions used to assess missingness.  
+
+We have two date columns in the data frame: `date_onset` and `date_report`. The first is the date of symptom onset, as recorded by the surveillance team. The second is the date the case was reported to the surveillance team.  
+
+**Which one should we be primarily using?**  
+
+There are many factors that go into a decision like this, such as the purpose of the analysis, the audience, etc. One important factor is data quality and missingness.  
+
+Missingness in R is represented by `NA` - or at least it should be - as we discussed above. The function to assess missingness is `is.na()` (whereas `!is.na()` is used to test for non-missingness). In both of these functions, the object you want to assess in placed within the parentheses.  
+
+`r fontawesome::fa("bookmark", fill = "orange")` **Please remember the below commands related to missingness in R**.  
+
+* `is.na()` is used to assess whether a value is `NA`  
+* `!is.na()` is used to assess whether a value is NOT `NA`  
+
+To *count* the number of rows that meet a certain logical criteria, you can further wrap them in `sum()`, as below:  
 
 ```{r, echo=T, eval=F}
-mutate(diff = as.numeric(date_report - date_onset))
+sum(is.na(surv$date_onset))   # the number of rows where is.na(surv$date_onset) evaluates to TRUE
+sum(is.na(surv$date_report))  # the number of rows where is.na(surv$date_report) evaluates to TRUE
 ```
 
-Note that currently, a patient with `date_onset` and `date_report` on 9 November 2014 would be recorded with `diff` of 0 days. In your work context, you may want to add a `+1` after the end of the `as.numeric()` command, if you prefer same day admission to be recorded as 1 and not 0.  
+**Run these two commands** (not in your pipe chain, but as stand-alone commands)  
+
+```{r quiz-dates2}
+quiz(caption = "Quiz - Date",
+  question("Which column has more missing data?",
+    allow_retry = T,
+    answer("date_onset", correct = T),
+    answer("date_report")
+  ),
+  question("Which percent of 'date_onset' is missing?",
+    allow_retry = T,
+    answer("16.4%"),
+    answer("10.2%"),
+    answer("1%"),
+    answer("5.3%", correct = T)
+  )
+)
+```
 
 
 
 
 
+### Re-coding hospital names  
 
+Our pipe chain is getting quite long! Each step is important, and thankfully it is all well-documented in our code. This transparency is useful for ourselves, anyone reviewing our code later, and for scientific integrity!  
+
+Now we turn to the column `hospital`. Try this code below. It will print a tabulation of all the values in this column:  
+
+```{r, echo=T, eval=F}
+surv %>% 
+  tabyl(hospital)
+```
+
+It seems there is some cleaning to be done! Note the different spellings of "hospital" and "hopital", of "Military" and "Mitilary", and of "Port" and "Port Hospital". These need to be syncronized.  
+
+An easy option is `recode()`. The syntax is relatively simple when we want to simply exchange one value for another:  
+
+```{r, echo=T, eval=F}
+surv %>% 
+  mutate(hospital = recode(hospital,
+    "OLD value" = "NEW value",
+    "OLD value" = "NEW value",
+    "OLD value" = "NEW value"))
+```
+
+The above code can be read as: "Re-define `hospital` as `hospital` with these recodes applied". *Note that this uses the opposite syntax order from `rename()`, which was NEW = OLD.*  
+
+**Using the above code as a template, try to write a command at the end of your pipe chain that aligns all the hospital names to the following:**  
+
+* Military Hospital  
+* Port Hospital  
+* Central Hospital
+* SMMH
+* Other  
+
+We will leave `NA` hospitals as they are.  
+
+<!--
+NOTE: Below is the hint (all within details tags collapsed)
+-->
+<details>
+
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
+</br>
+
+Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the column to re-define `hospital` and an equals sign. On the right side of the equals sign, you write the function `recode()`. Within the parentheses of `recode()`, the first argument is again the name of the column to re-define.
+
+After a comma, continue with one line per change, with the old value on the left, and the new value on the right. As these are character values, put them in quotes. Don't forget commas between each line, and to close with the correct number of parentheses.  
+
+</br>
+</details>
+
+
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+surv <- surv_raw %>% 
+  
+  # automatically clean column names
+  clean_names() %>% 
+  
+  # manually clean column names   
+  rename(
+    date_onset = onset_date,
+    date_report = date_of_report,
+    district_res = adm3_name_res,
+    district_det = adm3_name_det) %>%
+     
+  # remove unnecessary column
+  select(-row_num) %>% 
+
+  # de-duplicate rows  
+  distinct() %>% 
+     
+  # convert date_onset to date class
+  mutate(date_onset = mdy(date_onset)) %>% 
+  mutate(date_report = mdy(date_report)) %>% 
+     
+  # convert age to numeric class
+  mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
+     
+  # properly record missing values in many character columns
+  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH"))
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+
+
+## Logical recoding  
+
+
+Sometimes, the recoding we want is not as simple as replacing one value for another. Instead, we use logical criteria and logical operators, and often reference values in several columns.  
 
 
 ### Negative values  
 
-In the weight column `wt_kg`, there are some negative values. Open the data frame in the viewer (e.g. by clicking the data frame name in the Environment pane) and sort the dataset by clicking on the `wt_kg` column.  
+In the weight column `wt_kg`, there are some negative values. Open the data frame in the viewer (e.g. by clicking the data frame name in the Environment pane) and sort the dataset by clicking on the `wt_kg` column. Note the negative values.  
 
-Run the {base} command `summary()` on the column `surv$wt_kg` to return key summary statistics on this numeric column:  
+Alternatively, run the {base} command `summary()` on the column `surv$wt_kg` to return key summary statistics on this numeric column:  
 
 ```{r, echo=T, eval=F}
 summary(surv$wt_kg)
 ```
 
-This must be some data entry error. To avoid errors in any future calculations or plots, convert these values to `NA` (missing). Remember, you should make edits like this here in the script. It is better than editing in CSV file, because here there is a record of changes performed.  
+This must be some data entry error. To avoid errors in any future calculations or plots, convert these values to `NA` (missing). Remember, you should make edits like this here in the script. This is better than editing in CSV file, because here there is a record of changes performed.  
 
-The logic we want to apply is simple: "If negative, convert to `NA`, otherwise remain the same." Therefore, we can use the `ifelse()` function within `mutate()`.  
+The logic we want to apply is simple: "If `wt_kg` negative, convert it to `NA`, otherwise remain the same." Therefore, we can use the `if_else()` function within `mutate()`.  
 
-The syntax is: `ifelse(CONDITION APPLIED TO ROW, OUTCOME IF TRUE, OUTCOME IF FALSE)`  
+The syntax is: `if_else(CONDITION APPLIED TO ROW, OUTCOME IF TRUE, OUTCOME IF FALSE)`  
 
 ```{r, echo=T, eval=F}
-surv %>% 
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))
+mutate(wt_kg = if_else(wt_kg < 0, NA, wt_kg))
 ```
 
 **Add this to your pipe chain and verify that it worked correctly**
@@ -1457,17 +1621,23 @@ surv <- surv_raw %>%
      
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
      
-  # properly record missing values
+  # properly record missing values in many character columns
   mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
        
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-  # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) 
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg)) 
      
 ```
 
@@ -1476,6 +1646,14 @@ surv <- surv_raw %>%
 <!--
 NOTE: End of solution
 -->
+
+Now re-run your `summary()` command to check the new range of the values:  
+
+```{r, echo=T, eval=F}
+summary(surv$wt_kg)
+```
+
+
 
 
 ### Review logical operators  
@@ -1526,12 +1704,7 @@ Logical operators, such as AND and OR, are often used to connect relational oper
 
 
 
-
-
-
-
-
-## `case_when()` complex recoding  
+### `case_when()` complex recoding  
 
 Our next task is to recode the values in the column `gender`: "m" to "male" and "f" to "female".  
 
@@ -1544,18 +1717,88 @@ This logic is slightly more complex than when we used `ifelse()`. Instead, we wi
 
 ```{r, eval = F, echo=T}
 # Example of mutate() with case_when() to edit values in gender column
-surv %>% 
-  mutate(gender = case_when(     # re-define gender as: 
-     gender == 'm' ~ 'male',     # when "m", change to "male"   
-     gender == 'f' ~ 'female',   # when "f", change to "female" 
+mutate(gender = case_when(     # re-define gender as: 
+     gender == "m" ~ "male",     # when "m", change to "male"   
+     gender == "f" ~ "female",   # when "f", change to "female" 
      TRUE          ~ gender))    # any other value, remain as before
 ```
 
+Note the use of the double == to ask "**is** gender equal to 'm'?
 Notably, the criteria are applied to each row in the dataset **in the order they are written in the `case_when()` command (top-to-bottom).** So, if for a given dataset row the first criteria is met (e.g., `gender` == "m"), then the remaining criteria are not tested. It is therefore important to order your arguments correctly, from most specific to generic.
 
 Along those lines, in your *final statement*, it is advised to place TRUE on the left-side, which will capture any row that did not meet any of the previous criteria. The right-side of this statement could be assigned a value like “check me!”, or missing, or as in the example above to the column name to revert to the original value.  
 
 `r fontawesome::fa("exclamation", fill = "red")` *DANGER: All outcome values on the RIGHT-side must all be the same class - either numeric, integer, character, date, logical, etc. Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html).*  
+
+
+
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+surv <- surv_raw %>% 
+  
+  # automatically clean column names
+  clean_names() %>% 
+  
+  # manually clean column names   
+  rename(
+    date_onset = onset_date,
+    date_report = date_of_report,
+    district_res = adm3_name_res,
+    district_det = adm3_name_det) %>%
+     
+  # remove unnecessary column
+  select(-row_num) %>% 
+
+  # de-duplicate rows  
+  distinct() %>% 
+     
+  # convert date_onset to date class
+  mutate(date_onset = mdy(date_onset)) %>% 
+  mutate(date_report = mdy(date_report)) %>% 
+
+  # convert age to numeric class
+  mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
+     
+  # properly record missing values in many character columns
+  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
+  # convert gender values to full words
+  mutate(gender = case_when(          # re-define gender as: 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
+    TRUE          ~ gender))          # any other value, remain as before
+
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
 
 
 
@@ -1574,17 +1817,17 @@ Below we give you the outline of the command - it is your responsibility to fill
   # create age-in-years
   mutate(age_years = case_when(
     
-    # logic on age_unit    # adjustment to make age_years  
-    logic_if_months      ~ calculation,    # if age is given in months, return: age / 12
-    logic_if_years       ~ calculation,    # if age is given in years, leave as: age 
-    logic_if_missing ~   ~ age,            # if age unit is missing, assume years, and leave as: age
-    TRUE                 ~ NA_real_))      # leave this unchanged. In any other circumstance, assign missing.
+    # logic for age_unit    # adjustment to make age_years  
+    if_months      ~ calculation,    # return: age / 12
+    if_years       ~ calculation,    # return: age 
+    if_missing     ~ age,            # if age_unit is missing, assume years and return: age
+    TRUE           ~ NA_real_))      # leave unchanged
 ```
 
 
-Of note, the last line should remain unchanged. It is best practice to end a `case_when()` command with `TRUE`, that will catch all rows that have not met any of the previous logical criteria. In this case we set this to `NA`.
+Of note, the last line should remain unchanged. It is best practice to end a `case_when()` command with `TRUE`, that will catch all rows that have not met any of the previous logical criteria. We want the `age_years` for these rows to be set to `NA`. In this case we use `NA_real_` because all the other right-side values are numeric, so R requires that we use this special numeric version of `NA`.  
 
-It is important to know that in `case_when()`, all of the right-side values must be of the same class (numeric, integer, character, date, logical, etc). Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html). In this case our new variable will be numeric, so we use NA_real_.  
+It is important to know that in `case_when()`, all of the right-side values must be of the same class (numeric, integer, character, date, logical, etc). Sometimes, this requires assigning variations of `NA` such as `NA_character_`, `NA_real_` (for numeric), and `as.Date(NA)`. Read more in the dates chapter of [the Epi R Handbook](https://www.epirhandbook.com/en/working-with-dates.html). In this case our new variable will be numeric, so we use `NA_real_`.  
 
 <!--
 NOTE: Below is the hint (all within details tags collapsed)
@@ -1637,21 +1880,28 @@ surv <- surv_raw %>%
 
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
      
-  # properly record missing values
+  # properly record missing values in many character columns
   mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-  # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) %>% 
-     
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
   # convert gender values to full words
   mutate(gender = case_when(          # re-define gender as: 
-    gender == 'm' ~ 'male',           # when "m", change to "male"   
-    gender == 'f' ~ 'female',         # when "f", change to "female" 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
     TRUE          ~ gender)) %>%      # any other value, remain as before
      
   # create age-in-years
@@ -1689,10 +1939,7 @@ The arguments for `age_categories` are:
 4) `by = ` A number for the width of the categories (10)  
 
 
-Is that enough information for you to try adding this to the pipe chain?
-
-**Try adding this command to the pipe chain** To see if the code is correct, compare the values in `age_years` and `age_cat`.  
-If you get stuck, see the solution code hidden below.  
+**Try adding this command to the pipe chain** If you get stuck, see the solution code hidden below.  
 
 
 <!--
@@ -1725,25 +1972,32 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
+
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
      
-  # properly record missing values
+  # properly record missing values in many character columns
   mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-    # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) %>% 
-     
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
   # convert gender values to full words
-  mutate(gender = case_when(               # re-define gender as: 
-    gender == 'm' ~ 'male',                # when "m", change to "male"   
-    gender == 'f' ~ 'female',              # when "f", change to "female" 
-    TRUE          ~ gender)) %>%           # any other value, remain as before
+  mutate(gender = case_when(          # re-define gender as: 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
+    TRUE          ~ gender)) %>%      # any other value, remain as before
      
   # create age-in-years
   mutate(age_years = case_when(
@@ -1781,6 +2035,105 @@ NOTE: End of solution
 
 
 
+## Date differences  
+
+Now that both of the date columns are correctly classified as "date", we can do math on them with simple + and - operators.  
+
+**Add a `mutate()` command to the pipe chain, to create a new column named `diff`**. Define this new column to equal the number of days between `date_onset` and `date_report` for each case.  
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+surv <- surv_raw %>% 
+  
+  # automatically clean column names
+  clean_names() %>% 
+  
+  # manually clean column names   
+  rename(
+    date_onset = onset_date,
+    date_report = date_of_report,
+    district_res = adm3_name_res,
+    district_det = adm3_name_det) %>%
+     
+  # remove unnecessary column
+  select(-row_num) %>% 
+
+  # de-duplicate rows  
+  distinct() %>% 
+     
+  # convert date_onset to date class
+  mutate(date_onset = mdy(date_onset)) %>% 
+  mutate(date_report = mdy(date_report)) %>% 
+
+  # convert age to numeric class
+  mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
+     
+  # properly record missing values in many character columns
+  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
+  # convert gender values to full words
+  mutate(gender = case_when(          # re-define gender as: 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
+    TRUE          ~ gender)) %>%      # any other value, remain as before
+     
+  # create age-in-years
+  mutate(age_years = case_when(
+    age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
+    is.na(age_unit)      ~ age,            # if age unit is missing, assume years
+    TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
+       
+  # create age category column
+  mutate(age_cat = age_categories(         # create new column
+    age_years,                             # numeric column to make groups from
+    lower = 0,
+    upper = 70,
+    by = 10)) %>% 
+     
+  # Make date-difference column  
+  mutate(diff = date_report - date_onset)
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+Check the calculation for a few rows, manually. Is it how you expect?  
+
+Note that this column's values appear like "4 days" - this is a special class called "difftime". If you want the result to be purely numeric, you have to wrap the result in `as.numeric()`. That would look like this:  
+
+```{r, echo=T, eval=F}
+mutate(diff = as.numeric(date_report - date_onset))
+```
+
+Note that currently, a patient with `date_onset` and `date_report` on 9 November 2014 would be recorded with `diff` of 0 days. In your work context, you may want to add a `+1` after the end of the `as.numeric()` command, if you prefer same day admission to be recorded as 1 and not 0.  
+
+
+
+
+
+
 
 ## Location  
 
@@ -1788,18 +2141,18 @@ We have two columns that express districts (locations) - of the cases's residenc
 
 **How similar are these two columns?**
 
-One way to assess how similar the columns are, is to *create a new column* that indicates whether the two values are different. Then, you can tabulate this new column.  
+One way to assess how similar the columns are, is to *create a new column* that indicates whether the two column's values in that row are different. Then, you can tabulate this new column.  
 
-The syntax is actually quite simple, using `mutate()` and the `!=` operator (which means NOT EQUAL TO).  
-
+The syntax is actually quite simple, using `mutate()` and the `!=` operator (which means NOT EQUAL TO). **Add this to your pipe chain**.
+  
 
 ```{r, eval=F, echo=T}
-surv %>% 
-  # New column will be TRUE if the two values are different
-  mutate(moved = district_res != district_det)
+# New column will be TRUE if the two values are different
+mutate(moved = district_res != district_det)
 ```
 
-Try this in your RStudio. Then **open the `surv` dataset in the viewer** (by clicking on it) and filter new column to show rows that are TRUE. Was the logic for the new column applied correctly? Are TRUE and FALSE appearing where they should be?  
+
+Now try to assess the differences manually in RStudio. **Open the `surv` dataset in the viewer** (by clicking on it in the Environment pane) and but the filter button to limit the view to rows in which the new column `moved` is TRUE. Was the logic for the new column applied correctly? Are TRUE and FALSE appearing where they should be?  
 
 ```{r quiz-moved, echo = FALSE}
 quiz(caption = "Quiz - Moving cases",
@@ -1815,6 +2168,8 @@ quiz(caption = "Quiz - Moving cases",
 )
 ```
 
+### Prioritize certain values  
+
 Now that you know there is some discrepancy, which of these values should be prioritized? District of residence, or district of detection?  
 
 This is a question that each outbreak epidemiology team must answer given their knowledge of the data collection process, and of the outbreak itself. **For this exercise, we will prioritize location of detection**, because it might better reflect the nearby populations who are at higher risk for infection (which can be best understood by good case investigation).  
@@ -1826,9 +2181,105 @@ This is a question that each outbreak epidemiology team must answer given their 
 mutate(district = coalesce(district_det, district_res))
 ```
 
-**View the dataset again, and verify that this code worked as expected**  
 
-Use the manual **filters** in the dataset viewer to answer this question:  
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+surv <- surv_raw %>% 
+  
+  # automatically clean column names
+  clean_names() %>% 
+  
+  # manually clean column names   
+  rename(
+    date_onset = onset_date,
+    date_report = date_of_report,
+    district_res = adm3_name_res,
+    district_det = adm3_name_det) %>%
+     
+  # remove unnecessary column
+  select(-row_num) %>% 
+
+  # de-duplicate rows  
+  distinct() %>% 
+     
+  # convert date_onset to date class
+  mutate(date_onset = mdy(date_onset)) %>% 
+  mutate(date_report = mdy(date_report)) %>% 
+
+  # convert age to numeric class
+  mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
+     
+  # properly record missing values in many character columns
+  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
+  # convert gender values to full words
+  mutate(gender = case_when(          # re-define gender as: 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
+    TRUE          ~ gender)) %>%      # any other value, remain as before
+     
+  # create age-in-years
+  mutate(age_years = case_when(
+    age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
+    is.na(age_unit)      ~ age,            # if age unit is missing, assume years
+    TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
+       
+  # create age category column
+  mutate(age_cat = age_categories(         # create new column
+    age_years,                             # numeric column to make groups from
+    lower = 0,
+    upper = 70,
+    by = 10)) %>% 
+     
+  # Make date-difference column  
+  mutate(diff = date_report - date_onset) %>% 
+     
+  # create column marking TRUE if district of residence and detection differ
+  mutate(moved = district_res != district_det) %>% 
+  
+  # create new column that prioritizes district of detection
+  mutate(district = coalesce(district_det, district_res))
+
+```
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+**View the dataset in the RStudio viewer again, and verify with your eye that this code worked as expected**  
+
+Use the following command to answer the question below:
+
+```{r, echo=T, eval=F}
+# cross tabulate "moved" column with "district_res" column
+surv %>% 
+  tabyl(moved, district_res)
+```
+
 
 ```{r quiz-moved-home, echo = FALSE}
 quiz(caption = "Quiz - Moving cases origin",
@@ -1845,86 +2296,6 @@ quiz(caption = "Quiz - Moving cases origin",
 ```
 
 
-Below, you can see this code incorporated into the pipe chain:  
-
-
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
-
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-
-```{r eval = F, echo=T}
-surv <- surv_raw %>% 
-  
-  # automatically clean column names
-  clean_names() %>% 
-  
-  # manually clean column names   
-  rename(
-    date_onset = onset_date,
-    date_report = date_of_report,
-    district_res = adm3_name_res,
-    district_det = adm3_name_det) %>%
-     
-  # remove unnecessary column
-  select(-row_num) %>% 
-
-  # de-duplicate rows  
-  distinct() %>% 
-     
-  # convert date_onset to date class
-  mutate(date_onset = mdy(date_onset)) %>% 
-  mutate(date_report = mdy(date_report)) %>% 
-     
-  # convert age to numeric class
-  mutate(age = as.numeric(age)) %>% 
-     
-  # properly record missing values
-  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-    # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) %>% 
-     
-  # convert gender values to full words
-  mutate(gender = case_when(               # re-define gender as: 
-    gender == 'm' ~ 'male',                # when "m", change to "male"   
-    gender == 'f' ~ 'female',              # when "f", change to "female" 
-    TRUE          ~ gender)) %>%           # any other value, remain as before
-     
-  # create age-in-years
-  mutate(age_years = case_when(
-    age_unit == "months" ~ age/12,         # if age is given in months
-    age_unit == "years"  ~ age,            # if age is given in years
-    is.na(age_unit)      ~ age,            # if age unit is missing, assume years
-    TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
-       
-  # create age category column
-  mutate(age_cat = age_categories(         # create new column
-    age_years,                             # numeric column to make groups from
-    lower = 0,
-    upper = 70,
-    by = 10)) %>% 
-     
-  # create column marking TRUE if district of residence and detection differ
-  mutate(moved = district_res != district_det) %>% 
-  
-  # create new column that prioritizes district of detection
-  mutate(district = coalesce(district_det, district_res))
-
-```
-</br>
-</details>
-<!--
-NOTE: End of solution
--->
-
 `r fontawesome::fa("exclamation", fill = "red")`
 **Have you saved your script lately?**  
 
@@ -1933,141 +2304,11 @@ NOTE: End of solution
 
 
 
-## Re-coding hospital  
-
-Our pipe chain is getting quite long! Each step is important, and thankfully it is all well-documented in our code. This transparency is useful for ourselves, anyone reviewing our code later, and for scientific integrity!  
-
-Now we turn to the column `hospital`. Try this code below. It will print a tabulation of all the values in this column:  
-
-```{r, echo=T, eval=F}
-surv %>% 
-  tabyl(hospital)
-```
-
-It seems there is some cleaning to be done!  
-
-You could use `case_when()`, but an easier option in this circumstance is `recode()`. The syntax is more simple when we want to simply exchange one value for another:  
-
-```{r, echo=T, eval=F}
-surv %>% 
-  mutate(hospital = recode(hospital,
-    "OLD value" = "NEW value",
-    "OLD value" = "NEW value",
-    "OLD value" = "NEW value"))
-```
-
-The above code can be read as: "Re-define `hospital` as `hospital` with these recodes applied". 
-
-**Using the above code as a template, try to write a command that aligns hospital names to the following:**  
-
-* Military Hospital  
-* Port Hospital  
-* Central Hospital
-* SMMH
-* Other  
-
-We will leave `NA` hospitals as they are.  
-
-<!--
-NOTE: Below is the hint (all within details tags collapsed)
--->
-<details>
-
-<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
-</br>
-
-Begin as before by piping to a `mutate()`. Within the `mutate()` parentheses, write the name of the column to re-define `hospital` and an equals sign. On the right side of the equals sign, you write the function `recode()`. Within the parentheses of `recode()`, the first argument is again the name of the column to re-define.
-
-After a comma, continue with one line per change, with the old value on the left, and the new value on the right. As these are character values, put them in quotes. Don't forget commas between each line, and to close with the correct number of parentheses.  
-
-</br>
-</details>
 
 
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
 
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
 
-```{r eval = F, echo=T}
-surv <- surv_raw %>% 
-  
-  # automatically clean column names
-  clean_names() %>% 
-  
-  # manually clean column names   
-  rename(
-    date_onset = onset_date,
-    date_report = date_of_report,
-    district_res = adm3_name_res,
-    district_det = adm3_name_det) %>%
-     
-  # remove unnecessary column
-  select(-row_num) %>% 
 
-  # de-duplicate rows  
-  distinct() %>% 
-     
-  # convert date_onset to date class
-  mutate(date_onset = mdy(date_onset)) %>% 
-  mutate(date_report = mdy(date_report)) %>% 
-     
-  # convert age to numeric class
-  mutate(age = as.numeric(age)) %>% 
-     
-  # properly record missing values
-  mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-  # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) %>% 
-     
-  # convert gender values to full words
-  mutate(gender = case_when(               # re-define gender as: 
-    gender == 'm' ~ 'male',                # when "m", change to "male"   
-    gender == 'f' ~ 'female',              # when "f", change to "female" 
-    TRUE          ~ gender)) %>%           # any other value, remain as before
-     
-  # create age-in-years
-  mutate(age_years = case_when(
-    age_unit == "months" ~ age/12,         # if age is given in months
-    age_unit == "years"  ~ age,            # if age is given in years
-    is.na(age_unit)      ~ age,            # if age unit is missing, assume years
-    TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
-       
-  # create age category column
-  mutate(age_cat = age_categories(         # create new column
-    age_years,                             # numeric column to make groups from
-    lower = 0,
-    upper = 70,
-    by = 10)) %>% 
-     
-  # create column marking TRUE if district of residence and detection differ
-  mutate(moved = district_res != district_det) %>% 
-  
-  # create new column that prioritizes district of detection
-  mutate(district = coalesce(district_det, district_res)) %>% 
-  
-  # re-code hospital column
-  mutate(hospital = recode(hospital,
-    # for reference: OLD = NEW
-    "Mitilary Hospital"  = "Military Hospital",
-    "Port"               = "Port Hospital",
-    "Port Hopital"       = "Port Hospital",
-    "St. Marks Maternity Hopital (SMMH)" = "SMMH"))
-```
-
-</br>
-</details>
-<!--
-NOTE: End of solution
--->
 
 
 
@@ -2081,11 +2322,10 @@ Sub-setting rows is done with the function `filter()`. Inside the parentheses yo
 
 For the purposes of this exercise, we will remove any "suspect" cases from the dataset.
 
-The simplest way of filtering, is to use a logical condition ("==", "!=", ">", "<", etc), so that only rows where the logical statement is `TRUE` are kept. For example here, we are only keeping rows where the gender is equal to "f".
+The simplest way of filtering, is to use a logical condition ("==", "!=", ">", "<", etc), so that only rows where the logical statement is `TRUE` are kept. For example here, we are only keeping rows where the gender is equal to "female".
 
 ```{r, echo = T, eval = FALSE}
-surv %>% 
-  filter(gender == "female")
+filter(gender == "female")
 ```
 
 Multiple logical criteria can be combined using & (and), | (or), and parentheses.  
@@ -2122,30 +2362,37 @@ surv <- surv_raw %>%
   # convert date_onset to date class
   mutate(date_onset = mdy(date_onset)) %>% 
   mutate(date_report = mdy(date_report)) %>% 
-     
+
   # convert age to numeric class
   mutate(age = as.numeric(age)) %>% 
+  
+  # convert "Unknown" gender to NA
+  mutate(gender = na_if(gender, "Unknown")) %>% 
      
-  # properly record missing values
+  # properly record missing values in many character columns
   mutate(across(.cols = where(is.character), .fns = na_if, "")) %>% 
-     
-  # Make date-difference column  
-  mutate(diff = date_report - date_onset) %>% 
-     
-  # convert negative values to NA
-  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg),
-         bmi   = ifelse(bmi < 0,   NA, bmi)) %>% 
-     
+  
+  # re-code hospital column
+  mutate(hospital = recode(hospital,
+    # for reference: OLD = NEW
+    "Mitilary Hospital"  = "Military Hospital",
+    "Port"               = "Port Hospital",
+    "Port Hopital"       = "Port Hospital",
+    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>%
+       
+  # convert negative weight values to NA
+  mutate(wt_kg = ifelse(wt_kg < 0, NA, wt_kg))  %>% 
+
   # convert gender values to full words
-  mutate(gender = case_when(               # re-define gender as: 
-    gender == 'm' ~ 'male',                # when "m", change to "male"   
-    gender == 'f' ~ 'female',              # when "f", change to "female" 
-    TRUE          ~ gender)) %>%           # any other value, remain as before
+  mutate(gender = case_when(          # re-define gender as: 
+    gender == "m" ~ "male",           # when "m", change to "male"   
+    gender == "f" ~ "female",         # when "f", change to "female" 
+    TRUE          ~ gender)) %>%      # any other value, remain as before
      
   # create age-in-years
   mutate(age_years = case_when(
-    age_unit == "years"  ~ age,            # if age is given in years
     age_unit == "months" ~ age/12,         # if age is given in months
+    age_unit == "years"  ~ age,            # if age is given in years
     is.na(age_unit)      ~ age,            # if age unit is missing, assume years
     TRUE                 ~ NA_real_)) %>%  # any other circumstance, assign missing
        
@@ -2156,19 +2403,14 @@ surv <- surv_raw %>%
     upper = 70,
     by = 10)) %>% 
      
+  # Make date-difference column  
+  mutate(diff = date_report - date_onset) %>% 
+     
   # create column marking TRUE if district of residence and detection differ
   mutate(moved = district_res != district_det) %>% 
   
   # create new column that prioritizes district of detection
   mutate(district = coalesce(district_det, district_res)) %>% 
-  
-  # re-code hospital column
-  mutate(hospital = recode(hospital,
-    # for reference: OLD = NEW
-    "Mitilary Hospital"  = "Military Hospital",
-    "Port"               = "Port Hospital",
-    "Port Hopital"       = "Port Hospital",
-    "St. Mark's Maternity Hospital (SMMH)" = "SMMH")) %>% 
      
   # remove suspect cases
   filter(case_def == "Confirmed")
@@ -2182,7 +2424,7 @@ NOTE: End of solution
 
 
 
-`r fontawesome::fa("eye", fill = "darkblue")` **Review your cleaning pipe chain, and the one in the solution.** Ensure that all the cleaning steps in the solution are also present in your R script "ebola_analysis.R".    
+`r fontawesome::fa("eye", fill = "darkblue")` **Now review your cleaning pipe chain, and the one in the solution above.** Ensure that all the cleaning steps in the solution are also present in your R script "ebola_analysis.R".    
 
 
 
@@ -2203,17 +2445,21 @@ rio::export(surv, here("data", "clean", "surveillance_linelist_clean_20141201.rd
 
 Above, we write the name of the R object (`surv`), and then provide the file path and file namethat we want to save it to (using the same `here()` syntax that we used to import data). Note the file extension ".rds".  
 
+If you wanted to export the data as CSV or Excel, you would simply change the file extension in the command to: .csv or .xlsx
+
+
+
 
 
 
 
 ## End  
 
-Congratulations! You have completed the cleaning exercise!  
+Congratulations! You have completed the cleaning exercise! This is a huge step in your introduction to R. You have now been introduced to most of the important data management functions in R.  
 
 Be sure to save your R script, and check-in with your facilitator.  
 
-**In case you did not finish, do not worry.** *In the case that you can not finish, look in the "scripts/backup" folder. You will find R scripts for the Ebola analysis at every stage of this course. So you can always us these as a "backup".*  
+**In case you did not finish, do not worry.** *In the case that you can not finish, look in the "scripts/backup" folder. You will find R scripts for the Ebola analysis at every stage of this course. So you can always us these as a "backup" for later modules.*  
 
 
 
