@@ -64,9 +64,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Data prep --------------------------------------------------------------------
 # Import
-surv <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package = "introexercises")) 
+surv <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises")) 
   
-surv_small <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package = "introexercises")) %>% 
+surv_small <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises")) %>% 
      select(case_id, hospital, case_id, age_years,  wt_kg, 
             ht_cm,  date_onset, admin3pcod)
 

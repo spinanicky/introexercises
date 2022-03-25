@@ -2440,7 +2440,7 @@ For example, if you work in an epidemiology team and need to send files to a GIS
 
 ```{r, echo=T, eval=F}
 # Export cleaned file  
-rio::export(surv, here("data", "clean", "surveillance_linelist_clean_20141201.rds"))
+export(surv, here("data", "clean", "surveillance_linelist_clean_20141201.rds"))
 ```
 
 Above, we write the name of the R object (`surv`), and then provide the file path and file namethat we want to save it to (using the same `here()` syntax that we used to import data). Note the file extension ".rds".  

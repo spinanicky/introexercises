@@ -73,7 +73,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
-surv <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package = "introexercises"))
+surv <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises"))
 ```
 
 
@@ -399,7 +399,7 @@ scale_fill_viridis_d(na.value = "grey")
 
 ```{r quiz-brewer}
 quiz(caption = "Quiz - color brewer",
-  question("What color is the age group 10-19 using scale_fill_brewer(palette = 'pastel2')?",
+  question("What color is the age group 10-19 using scale_fill_brewer(palette = 'Pastel2')?",
     allow_retry = T,
     answer("green"),
     answer("yellow"),

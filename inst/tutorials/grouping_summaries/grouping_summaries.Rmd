@@ -72,7 +72,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r, include=FALSE}
 # data prep --------------------------------------------------------------------
-surv <- rio::import(system.file("dat/surveillance_linelist_clean.rds", package = "introexercises"))
+surv <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises"))
 
 ```
 
@@ -290,9 +290,20 @@ Run all the code in your script. If you have successfully finished the previous 
 * Load packages  
 * Import the "raw" surveillance dataset  
 * Run a series of descriptive analyses to review the data  
-* Clean the `surv_raw` "raw" data frame, in a "pipe chain", and save the clean data frame as `surv`  
+* Clean the `surv_raw` "raw" data frame using the "pipe chain", and save the clean data frame in R as `surv`  
 
 **Now you can write more code at the bottom of the script, using the cleaned data frame `surv`**
+
+
+#### Backup  
+
+If your R script causes errors, or you did not finish the last module, you can import a clean version of the surveillance linelist with the following command and use it for this exercise:  
+
+```{r}
+surv <- import(here("data", "clean", "backup", "surveillance_linelist_clean_20141201.rds"))
+```
+
+If running all the code in your R script caused errors, alert your instructor.  
 
 
 ### Add a new section  
@@ -488,8 +499,7 @@ Try to add `adorn_()` functions below. See how they behave slightly differently 
 
 * `adorn_totals()`  
 * `adorn_percentages()`  
-* `adorn_pct_formatting()`  
-* `adorn_pct_formatting(digits = 0)`  
+* `adorn_pct_formatting()` (also try this with `digits = 0`)  
 
 
 Then try adding these functions (only one at a time):  
@@ -541,7 +551,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 </br>
 
 ```{r eval = F, echo=T}
-district_counts <- surv %>% 
+hospital_counts <- surv %>% 
   count(hospital)
 ```
 
@@ -822,26 +832,33 @@ knitr::include_graphics("images/flextable.png", error = F)
 
 ### Saving an image  
 
-You can export the tables to Word, PowerPoint or HTML or as an image (PNG) files. To do this, save the table as a named object using the assignment operator `<-`. Then, place that object in one of the below {flextable} function, as shown.  
+You can export the tables to Word, PowerPoint or HTML or as an image (PNG) files.  
+
+To do this, 
+
+1) Save the table as a named object using the assignment operator `<-`  
+2) Write one of the {flextable} functions below as a *separate command* (**not** a pipe from your previous code):  
 
 * `save_as_docx()`  
 * `save_as_pptx()`  
 * `save_as_image()`  
 * `save_as_html()`  
 
-Within the parentheses of the command, provide the name of the table object in  (e.g. `my_table`), and then the file path to save to (including the file name), for example:  
+Within the parentheses of the function, provide the name of the table object in  (e.g. `my_table`), and then the file path to save to (including the file name and extension, in quotes), for example:  
 
 ```{r, echo=T, eval=F}
-# saves the file as my_table.docx in the root folder of your R project
-save_as_docx(my_table, path = "my_table.docx")
+# saves the table object my_table as "hospital_table.docx"
+save_as_docx(my_table, path = "hospital_table.docx")
 ```
 
-or this:  
+(Look for the file to appear in the root/top folder of your RStudio project)  
+
+or try to save as a PNG image like this:    
 
 
 ```{r, echo=T, eval=F}
-# saves the file as my_table.png in the root folder of your R project
-save_as_image(my_table, path = "my_table.png")
+# saves the table as hospital_table.png in the root folder of your R project
+save_as_image(my_table, path = "hospital_table.png")
 ```
 
 Note that you will need to install Phantom JS (free) for the `save_as_image()` to work. You can do this by running the command `webshot::install_phantomjs()`.  
