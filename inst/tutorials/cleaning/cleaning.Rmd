@@ -1002,7 +1002,7 @@ Each column in the data frame has a specific "class". Classes reflect how R unde
 
 You reviewed the classes of each column with the `skim()` function from the {skimr} package. You can also view the class of a single column using this syntax:  
 
-```{r}
+```{r, eval=F, echo=T}
 # print the class of a column
 class(surv$gender)
 ```
@@ -1030,7 +1030,7 @@ Use the following command to look at the first six values of `date_onset` in the
 head(surv$date_onset)
 ```
 
-```{r quiz-date-format}
+```{r quiz-date-format-raw}
 quiz(caption = "Quiz - raw date format",
   question("Which format is date_onset??",
     allow_retry = T,
