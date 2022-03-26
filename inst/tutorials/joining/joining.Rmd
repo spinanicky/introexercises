@@ -66,37 +66,34 @@ knitr::opts_chunk$set(echo = FALSE)
 # Import
 surv <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises")) 
   
-surv_small <- rio::import(system.file("dat/surveillance_linelist_clean_20141201.rds", package = "introexercises")) %>% 
-     select(case_id, hospital, case_id, age_years,  wt_kg, 
-            ht_cm,  date_onset, admin3pcod)
-
 hospitals <- bind_rows(rio::import(system.file("dat/hospitals/20141201_hosp_port.csv", package = "introexercises")),
                     rio::import(system.file("dat/hospitals/20141201_hosp_central.csv", package = "introexercises"))) %>% 
              select(hospital, `hospitalisation date`, outcome, `outcome date`) %>% 
              janitor::clean_names()
 
-geo_data <- rio::import(system.file("dat/pop/sle_admpop_adm3_2020.csv", package = "introexercises")) %>% 
-                 select(-c(Female, Male), -starts_with("T"))
+## NOT USED ANYMORE
+# geo_data <- rio::import(system.file("dat/pop/sle_admpop_adm3_2020.csv", package = "introexercises")) %>% 
+#                  select(-c(Female, Male), -starts_with("T"))
 
 
-# Make the hospital information dataframe
-hospital_dirty = data.frame(
-  hosp_name     = c("central hospital", "military", "military", "port", "St. Mark's", "ignace", "sisters"),
-  catchment_pop = c(1950280, 40500, 10000, 50280, 12000, 5000, 4200),
-  level         = c("Tertiary", "Secondary", "Primary", "Secondary", "Secondary", "Primary", "Primary")
-)
-
-hospital_clean <- hospital_dirty %>% 
-  mutate(
-    hosp_name = case_when(
-      # criteria                       # new value
-      hosp_name == "military"          ~ "Military Hospital",
-      hosp_name == "port"              ~ "Port Hospital",
-      hosp_name == "St. Mark's"        ~ "St. Mark's Maternity Hospital (SMMH)",
-      hosp_name == "central hospital"  ~ "Central Hospital",
-      TRUE                             ~ hosp_name
-      )
-    )
+## NOT USED ANYMORE Make the hospital information dataframe
+# hospital_dirty = data.frame(
+#   hosp_name     = c("central hospital", "military", "military", "port", "St. Mark's", "ignace", "sisters"),
+#   catchment_pop = c(1950280, 40500, 10000, 50280, 12000, 5000, 4200),
+#   level         = c("Tertiary", "Secondary", "Primary", "Secondary", "Secondary", "Primary", "Primary")
+# )
+# 
+# hospital_clean <- hospital_dirty %>% 
+#   mutate(
+#     hosp_name = case_when(
+#       # criteria                       # new value
+#       hosp_name == "military"          ~ "Military Hospital",
+#       hosp_name == "port"              ~ "Port Hospital",
+#       hosp_name == "St. Mark's"        ~ "St. Mark's Maternity Hospital (SMMH)",
+#       hosp_name == "central hospital"  ~ "Central Hospital",
+#       TRUE                             ~ hosp_name
+#       )
+#     )
 
 # Create smaller linelists for the easier exemples
 patients <- tibble(ID = c("patient_1", "patient_2", "patient_3", 
@@ -1007,7 +1004,7 @@ NOTE: Below is the solution (all within details tags collapsed)
 
 ```{r eval = F, echo=T}
 # Join the two data frames with a left join
-combined <- full_join(surv, hosp, by = "case_id")
+combined <- left_join(surv, hosp, by = "case_id")
 ```
 
 </br>
@@ -1023,147 +1020,15 @@ NOTE: End of solution
 
 
 
-
-
-
-
-
-## Joining lab data
-
-
-### Review lab data  
-
-Click on the `lab` data frame in the Environment pane. Review the columns. Are there any common columns between this data frame and `surv` that we can use to join lab data to the survillance linelist?  
-
-Yes, we see `case_ID`
-
-### Assess duplicates  
-
-
-When one dataframe has **several lines for some of the patients**, duplications may occur (depending on the join).
-
-
-```{r, echo=T, eval=F}
-count(lab, ID)
-```
-
-### Join data
-
-
-
-### Review join  
-
-
-
-
-
-
-
-### Left join
-
-How would you perform a *left join* of `df_patient` with `lab` (where `df_patient` is used as reference/baseline dataframe)?
-
-
-### Anti-join
-
-Write the command that returns *all rows from the lab database for which we do not have age and sex data*.
-
-Because we want `lab` as the baseline, it should be listed first. Do not forget the by=
-
-```{r, echo=T, eval=F}
-anti_join(lab, surv, by = "ID")
-```
-
-
-### Troubleshooting line duplication
-
-
-Let us now consider these small dataframes, named `df1` and `df2` (below): 
-
-```{r echo = FALSE, fig.show="hold"}
-df1 %>% kbl() %>% kable_styling(full_width = FALSE, 
-                                       bootstrap_options = c("striped", "hover", "condensed"))
-
-df2 %>% kbl() %>% kable_styling(full_width = FALSE, 
-                                   bootstrap_options = c("striped", "hover", "condensed"))
-```
-
-
-How would you *count the number of lines for each patient*? Try it for the `df2` dataframe:  
-
-```{r nb_lines, exercise = TRUE}
-
-```
-
-```{r nb_lines-hint}
-There are several ways, but a very quick way is to use the `count()` function.
-```
-
-```{r nb_lines-check}
-grade_this({
-     # Automatically pass if .result equal to .solution
-     pass_if_equal(message = "Excellent")
-     # Default to failing grade with feedback
-     fail()
-})
-```
-
-```{r nb_lines-solution}
-count(df2, ID)
-```
-
-And if we do this for the `df1` dataframe:  
-
-```{r eval = TRUE, echo = FALSE}
-count(df1, ID)
-```
-
-So we see that in the lab dataframes, some patients have several lines (they were tested more than once). This will affect our joins.
-
-```{r quiz-duplication-1}
-quiz(
-     question("When runing the command left_join(df1, df2, by = 'ID'), how many lines will be returned for patient 1?",
-              answer("0", message = "The left dataframe has a row for patient 1. This row could be duplicated if the right dataframe had more than one, but it cannot be dropped when using a left join."),
-              answer("1", message = "The lab dataframe has three rows for patient 1, what do you think will happen to them?"),
-              answer("2"),
-              answer("3", correct = TRUE),
-              answer("4", message = ""),
-              allow_retry = TRUE),
-     
-     question("What about patient 2?",
-              answer("0", message = "The left dataframe has a row for patient 2. This row could be duplicated if the right dataframe had more than one, but it cannot be dropped when using a left join."),
-              answer("1", correct = TRUE),
-              answer("2", message = "The right dataframe has only one row for patient 2, so it's a parfect one-on-one match"),
-              answer("3", message = "The right dataframe has only one row for patient 2, so it's a parfect one-on-one match"),
-              answer("4", message = "The right dataframe has only one row for patient 2, so it's a parfect one-on-one match"),
-              allow_retry = TRUE),
-     
-     question("When runing the command right_join(df1, df2, by = 'ID'), what do you think the values in the sexe column will be for patient 4?",
-              answer("F", message = "What is the value of sexe for patient 4 in the df1 dataframe?"),
-              answer("M", message = "What is the value of sexe for patient 4 in the df1 dataframe?"),
-              answer("There won't be a patient_4 row, it will be dropped", message = "This is a right join, so df2 is used as a reference dataframe, none of its rows will be dropped, even if no match is found in the df1 dataframe"),
-              answer("NA", correct = TRUE),
-              allow_retry = TRUE)
-     
-)
-
-```
-
-
-
-
-
-## Practice joins
-
-
 ## Join lab data  
 
-Now we need to join the dataset of laboratory testing results. 
+Now we need to join the data frame of laboratory testing results. 
 
-**Complete the following steps to join the lab dataset into the `combined` data frame**  
+**Complete the following steps to join the lab data frame into the `combined` data frame**  
 
-1) In the importing section of your script, write and run a command to import the CSV file located at "data/raw/lab_results_20141201.xlsx" and save it as `lab`  
-2) In the **Joining data** section of your script, write and run commands to compare the `combined` and `lab` datasets, then conduct a `full_join()` to add the `lab` column to `combined`  
+### Import and clean the lab data  
+
+In the importing section of your script, write and run a command to import the XLSX file located at "data/raw/lab_results_20141201.xlsx", clean the column names using `clean_names()`, and save it as `lab` in your R Environment.  
 
 
 <!--
@@ -1174,15 +1039,11 @@ NOTE: Below is the solution (all within details tags collapsed)
 <summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
 </br>
 
-```{r eval = F, echo=T}
-
+```{r, echo=T, eval=F}
 # Import lab data
 # (place this near the top of your script, in the importing section)
-lab <- import(here("data", "raw", "lab_results_20141201.xlsx"))
-
-# Join the two data frames with a full-join
-# (place this in the Joining data section of your script)
-combined <- full_join(combined, lab, by = "case_id")
+lab <- import(here("data", "raw", "lab_results_20141201.xlsx")) %>% 
+  clean_names()
 
 ```
 
@@ -1195,14 +1056,49 @@ NOTE: End of solution
 -->
 
 
-`r fontawesome::fa("eye", fill = "darkblue")` **Verify manually that the join occurred correctly.**  
+
+### Join the lab data  
+
+In the **Joining data** section of your script (below your `hosp` join), write and run commands to compare the `combined` and `lab` data frames, and then conduct a `left_join()` to add the `lab` column `ct_blood` to the `combined` data frame, matching on `case_id`.  
+
+
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+# Join the two data frames with a left-join
+combined <- full_join(combined, lab, by = "case_id")
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+`r fontawesome::fa("eye", fill = "darkblue")` **Verify manually in RStudio viewer that the join occurred correctly.**  
+
+
+
+
+
+
+
+
 
 
 ## Add case investigation data  
 
 Finally, we need to add new data from case investigations. Teams have called and conducted home visits to do detective work. They have recorded the likely source cases, dates of infection, and context of infection for some of the cases.  
 
-**Complete the following steps to join the case investigations dataset into the `combined` data frame**  
+**Complete the following steps to join the case investigations data frame into the `combined` data frame**  
 1) In the **importing section** of your script, write and run a command to import the CSV file located at "data/raw/case_investigations_20141201.xlsx" and save it as `investigations`  
 2) In the **Joining data** section of your script, write and run commands to:  
   * Compare the `combined` and `investigations` datasets  
