@@ -661,6 +661,44 @@ We want to apply a filter to `combined`, using *the Monday prior to the publish 
 
 We can return the Sunday prior to a date using `floor_date(DATE, unit = "week")` from the {lubridate} package. To return the *prior* Sunday, we can just subtract 7 days from the date: `floor_date(DATE - 7, unit = "week")`  
 
+Try to write a standalone command that creates `data_date` using the above specifications.  
+
+
+<!--
+NOTE: Below is the hint (all within details tags collapsed)
+-->
+<details>
+
+<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
+</br>
+First, define an R object `data_date` using `floor_date()` from {lubridate} with the argument `unit = "week"`. Within `floor_date()`, place the `ymd()` command and the `- 7`.    
+
+Then, in a separate command, use the assignment operator to re-define `combined`, and pipe it through a `filter()`. Within the `filter()` function, give logical criteria for values in the `date_report` column to be less or equal to the `data_date`.  
+
+</br>
+</details>
+
+<!--
+NOTE: Below is the solution (all within details tags collapsed)
+-->
+
+<details>
+<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
+</br>
+
+```{r eval = F, echo=T}
+# Define data date as Sunday of prior week
+data_date <- floor_date(ymd(params$publish_date)-7, unit = "week")
+```
+
+</br>
+</details>
+<!--
+NOTE: End of solution
+-->
+
+
+
 ```{r, echo=T, eval=T}
 # Define data date as Sunday of prior week
 data_date <- floor_date(ymd(params$publish_date)-7, unit = "week")
@@ -690,7 +728,7 @@ combined <- combined %>%
 
 Why? Because in R, `NA` is treated as infinitely large and small, is it removed by this simple filter.  
 
-Now try this one, and use it instead. It explicity adds a logical criteria that keeps rows that have missing `date_report`.  
+Now try this one, and use it instead. It explicitly adds a logical criteria that keeps rows that have missing `date_report`.  
 
 
 ```{r, echo=T, eval=F}
@@ -700,45 +738,6 @@ combined <- combined %>%
 ```
 
 
-
-`Give it a try, and check the hint/solution below before running the command.  
-
-<!--
-NOTE: Below is the hint (all within details tags collapsed)
--->
-<details>
-
-<summary style='text-decoration: underline; color: darkgreen;'>`r fontawesome::fa("lightbulb", fill = "gold")` Click to read a hint</summary>
-</br>
-First, define an R object `data_date` using `floor_date()` from {lubridate} with the argument `unit = "week"`. Within `floor_date()`, place the `ymd()` command and the `- 7`.    
-
-Then, in a separate command, use the assignment operator to re-define `combined`, and pipe it through a `filter()`. Within the `filter()` function, give logical criteria for values in the `date_report` column to be less or equal to the `data_date`.  
-
-</br>
-</details>
-
-<!--
-NOTE: Below is the solution (all within details tags collapsed)
--->
-
-<details>
-<summary style='text-decoration: underline; color: red;'>`r fontawesome::fa("check", fill = "red")`Click to see a solution (try it yourself first!)</summary>
-</br>
-
-```{r eval = F, echo=T}
-# Define data date as Sunday of prior week
-data_date <- floor_date(ymd(params$publish_date)-7, unit = "week")
-
-# Filter dataset to data date
-combined <- combined %>% 
-  filter(date_report <= data_date | is.na(date_report))
-```
-
-</br>
-</details>
-<!--
-NOTE: End of solution
--->
 
 
 
