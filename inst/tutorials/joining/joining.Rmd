@@ -305,7 +305,7 @@ Combining datasets can sometimes be as simple as combining the rows of data fram
 
 `r fontawesome::fa("window-restore", fill = "darkgrey")` 
 
-In our case study Ebola outbreak, there are six datasets from various hospitals in the "data/raw/hospitals" subfolder of the "intro_course" R project. In Module 1, you should have re-named them to the following standardized syntax (if not, please do so now or replace them using the renamed files in the "data/raw/hospitals/**backup**" folder):  
+In our case study Ebola outbreak, there are six datasets from various hospitals in the "data/raw/hospitals" subfolder of the "intro_course" R project. In Module 1, you should have re-named them to the following standardized syntax (if not, please do so now, or replace them using the "backup" renamed files in the "data/raw/hospitals/**backup**" folder):  
 
 * 20141201_hosp_central.csv  
 * 20141201_hosp_military.csv  
@@ -413,7 +413,8 @@ Other times, you want to combine data using *joins*, not simply binding more row
 
 Take a few minutes to review the information below. We give it to you as text descriptions, as a schematic, and as animations ([source](https://github.com/gadenbuie/tidyexplain)).  
 
-To note, the most common joins in public health contexts are left joins and anti joins  
+*To note, the most common joins in public health contexts are left joins and anti joins*.  
+
 
 
 #### Schematic  
@@ -428,7 +429,7 @@ knitr::include_graphics("images/summary_joins.png", error = F)
 
 * **Left join**: keep all rows from the baseline data frame; add columns and matched rows from the second data frame. For unmatched records, the columns of the baseline data frame are filled as `NA`.  
 
-* **Right join**: keep matched rows from the baseline data frame, and add columns and unmatched rows from the second data frame. For unmatched records, the columns of the second data frame are filled as `NA`.  
+* **Right join**: keep only matched rows from the baseline data frame, and add columns and unmatched rows from the second data frame. For unmatched records, the columns of the second data frame are filled as `NA`. Another way to think about this is: it is a left join in which the second-listed data frame is the baseline.  
 
 * **Full join**: combine two full data frames, keeps all rows and columns.  
 
@@ -534,13 +535,6 @@ quiz(caption = "Which join would you use:",
               allow_retry = TRUE),
      
      
-     question("Which of these joins would use patients as the baseline?",
-              answer("left_join(patients, results, by = 'ID')", correct = TRUE),
-              answer("right_join(results, patients, by = 'ID')", correct = TRUE),
-              answer("left_join(results, patients, by = 'ID')"), correct = FALSE,
-              allow_retry = TRUE),
-     
-     
      question("Which of these would return only the rows found in patients?",
               answer("inner_join(patients, results, by = 'ID')", correct = TRUE),
               answer("full_join(patients, results, by = 'ID')", correct = FALSE),
@@ -634,7 +628,7 @@ There is so much that can potentially go wrong when joining (and hidden from vie
 
 ### Review dimensions  
 
-Use the function `dim()` on the datasets in the code box below. This is a shortcut to return the number of rows and the number of columns. Alternatively, you can use `nrow()` and `ncol()` commands individually.  
+Use the function `dim()` on the two data frames. This is a shortcut to return the number of rows and the number of columns. Alternatively, you can use `nrow()` and `ncol()` commands individually.  
 
 **Check the dimensions (number of lines and columns) of the two data frames**.  
 
@@ -954,14 +948,14 @@ You have three options:
 2) Set all of the redundant columns as identifiers in the join  
   * This keep only the columns of the baseline data frame. The command would look like this:  
 
-```{r}
+```{r, echo=T, eval=F}
 test <- full_join(surv, hosp,
           by = c(
             "case_id" = "ID",
-            "age",                    # columns "age" and
-            "age_unit",               # "age_unit" are named the same in both 
-            "gender" = "gender",
-            "hospital" = "hospital"))
+            "age",                    # the other columns are
+            "age_unit",               # named the same in both 
+            "gender",
+            "hospital"))
 ```
 
 3) Remove the redundant columns *before* the merge  
