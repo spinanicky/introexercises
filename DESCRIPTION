@@ -19,7 +19,7 @@ Imports:
     fontawesome,
     gghighlight,
     ggplot2,
-    gradethis (>= 0.2.5.9000),
+    gradethis,
     gtsummary,
     janitor,
     learnr (>= 0.10.1.9019),
